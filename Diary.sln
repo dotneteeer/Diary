@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diary.Api", "Diary.Api\Diar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diary.Domain", "Diary.Domain\Diary.Domain.csproj", "{B2D0D81A-238D-4FF9-8538-FB8CF8DD89EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diary.DAL", "Diary.DAL\Diary.DAL.csproj", "{89CCA6BE-6703-4701-95B6-DA6D44A51D83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C21685A8-B7C8-498C-B6A3-BB7542B0A19E} = {46FE97A2-42AD-45BD-A346-9616AF46E2B3}
 		{B2D0D81A-238D-4FF9-8538-FB8CF8DD89EC} = {28558559-1E42-4A0A-A39A-DD9C807A9ACF}
+		{89CCA6BE-6703-4701-95B6-DA6D44A51D83} = {F954BEE8-6298-478E-8AB5-55804E0563BD}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C21685A8-B7C8-498C-B6A3-BB7542B0A19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -28,5 +31,9 @@ Global
 		{B2D0D81A-238D-4FF9-8538-FB8CF8DD89EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D0D81A-238D-4FF9-8538-FB8CF8DD89EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D0D81A-238D-4FF9-8538-FB8CF8DD89EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89CCA6BE-6703-4701-95B6-DA6D44A51D83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89CCA6BE-6703-4701-95B6-DA6D44A51D83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89CCA6BE-6703-4701-95B6-DA6D44A51D83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89CCA6BE-6703-4701-95B6-DA6D44A51D83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
