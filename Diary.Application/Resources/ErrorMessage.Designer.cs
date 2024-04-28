@@ -69,11 +69,38 @@ namespace Diary.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report already exists.
+        /// </summary>
+        internal static string ReportAlreadyExists {
+            get {
+                return ResourceManager.GetString("ReportAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Report not found.
+        /// </summary>
+        internal static string ReportNotFound {
+            get {
+                return ResourceManager.GetString("ReportNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reports not found.
         /// </summary>
         internal static string ReportsNotFound {
             get {
                 return ResourceManager.GetString("ReportsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }

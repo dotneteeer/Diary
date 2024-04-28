@@ -1,3 +1,4 @@
+using Diary.Domain.Entity;
 using Diary.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,8 +9,8 @@ public class ReportConfiguration:IEntityTypeConfiguration<Report>
 {
     public void Configure(EntityTypeBuilder<Report> builder)
     {
-        builder.Property(report => report.Id).ValueGeneratedOnAdd();
-        builder.Property(report => report.Name).IsRequired().HasMaxLength(100);
-        builder.Property(report => report.Description).IsRequired().HasMaxLength(2000);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
+        builder.Property(x => x.Description).IsRequired().HasMaxLength(2000);
     }
 }

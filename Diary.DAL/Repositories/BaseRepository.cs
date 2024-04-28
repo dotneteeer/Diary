@@ -23,8 +23,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         {
             throw new ArgumentNullException("Entity is null");
         }
-
-        //await _dbContext.AddAsync(entity);
+        
         _dbContext.Add(entity);
         _dbContext.SaveChanges();
         
@@ -37,8 +36,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         {
             throw new ArgumentNullException("Entity is null");
         }
-
-        //_dbContext.Update(entity);
+        
         _dbContext.Update(entity);
         _dbContext.SaveChanges();
         
@@ -51,8 +49,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         {
             throw new ArgumentNullException("Entity is null");
         }
-
-        //_dbContext.Remove(entity);
+        
         _dbContext.Remove(entity);
         _dbContext.SaveChanges();
         

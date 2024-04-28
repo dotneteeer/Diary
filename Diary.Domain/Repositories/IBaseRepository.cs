@@ -6,12 +6,6 @@ public interface IBaseRepository<TEntity>
 
     Task<TEntity> CreateAsync(TEntity entity);
 
-    // TEntity Update(TEntity entity);
-    //
-    // void Remove(TEntity entity);
-    //
-    // Task<int> SaveChangesAsync();
-
     Task<TEntity> RemoveAsync(TEntity entity);
     
     Task<TEntity> UpdateAsync(TEntity entity);

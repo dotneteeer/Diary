@@ -6,5 +6,11 @@ public enum ErrorCodes
     //User:10-20
     InternalServerError=10,
     
-    ReportsNotFound=0
+    ReportsNotFound=0,
+    ReportNotFound=1,
+    ReportAlreadyExists=2,
+    
+    UserNotFound=11
+    
+    
 }

@@ -11,14 +11,14 @@ public class UserConfiguration:IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.Property(user => user.Id).ValueGeneratedOnAdd();
-        builder.Property(user => user.Login).HasMaxLength(100).IsRequired();
-        builder.Property(user => user.Password).IsRequired();
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.Login).HasMaxLength(100).IsRequired();
+        builder.Property(x => x.Password).IsRequired();
 
-        builder.HasMany<Report>(user => user.Reports)
+        builder.HasMany<Report>(x => x.Reports)
             .WithOne(report=>report.User)
             .HasForeignKey(report=>report.UserId)
-            .HasPrincipalKey(user=>user.Id);
+            .HasPrincipalKey(x=>x.Id);
         
     }
 }

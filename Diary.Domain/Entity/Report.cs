@@ -1,7 +1,7 @@
 using Diary.Domain.Entity;
 using Diary.Domain.Interfaces;
 
-namespace Diary.Domain.Enum;
+namespace Diary.Domain.Entity;
 
 public class Report:IEntityId<long>,IAuditable
 {
