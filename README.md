@@ -1,4 +1,4 @@
-     !!!Do not use this file as a real one README!!!
+        !!!The project hasn't been finished yet!!!
 # Diary API Project
 
 ## Introduction
