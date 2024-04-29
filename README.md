@@ -1,4 +1,4 @@
-                                                                                                         !!!The project hasn't been finished yet!!!
+<center>!!!The project hasn't been finished yet!!!</center>
 # Diary API Project
 
 ## Introduction
