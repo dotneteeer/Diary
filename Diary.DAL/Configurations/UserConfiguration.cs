@@ -1,9 +1,6 @@
 using Diary.Domain.Entity;
-using Diary.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Diary.DAL.Configurations;
 

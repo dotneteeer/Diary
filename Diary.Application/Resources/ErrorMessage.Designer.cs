@@ -60,7 +60,7 @@ namespace Diary.Application.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Internal server error .
+        ///   Looks up a localized string similar to Internal server error.
         /// </summary>
         internal static string InternalServerError {
             get {
