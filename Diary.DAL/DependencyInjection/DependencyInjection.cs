@@ -16,7 +16,6 @@ public static class DependencyInjection
         services.AddSingleton<DateInterceptor>();
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            //options.UseNpgsql();
             options.UseNpgsql(connectionString);
         });
         

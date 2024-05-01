@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
@@ -11,7 +12,8 @@ namespace Diary.Api.Controllers;
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController:ControllerBase
 {
     private readonly IReportService _reportService;

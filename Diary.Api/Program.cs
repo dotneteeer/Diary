@@ -1,3 +1,4 @@
+using Diary.Api;
 using Diary.Application.DependencyInjection;
 using Diary.DAL.DependencyInjection;
 using Serilog;
@@ -8,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 
 
 builder.Host.UseSerilog((context, configuration)=>configuration.ReadFrom.Configuration(context.Configuration));
@@ -22,7 +23,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json","Diary Swagger v1.0");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json","Diary Swagger v2.0");
+        options.RoutePrefix=string.Empty;//https://localhost:3306/index.html
+    });
 }
 
 app.UseHttpsRedirection();
