@@ -17,20 +17,20 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return _dbContext.Set<TEntity>();
     }
 
-    public Task<TEntity> CreateAsync(TEntity entity)
+    public async Task<TEntity> CreateAsync(TEntity entity)
     {
         if (entity == null)
         {
             throw new ArgumentNullException("Entity is null");
         }
         
-        _dbContext.Add(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.AddAsync(entity);
+        await _dbContext.SaveChangesAsync();
         
-        return Task.FromResult(entity);
+        return entity;
     }
 
-    public Task<TEntity> UpdateAsync(TEntity entity)
+    public async Task<TEntity> UpdateAsync(TEntity entity)
     {
         if (entity == null)
         {
@@ -38,12 +38,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         
         _dbContext.Update(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
         
-        return Task.FromResult(entity);
+        return entity;
     }
 
-    public Task<TEntity> RemoveAsync(TEntity entity)
+    public async Task<TEntity> RemoveAsync(TEntity entity)
     {
         if (entity == null)
         {
@@ -51,13 +51,9 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         
         _dbContext.Remove(entity);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
         
-        return Task.FromResult(entity);
+        return entity;
     }
-
-    // public async Task<int> SaveChangesAsync()
-    // {
-    //     return await SaveChangesAsync();
-    // }
+    
 }

@@ -42,5 +42,38 @@ public class ReportController:ControllerBase
         }
         return BadRequest(response);
     }
-    //6:00
+    
+    [HttpDelete("{id:int:min(1)}")]
+    public async Task<ActionResult<BaseResult<ReportDto>>> Delete(long id)
+    {
+        var response = await _reportService.DeleteReportAsync(id);
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<BaseResult<ReportDto>>> Create([FromBody]CreateReportDto dto)
+    {
+        var response = await _reportService.CreateReportAsync(dto);
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+    
+    [HttpPut]
+    public async Task<ActionResult<BaseResult<ReportDto>>> Update([FromBody]UpdateReportDto dto)
+    {
+        var response = await _reportService.UpdateReportAsync(dto);
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+    
 }
