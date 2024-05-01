@@ -23,6 +23,22 @@ public class ReportController:ControllerBase
         _reportService = reportService;
     }
     
+    /// <summary>
+    /// Get reports of user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <remarks>
+    /// Request for create report:
+    /// 
+    ///     GET
+    ///     {
+    ///         "UserId":1
+    ///         
+    ///     }
+    /// </remarks>
+    /// <response code="200">If we could get the reports</response>
+    /// <response code="400">If we could not get the reports</response>
+    /// <response code="500">If internal server error occured</response>
     [HttpGet("reports/{userId:int:min(0)}")]//":int:min(0)" added by myself
     public async Task<ActionResult<BaseResult<ReportDto>>> GetUserReports(long userId)
     {
@@ -33,7 +49,24 @@ public class ReportController:ControllerBase
         }
         return BadRequest(response);
     }
-
+    
+    /// <summary>
+    /// Gets report by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <remarks>
+    /// Request for create report:
+    /// 
+    ///     GET
+    ///     {
+    ///         "id":1
+    ///         
+    ///     }
+    /// </remarks>
+    /// <response code="200">If we could get the report</response>
+    /// <response code="400">If we could not get the report</response>
+    /// <response code="500">If internal server error occured</response>
+    /// <response code="500">If internal server error occured</response>
     [HttpGet("{id:int:min(0)}")]//":int:min(0)" added by myself
     public async Task<ActionResult<BaseResult<ReportDto>>> GetReport(long id)
     {
@@ -45,6 +78,24 @@ public class ReportController:ControllerBase
         return BadRequest(response);
     }
     
+    /// <summary>
+    /// Deletes report
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <remarks>
+    /// Request for create report:
+    /// 
+    ///     DELETE
+    ///     {
+    ///         "id":1,
+    ///         "name":"string",
+    ///         "description":"string"
+    ///         
+    ///     }
+    /// </remarks>
+    /// <response code="200">If report was created</response>
+    /// <response code="400">If report was not created</response>
+    /// <response code="500">If internal server error occured</response>
     [HttpDelete("{id:int:min(1)}")]
     public async Task<ActionResult<BaseResult<ReportDto>>> Delete(long id)
     {
@@ -56,6 +107,23 @@ public class ReportController:ControllerBase
         return BadRequest(response);
     }
     
+    /// <summary>
+    /// Creates Report
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <remarks>
+    /// Request for create report:
+    /// 
+    ///     POST
+    ///     {
+    ///         "name":"string",
+    ///         "description":"string",
+    ///         "userId":1
+    ///     }
+    /// </remarks>
+    /// <response code="200">If report was created</response>
+    /// <response code="400">If report was not created</response>
+    /// <response code="500">If internal server error occured</response>
     [HttpPost]
     public async Task<ActionResult<BaseResult<ReportDto>>> Create([FromBody]CreateReportDto dto)
     {
@@ -67,6 +135,24 @@ public class ReportController:ControllerBase
         return BadRequest(response);
     }
     
+    /// <summary>
+    /// Updates report
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <remarks>
+    /// Request for create report:
+    /// 
+    ///     UPDATE
+    ///     {
+    ///         "id":1,
+    ///         "name":"string",
+    ///         "description":"string"
+    ///         
+    ///     }
+    /// </remarks>
+    /// <response code="200">If report was updated</response>
+    /// <response code="400">If report was not updated</response>
+    /// <response code="500">If internal server error occured</response>
     [HttpPut]
     public async Task<ActionResult<BaseResult<ReportDto>>> Update([FromBody]UpdateReportDto dto)
     {

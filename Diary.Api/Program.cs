@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json","Diary Swagger v1.0");
         options.SwaggerEndpoint("/swagger/v2/swagger.json","Diary Swagger v2.0");
-        options.RoutePrefix=string.Empty;//https://localhost:3306/index.html
+        //options.RoutePrefix=string.Empty;//https://localhost:3306/index.html
     });
 }
 

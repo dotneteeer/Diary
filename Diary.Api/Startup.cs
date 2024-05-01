@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Reflection;
 using Asp.Versioning;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -77,6 +78,9 @@ public static class Startup
                     Array.Empty<string>()
                 }
             });
+
+            var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
         });
         
         
