@@ -1,14 +1,19 @@
 using Diary.Api;
 using Diary.Application.DependencyInjection;
 using Diary.DAL.DependencyInjection;
+using Diary.Domain.Settings;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.DefaultSection));
+
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddAuthenticationAndAuthorization(builder);
+
+//builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwagger();
 
 
@@ -35,6 +40,5 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 app.MapControllers();
-app.UseAuthorization();//added by myself
 
 app.Run();

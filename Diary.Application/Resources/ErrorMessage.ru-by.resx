@@ -26,4 +26,13 @@
     <data name="UserNotFound" xml:space="preserve">
         <value>Пользователь не найден</value>
     </data>
+    <data name="PasswordMismatch" xml:space="preserve">
+        <value>Пароли не совпадают</value>
+    </data>
+    <data name="UserAlreadyExists" xml:space="preserve">
+        <value>Пользователь уже существует</value>
+    </data>
+    <data name="PasswordIsWrong" xml:space="preserve">
+        <value>Неверный пароль</value>
+    </data>
 </root>

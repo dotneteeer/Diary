@@ -1,14 +1,52 @@
-using System.Collections.ObjectModel;
-using System.Data;
+
 using System.Reflection;
+using System.Text;
 using Asp.Versioning;
+using Diary.Domain.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
+
 
 namespace Diary.Api;
 
 public static class Startup
 {
+    /// <summary>
+    /// Sets up authentication and authorization
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="builder"></param>
+    public static void AddAuthenticationAndAuthorization(this IServiceCollection services, WebApplicationBuilder builder)
+    {
+        services.AddAuthorization();
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            var jwtOptions = builder.Configuration.GetSection(JwtSettings.DefaultSection).Get<JwtSettings>();
+            var jwtKey = jwtOptions.JwtKey;
+            var issuer = jwtOptions.Issuer;
+            var audience = jwtOptions.Audience;
+            var authority = jwtOptions.Authority;
+            options.Authority = authority;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = issuer,
+                ValidAudience = audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true
+            };
+        });
+    }
+    
     /// <summary>
     /// Swagger set up
     /// </summary>

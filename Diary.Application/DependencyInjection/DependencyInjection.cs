@@ -15,6 +15,7 @@ public static class DependencyInjection
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ReportMapping));
+        //services.AddAutoMapper(typeof(UserMapping));
         
         InitServices(services);
     }
@@ -24,6 +25,9 @@ public static class DependencyInjection
         services.AddScoped<IReportValidator, ReportValidator>();
         services.AddScoped<IValidator<CreateReportDto>, CreateReportValidator>();
         services.AddScoped<IValidator<UpdateReportDto>, UpdateReportValidator>();
+        
         services.AddScoped<IReportService, ReportService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ITokenService, TokenService>();
     }
 }

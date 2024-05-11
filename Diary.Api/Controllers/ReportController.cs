@@ -81,7 +81,7 @@ public class ReportController:ControllerBase
     /// <summary>
     /// Deletes report
     /// </summary>
-    /// <param name="dto"></param>
+    /// <param name="id"></param>
     /// <remarks>
     /// Request for create report:
     /// 

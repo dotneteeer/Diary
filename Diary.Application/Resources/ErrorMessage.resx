@@ -33,4 +33,13 @@
     <data name="UserNotFound" xml:space="preserve">
         <value>User not found</value>
     </data>
+    <data name="PasswordMismatch" xml:space="preserve">
+        <value>Password mismatch</value>
+    </data>
+    <data name="UserAlreadyExists" xml:space="preserve">
+        <value>User alredy exists</value>
+    </data>
+    <data name="PasswordIsWrong" xml:space="preserve">
+        <value>Password is wrong</value>
+    </data>
 </root>

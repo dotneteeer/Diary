@@ -69,6 +69,24 @@ namespace Diary.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password is wrong.
+        /// </summary>
+        internal static string PasswordIsWrong {
+            get {
+                return ResourceManager.GetString("PasswordIsWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password mismatch.
+        /// </summary>
+        internal static string PasswordMismatch {
+            get {
+                return ResourceManager.GetString("PasswordMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Report already exists.
         /// </summary>
         internal static string ReportAlreadyExists {
@@ -92,6 +110,15 @@ namespace Diary.Application.Resources {
         internal static string ReportsNotFound {
             get {
                 return ResourceManager.GetString("ReportsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User alredy exists.
+        /// </summary>
+        internal static string UserAlreadyExists {
+            get {
+                return ResourceManager.GetString("UserAlreadyExists", resourceCulture);
             }
         }
         
