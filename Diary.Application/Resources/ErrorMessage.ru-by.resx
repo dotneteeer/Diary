@@ -35,4 +35,10 @@
     <data name="PasswordIsWrong" xml:space="preserve">
         <value>Неверный пароль</value>
     </data>
+    <data name="InvalidToken" xml:space="preserve">
+        <value>Невалидныйй токен</value>
+    </data>
+    <data name="InvalidClientRequest" xml:space="preserve">
+        <value>Невалидный запрос клиента</value>
+    </data>
 </root>

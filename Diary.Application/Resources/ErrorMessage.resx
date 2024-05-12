@@ -42,4 +42,10 @@
     <data name="PasswordIsWrong" xml:space="preserve">
         <value>Password is wrong</value>
     </data>
+    <data name="InvalidToken" xml:space="preserve">
+        <value>Invalid token</value>
+    </data>
+    <data name="InvalidClientRequest" xml:space="preserve">
+        <value>Invalid client request</value>
+    </data>
 </root>
