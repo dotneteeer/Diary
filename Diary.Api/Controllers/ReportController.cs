@@ -7,13 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Diary.Api.Controllers;
 
-//[Authorize]
+/// <summary>
+/// Repport controller
+/// </summary>
+/// <response code="200">If report was created</response>
+/// <response code="400">If report was not created</response>
+/// <response code="500">If internal server error occured</response>
+/// <response code="401">If user is unauthorized</response>
+[Authorize]
 [ApiController]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
+
 public class ReportController:ControllerBase
 {
     private readonly IReportService _reportService;
@@ -36,9 +45,7 @@ public class ReportController:ControllerBase
     ///         
     ///     }
     /// </remarks>
-    /// <response code="200">If we could get the reports</response>
-    /// <response code="400">If we could not get the reports</response>
-    /// <response code="500">If internal server error occured</response>
+
     [HttpGet("reports/{userId:int:min(0)}")]//":int:min(0)" added by myself
     public async Task<ActionResult<BaseResult<ReportDto>>> GetUserReports(long userId)
     {
@@ -63,10 +70,7 @@ public class ReportController:ControllerBase
     ///         
     ///     }
     /// </remarks>
-    /// <response code="200">If we could get the report</response>
-    /// <response code="400">If we could not get the report</response>
-    /// <response code="500">If internal server error occured</response>
-    /// <response code="500">If internal server error occured</response>
+
     [HttpGet("{id:int:min(0)}")]//":int:min(0)" added by myself
     public async Task<ActionResult<BaseResult<ReportDto>>> GetReport(long id)
     {
@@ -93,9 +97,7 @@ public class ReportController:ControllerBase
     ///         
     ///     }
     /// </remarks>
-    /// <response code="200">If report was created</response>
-    /// <response code="400">If report was not created</response>
-    /// <response code="500">If internal server error occured</response>
+
     [HttpDelete("{id:int:min(1)}")]
     public async Task<ActionResult<BaseResult<ReportDto>>> Delete(long id)
     {
@@ -121,9 +123,7 @@ public class ReportController:ControllerBase
     ///         "userId":1
     ///     }
     /// </remarks>
-    /// <response code="200">If report was created</response>
-    /// <response code="400">If report was not created</response>
-    /// <response code="500">If internal server error occured</response>
+
     [HttpPost]
     public async Task<ActionResult<BaseResult<ReportDto>>> Create([FromBody]CreateReportDto dto)
     {

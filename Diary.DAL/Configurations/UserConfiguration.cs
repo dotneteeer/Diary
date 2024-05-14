@@ -17,5 +17,17 @@ public class UserConfiguration:IEntityTypeConfiguration<User>
             .HasForeignKey(report=>report.UserId)
             .HasPrincipalKey(x=>x.Id);
         
+        //
+
+        builder.HasData(new List<User>
+        {
+            new()
+            {
+                Id = 1,
+                Login = "1stUser",
+                Password = "1stUserPassword"
+            }
+        });
+        //
     }
 }

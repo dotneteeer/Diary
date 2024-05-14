@@ -14,8 +14,10 @@ public enum ErrorCodes
     UserNotFound=11,
     UserAlreadyExists=12,
     
+    
     PasswordMismatch=21,
-    PasswordIsWrong=22
+    PasswordIsWrong=22,
+    UserUnauthorized=23,
     
     
 }

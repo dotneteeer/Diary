@@ -56,7 +56,9 @@ public class TokenService : ITokenService
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey)),
-            ValidateLifetime = true
+            ValidateLifetime = true,
+            ValidAudience = _audience,
+            ValidIssuer = _issuer
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var claimsPrincipal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
@@ -91,8 +93,9 @@ public class TokenService : ITokenService
 
         var newAccessToken = GenerateAccessToken(claimsPrincipal.Claims);
         var newRefreshToken = GenerateRefreshToken();
-        
-        await _userRepository.CreateAsync(user);
+
+        user.UserToken.RefereshToken = newRefreshToken;
+        await _userRepository.UpdateAsync(user);
 
         return new BaseResult<TokenDto>
         {

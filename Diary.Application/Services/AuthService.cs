@@ -45,116 +45,95 @@ public class AuthService : IAuthService
             };
         }
 
-        try
+        var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
+        if (user != null)
         {
-            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
-            if (user != null)
-            {
-                return new BaseResult<UserDto>()
-                {
-                    ErrorMessage = ErrorMessage.UserAlreadyExists,
-                    ErrorCode = (int)ErrorCodes.UserAlreadyExists
-                };
-            }
-
-            var hashUserPassword = HashPassword(dto.Password);
-            user = new User
-            {
-                Login = dto.Login,
-                Password = hashUserPassword
-            };
-
-            await _userRepository.CreateAsync(user);
-
-            return new BaseResult<UserDto>
-            {
-                Data = _mapper.Map<UserDto>(user)
-            };
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, ex.Message);
             return new BaseResult<UserDto>()
             {
-                ErrorMessage = ErrorMessage.InternalServerError,
-                ErrorCode = (int)ErrorCodes.InternalServerError
+                ErrorMessage = ErrorMessage.UserAlreadyExists,
+                ErrorCode = (int)ErrorCodes.UserAlreadyExists
             };
         }
+
+        var hashUserPassword = HashPassword(dto.Password);
+        user = new User
+        {
+            Login = dto.Login,
+            Password = hashUserPassword
+        };
+
+        await _userRepository.CreateAsync(user);
+
+        return new BaseResult<UserDto>
+        {
+            Data = _mapper.Map<UserDto>(user)
+        };
     }
 
     public async Task<BaseResult<TokenDto>> Login(LoginUserDto dto)
     {
-        try
+
+        var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
+        if (user == null)
         {
-            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Login == dto.Login);
-            if (user == null)
-            {
-                return new BaseResult<TokenDto>()
-                {
-                    ErrorMessage = ErrorMessage.UserNotFound,
-                    ErrorCode = (int)ErrorCodes.UserNotFound
-                };
-            }
-
-
-            if (!IsVerifiedPassword(user.Password, dto.Password))
-            {
-                return new BaseResult<TokenDto>
-                {
-                    ErrorMessage = ErrorMessage.PasswordIsWrong,
-                    ErrorCode = (int)ErrorCodes.PasswordIsWrong
-                };
-            }
-
-            var userToken = await _userTokenRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Login),
-                new Claim(ClaimTypes.Role, "User")//hardcode
-            };
-            var accessToken = _tokenService.GenerateAccessToken(claims);
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            if (userToken == null)
-            {
-                userToken = new UserToken
-                {
-                    UserId = user.Id,
-                    RefereshToken = refreshToken,
-                    RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7)
-                };
-
-                await _userTokenRepository.CreateAsync(userToken);
-            }
-            else
-            {
-                userToken.RefereshToken = refreshToken;
-                userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);//check if properties update in db or in code only
-            }
-
-            return new BaseResult<TokenDto>
-            {
-                Data = new TokenDto
-                {
-                    AccessToken = accessToken,
-                    RefreshToken = refreshToken
-                }
-            };
-        }
-        catch (Exception ex)
-        {
-            _logger.Error(ex, ex.Message);
             return new BaseResult<TokenDto>()
             {
-                ErrorMessage = ErrorMessage.InternalServerError,
-                ErrorCode = (int)ErrorCodes.InternalServerError
+                ErrorMessage = ErrorMessage.UserNotFound,
+                ErrorCode = (int)ErrorCodes.UserNotFound
             };
         }
+
+
+        if (!IsVerifiedPassword(user.Password, dto.Password))
+        {
+            return new BaseResult<TokenDto>
+            {
+                ErrorMessage = ErrorMessage.PasswordIsWrong,
+                ErrorCode = (int)ErrorCodes.PasswordIsWrong
+            };
+        }
+
+        var userToken = await _userTokenRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id);
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Login),
+            new Claim(ClaimTypes.Role, "User") //hardcode
+        };
+        var accessToken = _tokenService.GenerateAccessToken(claims);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        if (userToken == null)
+        {
+            userToken = new UserToken
+            {
+                UserId = user.Id,
+                RefereshToken = refreshToken,
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7)
+            };
+
+            await _userTokenRepository.CreateAsync(userToken);
+        }
+        else
+        {
+            userToken.RefereshToken = refreshToken;
+            userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            await _userTokenRepository.UpdateAsync(userToken);
+        }
+
+        return new BaseResult<TokenDto>
+        {
+            Data = new TokenDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            }
+        };
     }
 
     private string HashPassword(string password)
     {
         var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-        return BitConverter.ToString(bytes).ToLower();
+        return Convert.ToBase64String(bytes);
     }
 
     private bool IsVerifiedPassword(string userPaasswordHash, string userPassword)

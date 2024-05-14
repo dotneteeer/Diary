@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Diary.DAL;
 
-public class ApplicationDbContext:DbContext
+public sealed class ApplicationDbContext:DbContext//sealed added by rider(forbids to inherit)
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options):base(options)
     {

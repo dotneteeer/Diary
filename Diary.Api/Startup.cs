@@ -19,7 +19,7 @@ public static class Startup
     /// <param name="builder"></param>
     public static void AddAuthenticationAndAuthorization(this IServiceCollection services, WebApplicationBuilder builder)
     {
-        services.AddAuthorization();
+        services.AddAuthorization();//unnecessary because of app.UseAuthorization(); in program.cs
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

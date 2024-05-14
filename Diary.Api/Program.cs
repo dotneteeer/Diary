@@ -1,4 +1,5 @@
 using Diary.Api;
+using Diary.Api.Middlewares;
 using Diary.Application.DependencyInjection;
 using Diary.DAL.DependencyInjection;
 using Diary.Domain.Settings;
@@ -24,6 +25,8 @@ builder.Services.AddApplication();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -36,9 +39,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseAuthorization();//added by me because Authorization didn't work
 app.MapControllers();
 
 app.Run();

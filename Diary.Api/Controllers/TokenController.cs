@@ -8,6 +8,7 @@ namespace Diary.Api.Controllers;
 /// <summary>
 /// 
 /// </summary>
+[ApiController]
 public class TokenController : Controller
 {
     private readonly ITokenService _tokenService;
@@ -16,7 +17,8 @@ public class TokenController : Controller
     {
         _tokenService = tokenService;
     }
-
+    
+    [HttpPost("refresh")]
     public async Task<ActionResult> RereshToken([FromBody] TokenDto dto)
     {
         var response = await _tokenService.RefreshToken(dto);

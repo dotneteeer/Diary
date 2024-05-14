@@ -18,7 +18,7 @@ public class UserTokenConfiguration : IEntityTypeConfiguration<UserToken>
             new UserToken
             {
                 Id = 1,
-                RefereshToken = "tyggyusgyubsdgbuvuswftgd5623r523ed4562336274t23r544623r423r",
+                RefereshToken = "REFRESH_TOKENREFRESH_TOKENREFRESH_TOKENREFRESH_TOKENREFRESH_TOKEN",
                 RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7),
                 UserId = 1
             }
