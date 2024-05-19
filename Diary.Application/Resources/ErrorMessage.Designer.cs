@@ -159,6 +159,15 @@ namespace Diary.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User already has this role.
+        /// </summary>
+        internal static string UserAlreadyHasThisRole {
+            get {
+                return ResourceManager.GetString("UserAlreadyHasThisRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
         internal static string UserNotFound {

@@ -47,4 +47,7 @@
     <data name="RoleNotFound" xml:space="preserve">
         <value>Role not found</value>
     </data>
+    <data name="UserAlreadyHasThisRole" xml:space="preserve">
+        <value>User already has this role</value>
+    </data>
 </root>
