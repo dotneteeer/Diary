@@ -10,8 +10,8 @@ namespace Diary.Api.Controllers;
 /// <summary>
 /// Repport controller
 /// </summary>
-/// <response code="200">If report was created</response>
-/// <response code="400">If report was not created</response>
+/// <response code="200">If report was created/deleted/updated/get</response>
+/// <response code="400">If report was not created/deleted/updated/get</response>
 /// <response code="500">If internal server error occured</response>
 /// <response code="401">If user is unauthorized</response>
 [Authorize]
@@ -41,7 +41,7 @@ public class ReportController:ControllerBase
     /// 
     ///     GET
     ///     {
-    ///         "UserId":1
+    ///         "userId":1
     ///         
     ///     }
     /// </remarks>
@@ -91,10 +91,7 @@ public class ReportController:ControllerBase
     /// 
     ///     DELETE
     ///     {
-    ///         "id":1,
-    ///         "name":"string",
-    ///         "description":"string"
-    ///         
+    ///         "id":1
     ///     }
     /// </remarks>
 
@@ -150,9 +147,6 @@ public class ReportController:ControllerBase
     ///         
     ///     }
     /// </remarks>
-    /// <response code="200">If report was updated</response>
-    /// <response code="400">If report was not updated</response>
-    /// <response code="500">If internal server error occured</response>
     [HttpPut]
     public async Task<ActionResult<BaseResult<ReportDto>>> Update([FromBody]UpdateReportDto dto)
     {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Diary.Api.Controllers;
 
 /// <summary>
-/// 
+/// Token controller
 /// </summary>
 [ApiController]
 public class TokenController : Controller

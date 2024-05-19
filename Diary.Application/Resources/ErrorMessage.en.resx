@@ -36,9 +36,15 @@
         <value>Password is wrong</value>
     </data>
     <data name="InvalidToken" xml:space="preserve">
-        <value>nvalid token</value>
+        <value>Invalid token</value>
     </data>
     <data name="InvalidClientRequest" xml:space="preserve">
         <value>Invalid client request</value>
+    </data>
+    <data name="RoleAlreadyExists" xml:space="preserve">
+        <value>Role already exists</value>
+    </data>
+    <data name="RoleNotFound" xml:space="preserve">
+        <value>Role not found</value>
     </data>
 </root>

@@ -5,6 +5,7 @@ public enum ErrorCodes
     //Report:0-9
     //User:11-20
     //Authorization:21-30
+    //Roles: 31-40
     InternalServerError=10,
     
     ReportsNotFound=0,
@@ -17,7 +18,8 @@ public enum ErrorCodes
     
     PasswordMismatch=21,
     PasswordIsWrong=22,
-    UserUnauthorized=23,
-    
+
+    RoleAlreadyExists=31,
+    RoleNotFound=32,
     
 }

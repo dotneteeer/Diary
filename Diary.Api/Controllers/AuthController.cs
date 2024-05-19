@@ -6,6 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Diary.Api.Controllers;
 
+/// <summary>
+/// authentication contoller
+/// </summary>\
+/// <response code="200">If user was registrated/logined</response>
+/// <response code="400">If user was not registrated/logined</response>
+/// <response code="500">If internal server error occured</response>
 [ApiController]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
