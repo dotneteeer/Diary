@@ -1,7 +1,6 @@
-using Diary.DAL;
 using Diary.Domain.Interfaces.Repositories;
 
-namespace EF_Core.DAL.Repositories;
+namespace Diary.DAL.Repositories;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
@@ -11,49 +10,51 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         _dbContext = dbContext;
     }
-    
+
     public IQueryable<TEntity> GetAll()
     {
         return _dbContext.Set<TEntity>();
+    }
+
+    public async Task<int> SaveChangesAsync()
+    {
+        return await _dbContext.SaveChangesAsync();
     }
 
     public async Task<TEntity> CreateAsync(TEntity entity)
     {
         if (entity == null)
         {
-            throw new ArgumentNullException("Entity is null");
+            throw new ArgumentNullException(nameof(entity), "Entity is null");
         }
-        
+
         await _dbContext.AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
-        
+
         return entity;
     }
 
-    public async Task<TEntity> UpdateAsync(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
         if (entity == null)
         {
-            throw new ArgumentNullException("Entity is null");
+            throw new ArgumentNullException(nameof(entity), "Entity is null");
         }
-        
+
         _dbContext.Update(entity);
-        await _dbContext.SaveChangesAsync();
-        
+
         return entity;
     }
 
-    public async Task<TEntity> RemoveAsync(TEntity entity)
+    public void Remove(TEntity entity)//method return value is void, but imo it must be TEntity just in case for other developers
     {
         if (entity == null)
         {
-            throw new ArgumentNullException("Entity is null");
+            throw new ArgumentNullException(nameof(entity), "Entity is null");
         }
-        
+
         _dbContext.Remove(entity);
-        await _dbContext.SaveChangesAsync();
-        
-        return entity;
+
+
+        //return entity;//method return value is void, but imo it must be TEntity just in case for other developers
     }
-    
 }

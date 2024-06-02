@@ -7,6 +7,7 @@ using Diary.Domain.Dto;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
+using Diary.Domain.Interfaces.Databases;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
@@ -18,25 +19,25 @@ namespace Diary.Application.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IBaseRepository<User> _userRepository;
     private readonly IBaseRepository<UserToken> _userTokenRepository;
     private readonly ITokenService _tokenService;
     private readonly IBaseRepository<Role> _roleRepository;
     private readonly IBaseRepository<UserRole> _userRoleRepository;
-    private readonly ILogger _logger;
     private readonly IMapper _mapper;
 
-    public AuthService(IBaseRepository<User> userRepository, ILogger logger, IMapper mapper,
+    public AuthService(IBaseRepository<User> userRepository, IMapper mapper,
         IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
-        IBaseRepository<Role> roleRepository, IBaseRepository<UserRole> userRoleRepository)
+        IBaseRepository<Role> roleRepository, IBaseRepository<UserRole> userRoleRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
-        _logger = logger;
         _mapper = mapper;
         _userTokenRepository = userTokenRepository;
         _tokenService = tokenService;
         _roleRepository = roleRepository;
         _userRoleRepository = userRoleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<BaseResult<UserDto>> Register(RegisterUserDto dto)
@@ -61,32 +62,46 @@ public class AuthService : IAuthService
         }
 
         var hashUserPassword = HashPassword(dto.Password);
-        user = new User
+
+        using (var transaction = await _unitOfWork.BeginTransactionAsync())
         {
-            Login = dto.Login,
-            Password = hashUserPassword
-        };
-        
-        await _userRepository.CreateAsync(user);
-        
-        var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == "User");//hardcode
-        if (role == null)
-        {
-            return new BaseResult<UserDto>
+            try
             {
-                ErrorMessage = ErrorMessage.RoleNotFound,
-                ErrorCode = (int)ErrorCodes.RoleNotFound
-            };
+                user = new User
+                {
+                    Login = dto.Login,
+                    Password = hashUserPassword
+                };
+
+                await _unitOfWork.Users.CreateAsync(user);
+
+                var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == "User"); //hardcode
+                if (role == null)
+                {
+                    return new BaseResult<UserDto>
+                    {
+                        ErrorMessage = ErrorMessage.RoleNotFound,
+                        ErrorCode = (int)ErrorCodes.RoleNotFound
+                    };
+                }
+
+                UserRole userRole = new UserRole
+                {
+                    UserId = user.Id,
+                    RoleId = role.Id
+                };
+                await _unitOfWork.UserRoles.CreateAsync(userRole);
+
+                await _unitOfWork.SaveChangesAsync();
+                
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+            }
         }
-
-        UserRole userRole = new UserRole
-        {
-            UserId = user.Id,
-            RoleId = role.Id
-        };
-
-        await _userRoleRepository.CreateAsync(userRole);
-         
+        
         return new BaseResult<UserDto>
         {
             Data = _mapper.Map<UserDto>(user)
@@ -141,7 +156,8 @@ public class AuthService : IAuthService
             userToken.RefereshToken = refreshToken;
             userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-            await _userTokenRepository.UpdateAsync(userToken);
+            _userTokenRepository.Update(userToken);//was not checked to return new value(when it was checking by ithomester(lesson 17(25:58)))
+            await _userTokenRepository.SaveChangesAsync();
         }
 
         return new BaseResult<TokenDto>
@@ -160,9 +176,9 @@ public class AuthService : IAuthService
         return Convert.ToBase64String(bytes);
     }
 
-    private bool IsVerifiedPassword(string userPaasswordHash, string userPassword)
+    private bool IsVerifiedPassword(string userPasswordHash, string userPassword)
     {
         var hash = HashPassword(userPassword);
-        return userPaasswordHash == hash;
+        return userPasswordHash == hash;
     }
 }
