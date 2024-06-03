@@ -12,7 +12,7 @@ using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+
 
 
 namespace Diary.Application.Services;
@@ -24,19 +24,17 @@ public class AuthService : IAuthService
     private readonly IBaseRepository<UserToken> _userTokenRepository;
     private readonly ITokenService _tokenService;
     private readonly IBaseRepository<Role> _roleRepository;
-    private readonly IBaseRepository<UserRole> _userRoleRepository;
     private readonly IMapper _mapper;
 
     public AuthService(IBaseRepository<User> userRepository, IMapper mapper,
         IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
-        IBaseRepository<Role> roleRepository, IBaseRepository<UserRole> userRoleRepository, IUnitOfWork unitOfWork)
+        IBaseRepository<Role> roleRepository, IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _userTokenRepository = userTokenRepository;
         _tokenService = tokenService;
         _roleRepository = roleRepository;
-        _userRoleRepository = userRoleRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -75,7 +73,9 @@ public class AuthService : IAuthService
 
                 await _unitOfWork.Users.CreateAsync(user);
 
-                var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == "User"); //hardcode
+                await _unitOfWork.SaveChangesAsync();
+
+                var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x => x.Name == nameof(Roles.User));
                 if (role == null)
                 {
                     return new BaseResult<UserDto>
@@ -93,15 +93,16 @@ public class AuthService : IAuthService
                 await _unitOfWork.UserRoles.CreateAsync(userRole);
 
                 await _unitOfWork.SaveChangesAsync();
-                
+
                 await transaction.CommitAsync();
             }
             catch (Exception)
             {
                 await transaction.RollbackAsync();
+                throw;
             }
         }
-        
+
         return new BaseResult<UserDto>
         {
             Data = _mapper.Map<UserDto>(user)
@@ -156,7 +157,8 @@ public class AuthService : IAuthService
             userToken.RefereshToken = refreshToken;
             userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-            _userTokenRepository.Update(userToken);//was not checked to return new value(when it was checking by ithomester(lesson 17(25:58)))
+            _userTokenRepository
+                .Update(userToken); //was not checked to return new value(when it was checking by ithomester(lesson 17(25:58)))
             await _userTokenRepository.SaveChangesAsync();
         }
 

@@ -9,7 +9,8 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
 
-    public UnitOfWork(ApplicationDbContext context, IBaseRepository<User> users, IBaseRepository<Role> roles, IBaseRepository<UserRole> userRoles)
+    public UnitOfWork(ApplicationDbContext context, IBaseRepository<User> users, IBaseRepository<Role> roles,
+        IBaseRepository<UserRole> userRoles)
     {
         _context = context;
         Users = users;
@@ -29,6 +30,6 @@ public class UnitOfWork : IUnitOfWork
 
     public IBaseRepository<User> Users { get; set; }
     public IBaseRepository<Role> Roles { get; set; }
-    
+
     public IBaseRepository<UserRole> UserRoles { get; set; }
 }
