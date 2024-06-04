@@ -1,6 +1,7 @@
 using AutoMapper;
 using Diary.Application.Resources;
 using Diary.Domain.Dto.Role;
+using Diary.Domain.Dto.UserRole;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
 using Diary.Domain.Interfaces.Repositories;
@@ -43,6 +44,7 @@ public class RoleService : IRoleService
             Name = dto.Name
         };
         await _roleRepository.CreateAsync(role);
+        await _roleRepository.SaveChangesAsync();
         return new BaseResult<RoleDto>
         {
             Data = _mapper.Map<RoleDto>(role)
@@ -126,6 +128,7 @@ public class RoleService : IRoleService
             };
 
             await _userRoleRepository.CreateAsync(userRole);
+            await _userRoleRepository.SaveChangesAsync();
             return new BaseResult<UserRoleDto>
             {
                 Data = new UserRoleDto //make mapping
@@ -140,6 +143,45 @@ public class RoleService : IRoleService
         {
             ErrorMessage = ErrorMessage.UserAlreadyHasThisRole,
             ErrorCode = (int)ErrorCodes.UserAlreadyHasThisRole
+        };
+    }
+
+    public async Task<BaseResult<DeleteUserRoleDto>> DeleteRoleForUserAsync(DeleteUserRoleDto dto)
+    {
+        var user = await _userRepository.GetAll()
+            .Include(x => x.Roles)
+            .FirstOrDefaultAsync(x => x.Login == dto.Login);
+
+        if (user == null)
+        {
+            return new BaseResult<DeleteUserRoleDto>
+            {
+                ErrorMessage = ErrorMessage.UserNotFound,
+                ErrorCode = (int)ErrorCodes.UserNotFound
+            };
+        }
+
+        var role = user.Roles.FirstOrDefault(x => x.Id == dto.RoleId);
+
+        if (role == null)
+        {
+            return new BaseResult<DeleteUserRoleDto>
+            {
+                ErrorMessage = ErrorMessage.RoleNotFound,
+                ErrorCode = (int)ErrorCodes.RoleAlreadyExists
+            };
+        }
+
+        var userRole = await _userRoleRepository.GetAll()
+            .Where(x=>x.RoleId==role.Id)
+            .FirstOrDefaultAsync(x => x.RoleId == role.Id);
+        
+        _userRoleRepository.Remove(userRole);
+        await _userRoleRepository.SaveChangesAsync();
+
+        return new BaseResult<DeleteUserRoleDto>
+        {
+            Data = dto//not new because new DeleteUserRoleDto will be same 
         };
     }
 }

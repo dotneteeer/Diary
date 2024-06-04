@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Diary.Domain.Dto.Role;
+using Diary.Domain.Dto.UserRole;
 using Diary.Domain.Entity;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
@@ -15,7 +16,7 @@ namespace Diary.Api.Controllers;
 /// <response code="400">If role was not created/deleted/updated/get/added</response>
 /// <response code="500">If internal server error occured</response>
 [Consumes(MediaTypeNames.Application.Json)]
-[Authorize(Roles="User")]
+[Authorize(Roles="Admin")]
 [ApiController]
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,7 +38,7 @@ public class RoleController : ControllerBase
     /// <param name="dto"></param>
     /// <returns></returns>
     /// <remarks>
-    /// Request for create report:
+    /// Request for create role:
     /// 
     ///     POST
     ///     {
@@ -61,7 +62,7 @@ public class RoleController : ControllerBase
     /// <param name="id">role's id</param>
     /// <returns></returns>
     /// /// <remarks>
-    /// Request for create report:
+    /// Request for deleting role:
     /// 
     ///     DELETE
     ///     {
@@ -80,12 +81,12 @@ public class RoleController : ControllerBase
     }
     
     /// <summary>
-    /// 
+    /// Updates user's role
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
     /// <remarks>
-    /// Request for create report:
+    /// Request for updating role:
     /// 
     ///     UPDATE
     ///     {
@@ -119,9 +120,34 @@ public class RoleController : ControllerBase
     ///     }
     /// </remarks>
     [HttpPost("addRole")]
-    public async Task<ActionResult<BaseResult<UserRoleDto>>> AddRoleForUser([FromBody] UserRoleDto dto)
+    public async Task<ActionResult<BaseResult<Role>>> AddRoleForUser([FromBody] UserRoleDto dto)
     {
         var response = await _roleService.AddRoleForUserAsync(dto);
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+
+    /// <summary>
+    /// Deletes role of user by user's login and role's name
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    /// /// <remarks>
+    /// Request for deleting role:
+    /// 
+    ///     DELETE
+    ///     {
+    ///         "login":"user1",
+    ///         "roleId":2
+    ///     }
+    /// </remarks>
+    [HttpDelete("deleteRole")]
+    public async Task<ActionResult<BaseResult<Role>>> DeleteRoleForUser([FromBody] DeleteUserRoleDto dto)
+    {
+        var response = await _roleService.DeleteRoleForUserAsync(dto);
         if (response.IsSuccess)
         {
             return Ok(response);

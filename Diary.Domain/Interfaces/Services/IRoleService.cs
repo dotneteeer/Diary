@@ -1,4 +1,5 @@
 using Diary.Domain.Dto.Role;
+using Diary.Domain.Dto.UserRole;
 using Diary.Domain.Entity;
 using Diary.Domain.Result;
 
@@ -36,4 +37,11 @@ public interface IRoleService
     /// <param name="dto"></param>
     /// <returns></returns>
     Task<BaseResult<UserRoleDto>> AddRoleForUserAsync(UserRoleDto dto);
+    
+    /// <summary>
+    /// Deletes user's role
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    Task<BaseResult<DeleteUserRoleDto>> DeleteRoleForUserAsync(DeleteUserRoleDto dto);
 }

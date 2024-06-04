@@ -1,4 +1,4 @@
-namespace Diary.Domain.Dto.Role;
+namespace Diary.Domain.Dto.UserRole;
 
 public class UserRoleDto
 {
