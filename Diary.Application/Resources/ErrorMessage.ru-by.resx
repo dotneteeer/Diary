@@ -50,4 +50,10 @@
     <data name="UserAlreadyHasThisRole" xml:space="preserve">
         <value>Пользователь уже имеет эту роль</value>
     </data>
+    <data name="RoleToUpdateIsNotFound" xml:space="preserve">
+        <value>Обновляемая роль не найдена</value>
+    </data>
+    <data name="RoleToBeUpdatedIsNotFound" xml:space="preserve">
+        <value>Роль для обновления не найдена</value>
+    </data>
 </root>

@@ -81,7 +81,7 @@ public class RoleController : ControllerBase
     }
     
     /// <summary>
-    /// Updates user's role
+    /// Updates role
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
@@ -105,6 +105,7 @@ public class RoleController : ControllerBase
         }
         return BadRequest(response);
     }
+    
     /// <summary>
     /// Adding role for user
     /// </summary>
@@ -119,7 +120,7 @@ public class RoleController : ControllerBase
     ///         "roleName":"Admin"
     ///     }
     /// </remarks>
-    [HttpPost("addRole")]
+    [HttpPost("add-role")]
     public async Task<ActionResult<BaseResult<Role>>> AddRoleForUser([FromBody] UserRoleDto dto)
     {
         var response = await _roleService.AddRoleForUserAsync(dto);
@@ -131,7 +132,7 @@ public class RoleController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes role of user by user's login and role's name
+    /// Deletes role of user by user's login and role's id
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
@@ -144,10 +145,36 @@ public class RoleController : ControllerBase
     ///         "roleId":2
     ///     }
     /// </remarks>
-    [HttpDelete("deleteRole")]
+    [HttpDelete("delete-role")]
     public async Task<ActionResult<BaseResult<Role>>> DeleteRoleForUser([FromBody] DeleteUserRoleDto dto)
     {
         var response = await _roleService.DeleteRoleForUserAsync(dto);
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+        return BadRequest(response);
+    }
+    
+    /// <summary>
+    /// Updates role for user
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// Request for updating user's role:
+    /// 
+    ///     UPDATE
+    ///     {
+    ///         "Login":"user1",
+    ///         "FromRoleId":1,
+    ///         "ToRoleId":2
+    ///     }
+    /// </remarks>
+    [HttpPut("update-role")]
+    public async Task<ActionResult<BaseResult<Role>>> UpdateRoleForUser([FromBody] UpdateUserRoleDto dto)
+    {
+        var response = await _roleService.UpdateRoleForUserAsync(dto);
         if (response.IsSuccess)
         {
             return Ok(response);

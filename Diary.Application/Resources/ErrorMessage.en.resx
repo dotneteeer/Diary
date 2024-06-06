@@ -50,4 +50,10 @@
     <data name="UserAlreadyHasThisRole" xml:space="preserve">
         <value>User already has this role</value>
     </data>
+    <data name="RoleToUpdateIsNotFound" xml:space="preserve">
+        <value>Role to update is not found</value>
+    </data>
+    <data name="RoleToBeUpdatedIsNotFound" xml:space="preserve">
+        <value>Role to be updated is not found</value>
+    </data>
 </root>

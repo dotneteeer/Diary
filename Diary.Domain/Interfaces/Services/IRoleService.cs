@@ -43,5 +43,12 @@ public interface IRoleService
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    Task<BaseResult<DeleteUserRoleDto>> DeleteRoleForUserAsync(DeleteUserRoleDto dto);
+    Task<BaseResult<UserRoleDto>> DeleteRoleForUserAsync(DeleteUserRoleDto dto);
+    
+    /// <summary>
+    /// Updating role for user
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    Task<BaseResult<UserRoleDto>> UpdateRoleForUserAsync(UpdateUserRoleDto dto);
 }

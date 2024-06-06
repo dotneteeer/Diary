@@ -150,6 +150,24 @@ namespace Diary.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role to be updated is not found.
+        /// </summary>
+        internal static string RoleToBeUpdatedIsNotFound {
+            get {
+                return ResourceManager.GetString("RoleToBeUpdatedIsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role to update is not found.
+        /// </summary>
+        internal static string RoleToUpdateIsNotFound {
+            get {
+                return ResourceManager.GetString("RoleToUpdateIsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User alredy exists.
         /// </summary>
         internal static string UserAlreadyExists {
