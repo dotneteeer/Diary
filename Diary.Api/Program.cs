@@ -1,8 +1,10 @@
 using Diary.Api;
 using Diary.Api.Middlewares;
 using Diary.Application.DependencyInjection;
+using Diary.Consumer.DependencyInjection;
 using Diary.DAL.DependencyInjection;
 using Diary.Domain.Settings;
+using Diary.Producer.DependencyInjection;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,8 @@ builder.Host.UseSerilog((context, configuration)=>configuration.ReadFrom.Configu
 
 builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddProducer();
+builder.Services.AddConsumer();
 
 var app = builder.Build();
 
