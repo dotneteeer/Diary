@@ -7,13 +7,18 @@ using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Interfaces.Validations;
 using Diary.Domain.Result;
+using Diary.Domain.Settings;
+using Diary.Producer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace Diary.Application.Services;
 
 public class ReportService : IReportService
 {
+    private readonly IMessageProducer _messageProducer;
+    private readonly IOptions<RabbitMqSettings> _rabbitMqOptions;
     private readonly IBaseRepository<Report> _reportRepository;
     private readonly IBaseRepository<User> _userRepository;
     private readonly IReportValidator _reportValidator;
@@ -21,13 +26,16 @@ public class ReportService : IReportService
     private readonly ILogger _logger;
 
     public ReportService(IBaseRepository<Report> reportRepository, ILogger logger, IBaseRepository<User> userRepository,
-        IReportValidator reportValidator, IMapper mapper)
+        IReportValidator reportValidator, IMapper mapper, IOptions<RabbitMqSettings> rabbitMqOptions,
+        IMessageProducer messageProducer)
     {
         _reportRepository = reportRepository;
         _userRepository = userRepository;
         _logger = logger;
         _reportValidator = reportValidator;
         _mapper = mapper;
+        _rabbitMqOptions = rabbitMqOptions;
+        _messageProducer = messageProducer;
     }
 
     /// <inheritdoc />
@@ -105,7 +113,10 @@ public class ReportService : IReportService
         };
 
         await _reportRepository.CreateAsync(report);
-
+        await _reportRepository.SaveChangesAsync();
+        
+        _messageProducer.SendMessage(report, _rabbitMqOptions.Value.RoutingKey, _rabbitMqOptions.Value.ExchangeKey);
+        
         return new BaseResult<ReportDto>
         {
             Data = _mapper.Map<ReportDto>(report)
@@ -150,7 +161,7 @@ public class ReportService : IReportService
         report.Name = dto.Name;
         report.Description = dto.Description;
 
-        var updatedReport= _reportRepository.Update(report);
+        var updatedReport = _reportRepository.Update(report);
         await _reportRepository.SaveChangesAsync();
 
         return new BaseResult<ReportDto>

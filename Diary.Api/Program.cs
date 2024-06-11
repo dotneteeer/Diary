@@ -52,4 +52,6 @@ app.UseRouting();
 app.UseAuthorization();//added by me because Authorization didn't work
 app.MapControllers();
 
+
+
 app.Run();

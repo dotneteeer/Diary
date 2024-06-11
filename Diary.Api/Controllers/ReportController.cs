@@ -14,7 +14,7 @@ namespace Diary.Api.Controllers;
 /// <response code="400">If report was not created/deleted/updated/get</response>
 /// <response code="500">If internal server error occured</response>
 /// <response code="401">If user is unauthorized</response>
-[Authorize]
+//[Authorize]
 [ApiController]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]

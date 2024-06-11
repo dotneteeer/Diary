@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Diary.Domain\Diary.Domain.csproj" />
+      <ProjectReference Include="..\Diary.Producer\Diary.Producer.csproj" />
     </ItemGroup>
 
     <ItemGroup>

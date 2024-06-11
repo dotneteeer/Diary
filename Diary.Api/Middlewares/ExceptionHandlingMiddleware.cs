@@ -1,6 +1,5 @@
 using System.Net;
 using Diary.Domain.Result;
-using Serilog;
 using ILogger = Serilog.ILogger;
 
 namespace Diary.Api.Middlewares;

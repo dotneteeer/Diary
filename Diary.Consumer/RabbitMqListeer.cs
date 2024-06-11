@@ -23,7 +23,7 @@ public class RabbitMqListener : BackgroundService
         var factory = new ConnectionFactory { HostName = "localhost" };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
-        _channel.QueueDeclare(_options.Value.QueueName, true, true, false, null);
+        _channel.QueueDeclare(_options.Value.QueueName, true, false, false, null);
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,7 +34,7 @@ public class RabbitMqListener : BackgroundService
         consumer.Received += (obj, basicDeliver) =>
         {
             var content = Encoding.UTF8.GetString(basicDeliver.Body.ToArray());
-            _logger.Information($"Message received: {content}");
+            WriteReceivedMessage(content);
             _channel.BasicAck(basicDeliver.DeliveryTag, false);
             
         };
@@ -48,5 +48,21 @@ public class RabbitMqListener : BackgroundService
         _channel.Dispose();
         _connection.Dispose();
         base.Dispose();
+    }
+
+    private void WriteReceivedMessage(string content)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write("[");
+        var currentTime = DateTime.Now.ToString("HH:mm:ss");
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.Write(currentTime);
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write(" INF");
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+        Console.Write("] ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write($"Message received: {content}\n");
+
     }
 }
