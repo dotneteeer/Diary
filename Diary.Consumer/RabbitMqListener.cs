@@ -37,16 +37,9 @@ public class RabbitMqListener : BackgroundService
             
         };
         _channel.BasicConsume(_options.Value.QueueName, false, consumer);
-        Dispose();
         return Task.CompletedTask;
     }
-
-    public override void Dispose()
-    {
-        _channel.Dispose();
-        _connection.Dispose();
-        base.Dispose();
-    }
+    
 
     private void WriteReceivedMessage(string content)
     {
@@ -62,4 +55,7 @@ public class RabbitMqListener : BackgroundService
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write($"Message received: {content}\n");
     }
+    
+    //docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+    //create exchange, queue and bind them with names in launchSettings.json
 }
