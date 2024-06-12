@@ -14,12 +14,10 @@ public class RabbitMqListener : BackgroundService
     private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly IOptions<RabbitMqSettings> _options;
-    private readonly ILogger _logger;
 
-    public RabbitMqListener(IOptions<RabbitMqSettings> options, ILogger logger)
+    public RabbitMqListener(IOptions<RabbitMqSettings> options)
     {
         _options = options;
-        _logger = logger;
         var factory = new ConnectionFactory { HostName = "localhost" };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
@@ -63,6 +61,5 @@ public class RabbitMqListener : BackgroundService
         Console.Write("] ");
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write($"Message received: {content}\n");
-
     }
 }
