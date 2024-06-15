@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Diary.Api;
 using Diary.Api.Middlewares;
 using Diary.Application.DependencyInjection;
@@ -31,7 +32,6 @@ builder.Services.AddConsumer();
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.UseMiddleware<WriteAdressMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -53,6 +53,8 @@ app.UseRouting();
 app.UseAuthorization();//added by me because Authorization didn't work
 app.MapControllers();
 
-
+var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
+var addressesList = addresses.Value?.Split(';').ToList();
+addressesList?.ForEach(address=>Console.WriteLine("Now listening on: "+address + '/'));
 
 app.Run();
