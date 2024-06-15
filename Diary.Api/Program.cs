@@ -53,8 +53,11 @@ app.UseRouting();
 app.UseAuthorization();//added by me because Authorization didn't work
 app.MapControllers();
 
-var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
-var addressesList = addresses.Value?.Split(';').ToList();
-addressesList?.ForEach(address=>Console.WriteLine("Now listening on: "+address + '/'));
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
+    var addressesList = addresses.Value?.Split(';').ToList();
+    addressesList?.ForEach(address => Console.WriteLine("Now listening on: " + address + '/'));
+});
 
 app.Run();
