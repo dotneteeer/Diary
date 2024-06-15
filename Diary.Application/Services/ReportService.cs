@@ -23,15 +23,13 @@ public class ReportService : IReportService
     private readonly IBaseRepository<User> _userRepository;
     private readonly IReportValidator _reportValidator;
     private readonly IMapper _mapper;
-    private readonly ILogger _logger;
 
-    public ReportService(IBaseRepository<Report> reportRepository, ILogger logger, IBaseRepository<User> userRepository,
+    public ReportService(IBaseRepository<Report> reportRepository, IBaseRepository<User> userRepository,
         IReportValidator reportValidator, IMapper mapper, IOptions<RabbitMqSettings> rabbitMqOptions,
         IMessageProducer messageProducer)
     {
         _reportRepository = reportRepository;
         _userRepository = userRepository;
-        _logger = logger;
         _reportValidator = reportValidator;
         _mapper = mapper;
         _rabbitMqOptions = rabbitMqOptions;
@@ -49,7 +47,6 @@ public class ReportService : IReportService
 
         if (!reports.Any())
         {
-            _logger.Warning(ErrorMessage.ReportsNotFound, reports.Length);
             return new CollectionResult<ReportDto>
             {
                 ErrorMessage = ErrorMessage.ReportsNotFound,
@@ -76,7 +73,7 @@ public class ReportService : IReportService
 
         if (report == null)
         {
-            _logger.Warning("Report with {Id} not found", id);
+
             return Task.FromResult(new BaseResult<ReportDto>()
             {
                 ErrorMessage = ErrorMessage.ReportNotFound,

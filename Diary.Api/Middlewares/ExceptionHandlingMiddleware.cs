@@ -1,5 +1,7 @@
 using System.Net;
 using Diary.Domain.Result;
+using Newtonsoft.Json;
+using IFormattable = System.IFormattable;
 using ILogger = Serilog.ILogger;
 
 namespace Diary.Api.Middlewares;
@@ -19,7 +21,28 @@ public class ExceptionHandlingMiddleware
     {
         try
         {
-            await _next(httpContext);
+            using (var swapStream = new MemoryStream())
+            {
+                var originalResponseBody = httpContext.Response.Body;
+
+                httpContext.Response.Body = swapStream;
+
+                await _next(httpContext);
+
+                swapStream.Seek(0, SeekOrigin.Begin);
+                string responseBody = new StreamReader(swapStream).ReadToEnd();
+                swapStream.Seek(0, SeekOrigin.Begin);
+
+                if (httpContext.Response.StatusCode == (int)HttpStatusCode.BadRequest)
+                {
+                    dynamic data = JsonConvert.DeserializeObject(responseBody);
+                    string errorMessage = data.errorMessage;
+                    _logger.Warning(new ArgumentException("Bad request: "+errorMessage), errorMessage);
+                }
+
+                await swapStream.CopyToAsync(originalResponseBody);
+                httpContext.Response.Body = originalResponseBody;
+            }
         }
         catch(Exception exception)
         {
