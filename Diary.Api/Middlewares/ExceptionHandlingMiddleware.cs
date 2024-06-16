@@ -44,7 +44,7 @@ public class ExceptionHandlingMiddleware
                     case (int)HttpStatusCode.NotFound:
                         httpContext.Response.ContentType = "text/html";
                         const string pageNotFoundImage = "<img style=\"width: 100%; height: 100%;\" src=\"https://colorlib.com/wp/wp-content/uploads/sites/2/404-error-template-3.png\" alt=\"404. We are sorry, but the page you requested was not found.\"/>";
-                        await WriteToStream(swapStream, pageNotFoundImage);
+                        await WriteToStreamAsync(swapStream, pageNotFoundImage);
                         break;
                 }
 
@@ -84,7 +84,7 @@ public class ExceptionHandlingMiddleware
         httpContext.Response.StatusCode = (int)response.ErrorCode;
         await httpContext.Response.WriteAsJsonAsync(response);
     }
-    private async Task WriteToStream(MemoryStream stream, string message)
+    private static async Task WriteToStreamAsync(MemoryStream stream, string message)
      {
          var buffer = Encoding.UTF8.GetBytes(message);
          await stream.WriteAsync(buffer, 0, buffer.Length);
