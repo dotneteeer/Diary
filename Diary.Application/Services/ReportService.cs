@@ -11,7 +11,6 @@ using Diary.Domain.Settings;
 using Diary.Producer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Serilog;
 
 namespace Diary.Application.Services;
 

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Diary.Api;
 using Diary.Api.Middlewares;
 using Diary.Application.DependencyInjection;

@@ -14,10 +14,12 @@ public class RabbitMqListener : BackgroundService
     private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly IOptions<RabbitMqSettings> _options;
+    private readonly ILogger _logger;
 
-    public RabbitMqListener(IOptions<RabbitMqSettings> options)
+    public RabbitMqListener(IOptions<RabbitMqSettings> options, ILogger logger)
     {
         _options = options;
+        _logger = logger;
         var factory = new ConnectionFactory { HostName = "localhost" };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
@@ -32,7 +34,7 @@ public class RabbitMqListener : BackgroundService
         consumer.Received += (obj, basicDeliver) =>
         {
             var content = Encoding.UTF8.GetString(basicDeliver.Body.ToArray());
-            WriteReceivedMessage(content);
+            _logger.Information("Message received: "+content);
             _channel.BasicAck(basicDeliver.DeliveryTag, false);
             
         };
