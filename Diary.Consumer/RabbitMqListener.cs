@@ -42,22 +42,6 @@ public class RabbitMqListener : BackgroundService
         return Task.CompletedTask;
     }
     
-
-    private void WriteReceivedMessage(string content)
-    {
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write("[");
-        var currentTime = DateTime.Now.ToString("HH:mm:ss");
-        Console.ForegroundColor = ConsoleColor.Gray;
-        Console.Write(currentTime);
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.Write(" INF");
-        Console.ForegroundColor = ConsoleColor.DarkGray;
-        Console.Write("] ");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.Write($"Message received: {content}\n");
-    }
-    
     //docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
     //create exchange, queue and bind them with names in launchSettings.json
 }
