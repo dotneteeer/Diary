@@ -22,34 +22,15 @@ public class ExceptionHandlingMiddleware
     {
         try
         {
-            using (var swapStream = new MemoryStream())
+            await _next(httpContext);
+
+            switch (httpContext.Response.StatusCode)
             {
-                var originalResponseBody = httpContext.Response.Body;
-
-                httpContext.Response.Body = swapStream;
-
-                await _next(httpContext);
-
-                swapStream.Seek(0, SeekOrigin.Begin);
-                string responseBody = new StreamReader(swapStream).ReadToEnd();
-                swapStream.Seek(0, SeekOrigin.Begin);
-
-                switch (httpContext.Response.StatusCode)
-                {
-                    case (int)HttpStatusCode.BadRequest:
-                        dynamic data = JsonConvert.DeserializeObject(responseBody);
-                        string errorMessage = data.errorMessage;
-                        _logger.Warning(new ArgumentException("Bad request: " + errorMessage), errorMessage);
-                        break;
-                    case (int)HttpStatusCode.NotFound:
-                        httpContext.Response.ContentType = "text/html";
-                        const string pageNotFoundImage = "<img style=\"width: 100%; height: 100%;\" src=\"https://colorlib.com/wp/wp-content/uploads/sites/2/404-error-template-3.png\" alt=\"404. We are sorry, but the page you requested was not found.\"/>";
-                        await WriteToStreamAsync(swapStream, pageNotFoundImage);
-                        break;
-                }
-
-                await swapStream.CopyToAsync(originalResponseBody);
-                httpContext.Response.Body = originalResponseBody;
+                case (int)HttpStatusCode.NotFound:
+                    httpContext.Response.ContentType = "text/plain";
+                    var message = $"{(int)HttpStatusCode.NotFound} {nameof(HttpStatusCode.NotFound)}\nPlease check URL";
+                    await httpContext.Response.WriteAsync(message);
+                    break;
             }
         }
         catch (Exception exception)
@@ -60,9 +41,11 @@ public class ExceptionHandlingMiddleware
 
     private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
-        _logger.Error(exception, exception.Message);
 
         var errorMessage = exception.Message;
+        
+        _logger.Error(exception, errorMessage);
+        
 
         var response = exception switch
         {
@@ -79,16 +62,9 @@ public class ExceptionHandlingMiddleware
             }
         };
 
-
-        httpContext.Response.ContentType = "application/json";
+        
+        httpContext.Response.ContentType= "application/json";
         httpContext.Response.StatusCode = (int)response.ErrorCode;
         await httpContext.Response.WriteAsJsonAsync(response);
     }
-    private static async Task WriteToStreamAsync(MemoryStream stream, string message)
-     {
-         var buffer = Encoding.UTF8.GetBytes(message);
-         await stream.WriteAsync(buffer, 0, buffer.Length);
-         stream.Seek(0, SeekOrigin.Begin);
-     }
 }
-
