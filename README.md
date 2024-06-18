@@ -1,16 +1,11 @@
-<p align="center">
-!!!The project hasn't been finished yet!!!
-</p>
-
 # Diary API Project
 
 ## Introduction
 Welcome to the Diary API project! This project is built using ASP.NET Core and represents the backend and API for a diary application. The goal of this project is to provide a robust and scalable backend service that can handle diary entries and user interactions efficiently.
 
 ## Features
-- **User Authentication**: Secure login and registration system.
-- **Diary Entry Management**: Create, read, update, and delete diary entries.
-- **Search Functionality**: Quickly find past entries.
+- **User Authentication**: Secure JWT Token system.
+- **Diary Entry Management**: Create, read, update, and delete reports, role and users.
 - **Data Persistence**: Store data using Entity Framework Core.
 - **API Documentation**: Swagger UI for API endpoint visualization and interaction.
 
@@ -29,9 +24,8 @@ To get started with this project, you'll need to have the following prerequisite
 1. Clone the repository to your local machine.
 2. Open the solution in your IDE.
 3. Restore the NuGet packages.
-4. Update the connection string in `appsettings.json` to point to your SQL Server instance.
-5. Run the migrations to set up the database schema.
-6. Start the application.
+4. Update the connection string in `secrets.json` of Diary.Api to point to your SQL Server instance.
+5. Start the application.
 
 ## Usage
 Once the application is running, you can interact with the API using tools like Postman or directly through the Swagger UI.
