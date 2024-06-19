@@ -6,7 +6,7 @@ public class UserToken : IEntityId<long>
 {
     public long Id { get; set; }
     
-    public string RefereshToken { get; set; }
+    public string RefreshToken { get; set; }
 
     public DateTime RefreshTokenExpiryTime { get; set; }
 

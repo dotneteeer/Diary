@@ -11,8 +11,9 @@ using Diary.Domain.Interfaces.Databases;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
+using Diary.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Options;
 
 
 namespace Diary.Application.Services;
@@ -25,10 +26,11 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IBaseRepository<Role> _roleRepository;
     private readonly IMapper _mapper;
+    private readonly int _refreshTokenValidityInDays;
 
     public AuthService(IBaseRepository<User> userRepository, IMapper mapper,
         IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
-        IBaseRepository<Role> roleRepository, IUnitOfWork unitOfWork)
+        IBaseRepository<Role> roleRepository, IUnitOfWork unitOfWork, IOptions<JwtSettings> options)
     {
         _userRepository = userRepository;
         _mapper = mapper;
@@ -36,6 +38,7 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _roleRepository = roleRepository;
         _unitOfWork = unitOfWork;
+        _refreshTokenValidityInDays = options.Value.RefreshTokenValidityInDays;
     }
 
     public async Task<BaseResult<UserDto>> Register(RegisterUserDto dto)
@@ -146,16 +149,17 @@ public class AuthService : IAuthService
             userToken = new UserToken
             {
                 UserId = user.Id,
-                RefereshToken = refreshToken,
-                RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7)
+                RefreshToken = refreshToken,
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_refreshTokenValidityInDays)
             };
 
             await _userTokenRepository.CreateAsync(userToken);
+            await _userTokenRepository.SaveChangesAsync();
         }
         else
         {
-            userToken.RefereshToken = refreshToken;
-            userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            userToken.RefreshToken = refreshToken;
+            userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_refreshTokenValidityInDays);
 
             _userTokenRepository
                 .Update(userToken); //was not checked to return new value(when it was checking by ithomester(lesson 17(25:58)))

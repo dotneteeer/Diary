@@ -22,19 +22,5 @@ public class UserConfiguration:IEntityTypeConfiguration<User>
                 x=>x.HasOne<Role>().WithMany().HasForeignKey(y=>y.RoleId),
                 x=>x.HasOne<User>().WithMany().HasForeignKey(y=>y.UserId)
                 );
-        
-        
-        //
-
-        builder.HasData(new List<User>
-        {
-            new()
-            {
-                Id = 1,
-                Login = "1stUser",
-                Password = "1stUserPassword"
-            }
-        });
-        //
     }
 }

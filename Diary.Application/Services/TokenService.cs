@@ -21,10 +21,12 @@ public class TokenService : ITokenService
     private readonly string _jwtKey;
     private readonly string _issuer;
     private readonly string _audience;
+    private readonly int _lifetime;
 
     public TokenService(IOptions<JwtSettings> options, IBaseRepository<User> userRepository)
     {
         _userRepository = userRepository;
+        _lifetime = options.Value.LifeTime;
         _jwtKey = options.Value.JwtKey;
         _issuer = options.Value.Issuer;
         _audience = options.Value.Audience;
@@ -35,7 +37,7 @@ public class TokenService : ITokenService
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var securityToken =
-            new JwtSecurityToken(_issuer, _audience, claims, null, DateTime.UtcNow.AddMinutes(10), credentials);
+            new JwtSecurityToken(_issuer, _audience, claims, null, DateTime.UtcNow.AddMinutes(_lifetime), credentials);
         var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return token;
     }
@@ -56,7 +58,7 @@ public class TokenService : ITokenService
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey)),
-            ValidateLifetime = true,
+            ValidateLifetime = false,
             ValidAudience = _audience,
             ValidIssuer = _issuer
         };
@@ -82,7 +84,7 @@ public class TokenService : ITokenService
             .Include(x => x.UserToken)
             .FirstOrDefaultAsync(x => x.Login == username);
 
-        if (user == null || user.UserToken.RefereshToken != refreshToken ||
+        if (user == null || user.UserToken.RefreshToken != refreshToken ||
             user.UserToken.RefreshTokenExpiryTime <= DateTime.UtcNow)
         {
             return new BaseResult<TokenDto>
@@ -94,7 +96,7 @@ public class TokenService : ITokenService
         var newAccessToken = GenerateAccessToken(claimsPrincipal.Claims);
         var newRefreshToken = GenerateRefreshToken();
 
-        user.UserToken.RefereshToken = newRefreshToken;
+        user.UserToken.RefreshToken = newRefreshToken;
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
 
