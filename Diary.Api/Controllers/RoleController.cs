@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Diary.Domain.Dto.Role;
 using Diary.Domain.Dto.UserRole;
 using Diary.Domain.Entity;
+using Diary.Domain.Enum;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ namespace Diary.Api.Controllers;
 /// <response code="400">If role was not created/deleted/updated/received/added</response>
 /// <response code="500">If internal server error occured</response>
 [Consumes(MediaTypeNames.Application.Json)]
-[Authorize(Roles="Admin")]
+[Authorize(Roles=nameof(Roles.Admin))]
 [ApiController]
 [Route("api/[controller]")]
 [ProducesResponseType(StatusCodes.Status200OK)]
