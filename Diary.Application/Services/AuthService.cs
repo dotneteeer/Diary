@@ -141,6 +141,7 @@ public class AuthService : IAuthService
         var userRoles = user.Roles;
         var claims = userRoles.Select(x => new Claim(ClaimTypes.Role, x.Name)).ToList();
         claims.Add(new Claim(ClaimTypes.Name, user.Login));
+        claims.Add(new Claim("UserId", user.Id.ToString()));
 
         var accessToken = _tokenService.GenerateAccessToken(claims);
         var refreshToken = _tokenService.GenerateRefreshToken();

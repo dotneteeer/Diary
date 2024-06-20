@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Diary.Api.Controllers;
 
 /// <summary>
-/// authentication contoller
+/// authentication controller
 /// </summary>\
 /// <response code="200">If user was registrated/logined</response>
 /// <response code="400">If user was not registrated/logined</response>

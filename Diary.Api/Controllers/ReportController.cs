@@ -10,8 +10,8 @@ namespace Diary.Api.Controllers;
 /// <summary>
 /// Repport controller
 /// </summary>
-/// <response code="200">If report was created/deleted/updated/get</response>
-/// <response code="400">If report was not created/deleted/updated/get</response>
+/// <response code="200">If report was created/deleted/updated/received</response>
+/// <response code="400">If report was not created/deleted/updated/received</response>
 /// <response code="500">If internal server error occured</response>
 /// <response code="401">If user is unauthorized</response>
 [Authorize]

@@ -12,8 +12,8 @@ namespace Diary.Api.Controllers;
 /// <summary>
 /// Role controller
 /// </summary>
-/// <response code="200">If role was created/deleted/updated/get/added</response>
-/// <response code="400">If role was not created/deleted/updated/get/added</response>
+/// <response code="200">If role was created/deleted/updated/received/added</response>
+/// <response code="400">If role was not created/deleted/updated/received/added</response>
 /// <response code="500">If internal server error occured</response>
 [Consumes(MediaTypeNames.Application.Json)]
 [Authorize(Roles="Admin")]
