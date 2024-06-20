@@ -191,13 +191,17 @@ public class ReportController : ControllerBase
 
     private bool CheckIsUserAllowedToGetData(string identifier)
     {
-        var userRole = User.FindFirstValue(ClaimTypes.Role);
+        var userRole = User.FindAll(ClaimTypes.Role);
         List<string> canGetAnyDataRoles = new List<string>
         {
             nameof(Roles.Admin),
             nameof(Roles.Moderator)
         };
-        var canGetAnyData = canGetAnyDataRoles.Any(role=>role==userRole);
+        var canGetAnyData=false;
+        userRole.ToList().ForEach(currentRole =>
+        {
+            canGetAnyData = canGetAnyDataRoles.Any(role=>role==currentRole.Value);
+        });
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var isSame = id == identifier;
         return canGetAnyData || isSame;
@@ -205,13 +209,17 @@ public class ReportController : ControllerBase
 
     private bool CheckIsAnyDataBelongsToUser(long id)
     {
-        var userRole = User.FindFirstValue(ClaimTypes.Role);
+        var userRole = User.FindAll(ClaimTypes.Role);
         List<string> canGetAnyDataRoles = new List<string>
         {
             nameof(Roles.Admin),
             nameof(Roles.Moderator)
         };
-        var canGetAnyData = canGetAnyDataRoles.Any(role=>role==userRole);
+        var canGetAnyData=false;
+        userRole.ToList().ForEach(currentRole =>
+        {
+            canGetAnyData = canGetAnyDataRoles.Any(role=>role==currentRole.Value);
+        });
         var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var userReports = _reportRepository.GetAll().AsEnumerable().Where(x => x.UserId == userId);
         return canGetAnyData||userReports.Any(x => x.Id == id);
