@@ -20,9 +20,6 @@
     <data name="ReportNotFound" xml:space="preserve">
         <value>Отчёт не найден</value>
     </data>
-    <data name="ReportAlreadyExists" xml:space="preserve">
-        <value>Отчёт уже существует</value>
-    </data>
     <data name="UserNotFound" xml:space="preserve">
         <value>Пользователь не найден</value>
     </data>

@@ -105,15 +105,6 @@ namespace Diary.Application.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report already exists.
-        /// </summary>
-        internal static string ReportAlreadyExists {
-            get {
-                return ResourceManager.GetString("ReportAlreadyExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Report not found.
         /// </summary>
         internal static string ReportNotFound {

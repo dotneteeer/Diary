@@ -22,17 +22,8 @@ public class ReportValidator:IReportValidator
         return new BaseResult();
     }
 
-    public BaseResult CreateValidator(Report report, User user)
+    public BaseResult CreateValidator(User user)
     {
-        if (report != null)
-        {
-            return new BaseResult
-            {
-                ErrorMessage = ErrorMessage.ReportAlreadyExists,
-                ErrorCode = (int)ErrorCodes.ReportAlreadyExists
-            };
-        }
-
         if (user == null)
         {
             return new BaseResult

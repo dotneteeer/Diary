@@ -20,9 +20,6 @@
     <data name="ReportNotFound" xml:space="preserve">
         <value>Report not found</value>
     </data>
-    <data name="ReportAlreadyExists" xml:space="preserve">
-        <value>Report already exists</value>
-    </data>
     <data name="UserNotFound" xml:space="preserve">
         <value>User not found</value>
     </data>

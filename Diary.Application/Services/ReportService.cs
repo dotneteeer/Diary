@@ -90,8 +90,7 @@ public class ReportService : IReportService
     public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto dto)
     {
         var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dto.UserId);
-        var report = await _reportRepository.GetAll().FirstOrDefaultAsync(x => x.Name == dto.Name);
-        var result = _reportValidator.CreateValidator(report, user);
+        var result = _reportValidator.CreateValidator( user);
         if (!result.IsSuccess)
         {
             return new BaseResult<ReportDto>
@@ -101,7 +100,7 @@ public class ReportService : IReportService
             };
         }
 
-        report = new Report
+        var report = new Report
         {
             Name = dto.Name,
             Description = dto.Description,
