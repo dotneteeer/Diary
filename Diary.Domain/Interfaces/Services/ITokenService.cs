@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Diary.Domain.Dto;
+using Diary.Domain.Dto.Token;
 using Diary.Domain.Result;
 
 namespace Diary.Domain.Interfaces.Services;
@@ -12,5 +13,5 @@ public interface ITokenService
 
     ClaimsPrincipal GetPrincipalFromExpiredToken(string accessToken);
     
-    Task<BaseResult<TokenDto>> RefreshToken(TokenDto dto);
+    Task<BaseResult<TokenDto>> RefreshToken(RefreshTokenDto dto);
 }

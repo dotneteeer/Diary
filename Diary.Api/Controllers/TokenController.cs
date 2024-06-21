@@ -1,4 +1,5 @@
 using Diary.Domain.Dto;
+using Diary.Domain.Dto.Token;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public class TokenController : Controller
     }
     
     [HttpPost("refresh")]
-    public async Task<ActionResult> RereshToken([FromBody] TokenDto dto)
+    public async Task<ActionResult> RereshToken([FromBody] RefreshTokenDto dto)
     {
         var response = await _tokenService.RefreshToken(dto);
         if (response.IsSuccess)

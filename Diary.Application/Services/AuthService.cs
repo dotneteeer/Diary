@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Diary.Application.Resources;
 using Diary.Domain.Dto;
+using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
@@ -172,7 +173,8 @@ public class AuthService : IAuthService
             Data = new TokenDto
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                UserId = user.Id
             }
         };
     }

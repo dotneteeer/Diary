@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Diary.Application.Resources;
-using Diary.Domain.Dto;
+using Diary.Domain.Dto.Token;
 using Diary.Domain.Entity;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
@@ -72,7 +72,7 @@ public class TokenService : ITokenService
         return claimsPrincipal;
     }
 
-    public async Task<BaseResult<TokenDto>> RefreshToken(TokenDto dto)
+    public async Task<BaseResult<TokenDto>> RefreshToken(RefreshTokenDto dto)
     {
         var accessToken = dto.AccessToken;
         var refreshToken = dto.RefreshToken;
@@ -105,7 +105,8 @@ public class TokenService : ITokenService
             Data = new TokenDto
             {
                 RefreshToken = newRefreshToken,
-                AccessToken = newAccessToken
+                AccessToken = newAccessToken,
+                UserId = user.Id
             }
         };
     }

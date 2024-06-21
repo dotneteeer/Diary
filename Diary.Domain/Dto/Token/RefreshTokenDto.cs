@@ -1,7 +1,8 @@
-namespace Diary.Domain.Dto;
+namespace Diary.Domain.Dto.Token;
 
-public class TokenDto
+public class RefreshTokenDto
 {
     public string AccessToken { get; set; }
+    
     public string RefreshToken { get; set; }
 }
