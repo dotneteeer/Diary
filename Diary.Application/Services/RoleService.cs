@@ -229,24 +229,36 @@ public class RoleService : IRoleService
                 ErrorCode = (int)ErrorCodes.RoleNotFound
             };
         }
-        
+
         using (var transaction = await _unitOfWork.BeginTransactionAsync())
         {
             try
             {
-                var userRole = await _unitOfWork.UserRoles.GetAll()
-                    .Where(x => x.RoleId == role.Id)
-                    .FirstOrDefaultAsync(x => x.UserId == user.Id);
-
-                _unitOfWork.UserRoles.Remove(userRole);
-                await _unitOfWork.SaveChangesAsync();
-
                 var newUserRole = new UserRole
                 {
                     UserId = user.Id,
                     RoleId = newRoleForUser.Id
                 };
 
+                var isNewUserRoleExists = await _userRoleRepository.GetAll()
+                    .FirstOrDefaultAsync(x => x.UserId == newUserRole.UserId && x.RoleId == newUserRole.RoleId) != null;
+
+                if (isNewUserRoleExists)
+                {
+                    return new BaseResult<UserRoleDto>()
+                    {
+                        ErrorMessage = ErrorMessage.UserAlreadyHasThisRole,
+                        ErrorCode = (int)ErrorCodes.UserAlreadyHasThisRole
+                    };
+                }
+                
+                var userRole = await _unitOfWork.UserRoles.GetAll()
+                    .Where(x => x.RoleId == role.Id)
+                    .FirstOrDefaultAsync(x => x.UserId == user.Id);
+
+                _unitOfWork.UserRoles.Remove(userRole);
+                await _unitOfWork.SaveChangesAsync();
+                
                 await _unitOfWork.UserRoles.CreateAsync(newUserRole);
                 await _unitOfWork.SaveChangesAsync();
 
