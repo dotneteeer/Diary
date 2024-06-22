@@ -1,3 +1,4 @@
+using System.Globalization;
 using AutoMapper;
 using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
@@ -39,9 +40,10 @@ public class ReportService : IReportService
     public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId)
     {
         ReportDto[] reports;
+        var enUsCulture = CultureInfo.CreateSpecificCulture("en-US");
         reports = await _reportRepository.GetAll()
             .Where(x => x.UserId == userId)
-            .Select(x => new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLongDateString()))
+            .Select(x => new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss",enUsCulture)))
             .ToArrayAsync();
 
         if (!reports.Any())
@@ -64,10 +66,11 @@ public class ReportService : IReportService
     public Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
     {
         ReportDto? report;
+        var enUsCulture = CultureInfo.CreateSpecificCulture("en-US");
         report = _reportRepository.GetAll()
             .AsEnumerable()
             .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLongDateString()))
+                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss",enUsCulture)))
             .FirstOrDefault(x => x.Id == id);
 
         if (report == null)
