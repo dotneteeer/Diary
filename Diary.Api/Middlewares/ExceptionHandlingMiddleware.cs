@@ -44,7 +44,7 @@ public class ExceptionHandlingMiddleware
 
         var errorMessage = exception.Message;
         
-        _logger.Error(exception, errorMessage);
+        _logger.Fatal(exception, errorMessage);
         
 
         var response = exception switch
