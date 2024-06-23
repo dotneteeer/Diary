@@ -1,7 +1,5 @@
-using Diary.Domain.Dto;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Interfaces.Services;
-using Diary.Domain.Result;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diary.Api.Controllers;

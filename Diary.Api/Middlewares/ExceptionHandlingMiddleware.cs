@@ -1,8 +1,5 @@
 using System.Net;
-using System.Text;
 using Diary.Domain.Result;
-using Newtonsoft.Json;
-using IFormattable = System.IFormattable;
 using ILogger = Serilog.ILogger;
 
 namespace Diary.Api.Middlewares;

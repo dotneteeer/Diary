@@ -1,4 +1,3 @@
-using Diary.Domain.Dto;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Interfaces.Services;

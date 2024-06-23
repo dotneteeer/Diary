@@ -5,7 +5,6 @@ using System.Text;
 using Diary.Application.Resources;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Entity;
-using Diary.Domain.Enum;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;

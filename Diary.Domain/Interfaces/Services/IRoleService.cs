@@ -1,6 +1,5 @@
 using Diary.Domain.Dto.Role;
 using Diary.Domain.Dto.UserRole;
-using Diary.Domain.Entity;
 using Diary.Domain.Result;
 
 namespace Diary.Domain.Interfaces.Services;

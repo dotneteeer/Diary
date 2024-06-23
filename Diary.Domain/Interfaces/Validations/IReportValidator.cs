@@ -1,5 +1,4 @@
 using Diary.Domain.Entity;
-using Diary.Domain.Enum;
 using Diary.Domain.Result;
 
 namespace Diary.Domain.Interfaces.Validations;

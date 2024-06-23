@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using Diary.Application.Resources;
-using Diary.Domain.Dto;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Entity;

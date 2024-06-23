@@ -1,4 +1,3 @@
-using Diary.Domain.Settings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Diary.Consumer.DependencyInjection;

@@ -1,7 +1,5 @@
-using Diary.Domain.Dto;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
-using Diary.Domain.Entity;
 using Diary.Domain.Result;
 
 namespace Diary.Domain.Interfaces.Services;

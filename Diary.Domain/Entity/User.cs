@@ -1,4 +1,3 @@
-using Diary.Domain.Enum;
 using Diary.Domain.Interfaces;
 
 namespace Diary.Domain.Entity;

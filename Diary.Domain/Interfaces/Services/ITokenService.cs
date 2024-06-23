@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using Diary.Domain.Dto;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Result;
 

@@ -1,16 +1,13 @@
 using System.Security.Claims;
 using Asp.Versioning;
-using Diary.Application.Services;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Diary.Api.Controllers;
 
