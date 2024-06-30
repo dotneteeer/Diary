@@ -43,6 +43,7 @@ public class ReportService : IReportService
         var enUsCulture = CultureInfo.CreateSpecificCulture("en-US");
         reports = await _reportRepository.GetAll()
             .Where(x => x.UserId == userId)
+            .OrderBy(x=>x.Id)
             .Select(x => new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss",enUsCulture)))
             .ToArrayAsync();
 

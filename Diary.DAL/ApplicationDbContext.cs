@@ -12,7 +12,7 @@ public sealed class ApplicationDbContext:DbContext//sealed added by rider(forbid
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options, ILogger logger):base(options)
     {
         _logger = logger;
-        Database.EnsureCreated();
+        //Database.EnsureCreated();//use migrations
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
