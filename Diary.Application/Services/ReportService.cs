@@ -1,4 +1,3 @@
-using System.Globalization;
 using AutoMapper;
 using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
@@ -17,12 +16,12 @@ namespace Diary.Application.Services;
 
 public class ReportService : IReportService
 {
+    private readonly IMapper _mapper;
     private readonly IMessageProducer _messageProducer;
     private readonly IOptions<RabbitMqSettings> _rabbitMqOptions;
     private readonly IBaseRepository<Report> _reportRepository;
-    private readonly IBaseRepository<User> _userRepository;
     private readonly IReportValidator _reportValidator;
-    private readonly IMapper _mapper;
+    private readonly IBaseRepository<User> _userRepository;
 
     public ReportService(IBaseRepository<Report> reportRepository, IBaseRepository<User> userRepository,
         IReportValidator reportValidator, IMapper mapper, IOptions<RabbitMqSettings> rabbitMqOptions,
@@ -40,11 +39,11 @@ public class ReportService : IReportService
     public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId)
     {
         ReportDto[] reports;
-        var enUsCulture = CultureInfo.CreateSpecificCulture("en-US");
         reports = await _reportRepository.GetAll()
             .Where(x => x.UserId == userId)
-            .OrderBy(x=>x.Id)
-            .Select(x => new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss",enUsCulture)))
+            .OrderBy(x => x.Id)
+            .Select(x =>
+                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
             .ToArrayAsync();
 
         if (!reports.Any())
@@ -67,16 +66,14 @@ public class ReportService : IReportService
     public Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
     {
         ReportDto? report;
-        var enUsCulture = CultureInfo.CreateSpecificCulture("en-US");
         report = _reportRepository.GetAll()
             .AsEnumerable()
             .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss",enUsCulture)))
+                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
             .FirstOrDefault(x => x.Id == id);
 
         if (report == null)
         {
-
             return Task.FromResult(new BaseResult<ReportDto>()
             {
                 ErrorMessage = ErrorMessage.ReportNotFound,
@@ -94,7 +91,7 @@ public class ReportService : IReportService
     public async Task<BaseResult<ReportDto>> CreateReportAsync(CreateReportDto dto)
     {
         var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dto.UserId);
-        var result = _reportValidator.CreateValidator( user);
+        var result = _reportValidator.CreateValidator(user);
         if (!result.IsSuccess)
         {
             return new BaseResult<ReportDto>
@@ -113,9 +110,9 @@ public class ReportService : IReportService
 
         await _reportRepository.CreateAsync(report);
         await _reportRepository.SaveChangesAsync();
-        
+
         _messageProducer.SendMessage(report, _rabbitMqOptions.Value.RoutingKey, _rabbitMqOptions.Value.ExchangeKey);
-        
+
         return new BaseResult<ReportDto>
         {
             Data = _mapper.Map<ReportDto>(report)
