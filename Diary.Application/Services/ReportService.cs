@@ -36,7 +36,7 @@ public class ReportService : IReportService
     }
 
     /// <inheritdoc />
-    public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId)
+    public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId, PageReportDto dto)
     {
         ReportDto[] reports;
         reports = await _reportRepository.GetAll()
@@ -54,6 +54,18 @@ public class ReportService : IReportService
                 ErrorCode = (int)ErrorCodes.ReportsNotFound
             };
         }
+
+        var currentPage = dto.PageNumber;
+        var currentPageSize = dto.PageSize;
+
+        if (currentPage == 0 || currentPageSize == 0)
+        {
+            currentPage = 1;
+            currentPageSize = reports.Length;
+        }
+
+        reports = reports.Skip((currentPage - 1) *
+                               currentPageSize).Take(currentPageSize).ToArray();
 
         return new CollectionResult<ReportDto>
         {

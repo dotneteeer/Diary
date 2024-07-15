@@ -9,16 +9,17 @@ public interface IReportService
     /// Get all reports by user's id
     /// </summary>
     /// <param name="userId">user's id</param>
+    /// <param name="dto">Recieved page number and size</param>
     /// <returns>Returns all reports of user by its id</returns>
-    Task<CollectionResult<ReportDto>> GetReportsAsync(long userId);
-    
+    Task<CollectionResult<ReportDto>> GetReportsAsync(long userId, PageReportDto dto);
+
     /// <summary>
     /// Get report by its id
     /// </summary>
     /// <param name="id">report's id</param>
     /// <returns>report with the specified id </returns>
     Task<BaseResult<ReportDto>> GetReportByIdAsync(long id);
-    
+
     /// <summary>
     /// Creates report
     /// </summary>

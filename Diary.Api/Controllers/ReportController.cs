@@ -29,8 +29,8 @@ namespace Diary.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController : ControllerBase
 {
-    private readonly IReportService _reportService;
     private readonly IBaseRepository<Report> _reportRepository;
+    private readonly IReportService _reportService;
 
     public ReportController(IReportService reportService, IBaseRepository<Report> reportRepository)
     {
@@ -42,23 +42,26 @@ public class ReportController : ControllerBase
     /// Get reports of user
     /// </summary>
     /// <param name="userId"></param>
+    /// <param name="pageReportDto">Recieved page number and size</param>
     /// <remarks>
     /// Request for create report:
     /// 
     ///     GET
     ///     {
-    ///         "userId":1
-    ///         
+    ///         "pageNumber":1,
+    ///         "pageSize":5
     ///     }
     /// </remarks>
     [HttpGet("reports/{userId:int:min(0)}")] //":int:min(0)" added by myself
-    public async Task<ActionResult<BaseResult<ReportDto>>> GetUserReports(long userId)
+    public async Task<ActionResult<BaseResult<ReportDto>>> GetUserReports(long userId,
+        [FromQuery] PageReportDto? pageReportDto)
     {
         if (!CheckIsUserAllowedToGetData(userId.ToString()))
         {
             return Forbid("Bearer");
         }
-        var response = await _reportService.GetReportsAsync(userId);
+
+        var response = await _reportService.GetReportsAsync(userId, pageReportDto);
         if (response.IsSuccess)
         {
             return Ok(response);
@@ -83,10 +86,11 @@ public class ReportController : ControllerBase
     [HttpGet("{id:int:min(0)}")] //":int:min(0)" added by myself
     public async Task<ActionResult<BaseResult<ReportDto>>> GetReport(long id)
     {
-        if(!CheckIsAnyDataBelongsToUser(id))
+        if (!CheckIsAnyDataBelongsToUser(id))
         {
             return Forbid("Bearer");
         }
+
         var response = await _reportService.GetReportByIdAsync(id);
         if (response.IsSuccess)
         {
@@ -111,10 +115,11 @@ public class ReportController : ControllerBase
     [HttpDelete("{id:int:min(1)}")]
     public async Task<ActionResult<BaseResult<ReportDto>>> Delete(long id)
     {
-        if(!CheckIsAnyDataBelongsToUser(id))
+        if (!CheckIsAnyDataBelongsToUser(id))
         {
             return Forbid("Bearer");
         }
+
         var response = await _reportService.DeleteReportAsync(id);
         if (response.IsSuccess)
         {
@@ -173,10 +178,11 @@ public class ReportController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<BaseResult<ReportDto>>> Update([FromBody] UpdateReportDto dto)
     {
-        if(!CheckIsAnyDataBelongsToUser(dto.Id))
+        if (!CheckIsAnyDataBelongsToUser(dto.Id))
         {
             return Forbid("Bearer");
         }
+
         var response = await _reportService.UpdateReportAsync(dto);
         if (response.IsSuccess)
         {
@@ -194,10 +200,10 @@ public class ReportController : ControllerBase
             nameof(Roles.Admin),
             nameof(Roles.Moderator)
         };
-        var canGetAnyData=false;
+        var canGetAnyData = false;
         userRole.ToList().ForEach(currentRole =>
         {
-            canGetAnyData = canGetAnyDataRoles.Any(role=>role==currentRole.Value);
+            canGetAnyData = canGetAnyDataRoles.Any(role => role == currentRole.Value);
         });
         var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var isSame = id == identifier;
@@ -212,13 +218,13 @@ public class ReportController : ControllerBase
             nameof(Roles.Admin),
             nameof(Roles.Moderator)
         };
-        var canGetAnyData=false;
+        var canGetAnyData = false;
         userRole.ToList().ForEach(currentRole =>
         {
-            canGetAnyData = canGetAnyDataRoles.Any(role=>role==currentRole.Value);
+            canGetAnyData = canGetAnyDataRoles.Any(role => role == currentRole.Value);
         });
         var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
         var userReports = _reportRepository.GetAll().AsEnumerable().Where(x => x.UserId == userId);
-        return canGetAnyData||userReports.Any(x => x.Id == id);
+        return canGetAnyData || userReports.Any(x => x.Id == id);
     }
 }
