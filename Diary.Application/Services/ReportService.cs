@@ -41,9 +41,9 @@ public class ReportService : IReportService
         ReportDto[] reports;
         reports = await _reportRepository.GetAll()
             .Where(x => x.UserId == userId)
-            .OrderBy(x => x.Id)
+            .OrderByDescending(x => x.LastEditedAt)
             .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
+                new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
             .ToArrayAsync();
 
         if (!reports.Any())
@@ -81,7 +81,7 @@ public class ReportService : IReportService
         report = _reportRepository.GetAll()
             .AsEnumerable()
             .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.CreatedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
+                new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
             .FirstOrDefault(x => x.Id == id);
 
         if (report == null)

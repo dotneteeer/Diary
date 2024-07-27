@@ -12,7 +12,8 @@ public class ReportMapping : Profile
             .ForCtorParam("Id", x => x.MapFrom(y => y.Id))
             .ForCtorParam("Name", x => x.MapFrom(y => y.Name))
             .ForCtorParam("Description", x => x.MapFrom(y => y.Description))
-            .ForCtorParam("DateCreated", x => x.MapFrom(y => y.CreatedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
+            .ForCtorParam("DateLastEdited",
+                x => x.MapFrom(y => y.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
             .ReverseMap();
     }
 }
