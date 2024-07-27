@@ -11,6 +11,8 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
 
+        builder.HasIndex(x => x.Name).IsUnique();
+
         builder.HasData(new List<Role>
         {
             new()
@@ -27,6 +29,11 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             {
                 Id = 3,
                 Name = "Moderator"
+            },
+            new()
+            {
+                Id = 4,
+                Name = "Api"
             }
         });
     }
