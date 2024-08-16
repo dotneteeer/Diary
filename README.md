@@ -19,14 +19,14 @@ Welcome to the Diary API project! This project is built using ASP.NET Core and r
 To get started with this project, you'll need to have the following prerequisites installed:
 - .NET Core SDK
 - An IDE like Visual Studio or Rider
-- A SQL Server instance for the database
+- A PostgreSQL Server instance for the database
 - Erlang for rabbitMq
 
 ### Setup
 1. Clone the repository to your local machine.
 2. Open the solution in your IDE.
 3. Restore the NuGet packages.
-4. Update the connection string in `secrets.json` of Diary.Api to point to your SQL Server instance.
+4. Update the connection string in `secrets.json` of Diary.Api to point to your PostgreSQL Server instance.
 5. Set up rabbitMq(follow instructions in Diary\Diary.Consumer\RabbitMqListener.cs)
 6. Start the application.
 
