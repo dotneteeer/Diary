@@ -46,6 +46,8 @@ public class ReportService : IReportService
                 new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
             .ToArrayAsync();
 
+        var totalCount = reports.Length;
+
         if (!reports.Any())
         {
             return new CollectionResult<ReportDto>
@@ -70,7 +72,8 @@ public class ReportService : IReportService
         return new CollectionResult<ReportDto>
         {
             Data = reports,
-            Count = reports.Length
+            Count = reports.Length,
+            TotalCount = totalCount
         };
     }
 

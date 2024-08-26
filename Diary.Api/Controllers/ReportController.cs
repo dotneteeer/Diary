@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Diary.Api.Controllers;
 
 /// <summary>
-/// Repport controller
+/// Report controller
 /// </summary>
 /// <response code="200">If report was created/deleted/updated/received</response>
 /// <response code="400">If report was not created/deleted/updated/received</response>
@@ -62,6 +62,9 @@ public class ReportController : ControllerBase
         }
 
         var response = await _reportService.GetReportsAsync(userId, pageReportDto);
+
+        Response.Headers.Add("x-total-count", response.TotalCount.ToString());
+
         if (response.IsSuccess)
         {
             return Ok(response);
