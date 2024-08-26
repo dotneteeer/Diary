@@ -3,6 +3,7 @@ using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
+using Diary.Domain.Extensions;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Interfaces.Validations;
@@ -10,12 +11,14 @@ using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Diary.Producer.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 
 namespace Diary.Application.Services;
 
 public class ReportService : IReportService
 {
+    private readonly IDistributedCache _distributedCache;
     private readonly IMapper _mapper;
     private readonly IMessageProducer _messageProducer;
     private readonly IOptions<RabbitMqSettings> _rabbitMqOptions;
@@ -25,7 +28,7 @@ public class ReportService : IReportService
 
     public ReportService(IBaseRepository<Report> reportRepository, IBaseRepository<User> userRepository,
         IReportValidator reportValidator, IMapper mapper, IOptions<RabbitMqSettings> rabbitMqOptions,
-        IMessageProducer messageProducer)
+        IMessageProducer messageProducer, IDistributedCache distributedCache)
     {
         _reportRepository = reportRepository;
         _userRepository = userRepository;
@@ -33,6 +36,7 @@ public class ReportService : IReportService
         _mapper = mapper;
         _rabbitMqOptions = rabbitMqOptions;
         _messageProducer = messageProducer;
+        _distributedCache = distributedCache;
     }
 
     /// <inheritdoc />
@@ -81,20 +85,30 @@ public class ReportService : IReportService
     public Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
     {
         ReportDto? report;
-        report = _reportRepository.GetAll()
-            .AsEnumerable()
-            .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
-            .FirstOrDefault(x => x.Id == id);
-
-        if (report == null)
+        try
         {
-            return Task.FromResult(new BaseResult<ReportDto>()
-            {
-                ErrorMessage = ErrorMessage.ReportNotFound,
-                ErrorCode = (int)ErrorCodes.ReportNotFound
-            });
+            report = _distributedCache.GetObject<ReportDto>($"Report_{id}");
         }
+        catch
+        {
+            report = _reportRepository.GetAll()
+                .AsEnumerable()
+                .Select(x =>
+                    new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
+                .FirstOrDefault(x => x.Id == id);
+
+            if (report == null)
+            {
+                return Task.FromResult(new BaseResult<ReportDto>()
+                {
+                    ErrorMessage = ErrorMessage.ReportNotFound,
+                    ErrorCode = (int)ErrorCodes.ReportNotFound
+                });
+            }
+        }
+
+        _distributedCache.SetObject($"Report_{id}", report,
+            new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)));
 
         return Task.FromResult(new BaseResult<ReportDto>()
         {
