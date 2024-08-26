@@ -1,4 +1,3 @@
-
 using System.Reflection;
 using System.Text;
 using Asp.Versioning;
@@ -6,7 +5,6 @@ using Diary.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
 
 namespace Diary.Api;
 
@@ -17,9 +15,10 @@ public static class Startup
     /// </summary>
     /// <param name="services"></param>
     /// <param name="builder"></param>
-    public static void AddAuthenticationAndAuthorization(this IServiceCollection services, WebApplicationBuilder builder)
+    public static void AddAuthenticationAndAuthorization(this IServiceCollection services,
+        WebApplicationBuilder builder)
     {
-        services.AddAuthorization();//unnecessary because of app.UseAuthorization(); in program.cs
+        services.AddAuthorization(); //unnecessary because of app.UseAuthorization(); in program.cs
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,7 +45,7 @@ public static class Startup
             };
         });
     }
-    
+
     /// <summary>
     /// Swagger set up
     /// </summary>
@@ -73,10 +72,10 @@ public static class Startup
                 Contact = new OpenApiContact
                 {
                     Name = "Diary api contact",
-                    Url=new Uri("https://aka.ms/aspnetcore/swashbuckle")
+                    Url = new Uri("https://aka.ms/aspnetcore/swashbuckle")
                 }
             });
-            
+
             options.SwaggerDoc("v2", new OpenApiInfo
             {
                 Version = "v2",
@@ -86,20 +85,20 @@ public static class Startup
                 Contact = new OpenApiContact
                 {
                     Name = "Diary api contact",
-                    Url=new Uri("https://aka.ms/aspnetcore/swashbuckle")
+                    Url = new Uri("https://aka.ms/aspnetcore/swashbuckle")
                 }
             });
-             
+
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                In=ParameterLocation.Header,
+                In = ParameterLocation.Header,
                 Description = "Please write valid token",
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
                 Scheme = "Bearer"
             });
-            
+
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -107,12 +106,12 @@ public static class Startup
                     {
                         Reference = new OpenApiReference
                         {
-                            Type=ReferenceType.SecurityScheme,
+                            Type = ReferenceType.SecurityScheme,
                             Id = "Bearer"
                         },
                         Name = "Bearer",
                         In = ParameterLocation.Header
-                    }, 
+                    },
                     Array.Empty<string>()
                 }
             });
@@ -120,7 +119,15 @@ public static class Startup
             var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
         });
-        
-        
+    }
+
+    public static void LogListeningUrls(WebApplication app)
+    {
+        app.Lifetime.ApplicationStarted.Register(() =>
+        {
+            var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
+            var addressesList = addresses.Value?.Split(';').ToList();
+            addressesList?.ForEach(address => Console.WriteLine("Now listening on: " + address));
+        });
     }
 }
