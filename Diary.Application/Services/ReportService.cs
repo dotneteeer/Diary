@@ -85,26 +85,21 @@ public class ReportService : IReportService
     public Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
     {
         ReportDto? report;
-        try
-        {
-            report = _distributedCache.GetObject<ReportDto>($"Report_{id}");
-        }
-        catch
-        {
-            report = _reportRepository.GetAll()
-                .AsEnumerable()
-                .Select(x =>
-                    new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
-                .FirstOrDefault(x => x.Id == id);
+        report = _distributedCache.GetObject<ReportDto>($"Report_{id}")
+                 ?? _reportRepository.GetAll()
+                     .AsEnumerable()
+                     .Select(x =>
+                         new ReportDto(x.Id, x.Name, x.Description,
+                             x.LastEditedAt.ToString("(UTC): " + "dd.MM.yyyy HH:mm")))
+                     .FirstOrDefault(x => x.Id == id);
 
-            if (report == null)
+        if (report == null)
+        {
+            return Task.FromResult(new BaseResult<ReportDto>()
             {
-                return Task.FromResult(new BaseResult<ReportDto>()
-                {
-                    ErrorMessage = ErrorMessage.ReportNotFound,
-                    ErrorCode = (int)ErrorCodes.ReportNotFound
-                });
-            }
+                ErrorMessage = ErrorMessage.ReportNotFound,
+                ErrorCode = (int)ErrorCodes.ReportNotFound
+            });
         }
 
         _distributedCache.SetObject($"Report_{id}", report,

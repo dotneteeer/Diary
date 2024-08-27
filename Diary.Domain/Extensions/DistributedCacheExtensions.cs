@@ -11,7 +11,7 @@ public static class DistributedCacheExtensions
         var value = cache.Get(key);
         return value?.Length > 0
             ? JsonSerializer.Deserialize<T>(value)
-            : throw new NullReferenceException($"Object with key \"{key}\" was not found");
+            : default;
         ;
     }
 
