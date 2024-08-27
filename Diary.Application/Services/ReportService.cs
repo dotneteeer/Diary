@@ -10,6 +10,7 @@ using Diary.Domain.Interfaces.Validations;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Diary.Producer.Interfaces;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
@@ -21,6 +22,7 @@ public class ReportService : IReportService
     private readonly IDistributedCache _distributedCache;
     private readonly IMapper _mapper;
     private readonly IMessageProducer _messageProducer;
+    private readonly IValidator<PageReportDto> _pageReportDtoValidator;
     private readonly IOptions<RabbitMqSettings> _rabbitMqOptions;
     private readonly IBaseRepository<Report> _reportRepository;
     private readonly IReportValidator _reportValidator;
@@ -28,7 +30,8 @@ public class ReportService : IReportService
 
     public ReportService(IBaseRepository<Report> reportRepository, IBaseRepository<User> userRepository,
         IReportValidator reportValidator, IMapper mapper, IOptions<RabbitMqSettings> rabbitMqOptions,
-        IMessageProducer messageProducer, IDistributedCache distributedCache)
+        IMessageProducer messageProducer, IDistributedCache distributedCache,
+        IValidator<PageReportDto> pageReportDtoValidator)
     {
         _reportRepository = reportRepository;
         _userRepository = userRepository;
@@ -37,6 +40,7 @@ public class ReportService : IReportService
         _rabbitMqOptions = rabbitMqOptions;
         _messageProducer = messageProducer;
         _distributedCache = distributedCache;
+        _pageReportDtoValidator = pageReportDtoValidator;
     }
 
     /// <inheritdoc />
@@ -64,7 +68,7 @@ public class ReportService : IReportService
         var currentPage = dto.PageNumber;
         var currentPageSize = dto.PageSize;
 
-        if (currentPage == 0 || currentPageSize == 0)
+        if (!(await _pageReportDtoValidator.ValidateAsync(dto)).IsValid)
         {
             currentPage = 1;
             currentPageSize = reports.Length;
