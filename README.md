@@ -14,6 +14,7 @@ Welcome to the Diary API project! This project is built using ASP.NET Core and r
 - **Entity Framework Core**: For ORM and database interactions.
 - **Swagger**: For API documentation and testing.
 - **RabbitMq**: RabbitMq consumer and prudecer implemented.
+- **Redis**: The requested reports are cached.
 
 ## Getting Started
 To get started with this project, you'll need to have the following prerequisites installed:
@@ -21,6 +22,7 @@ To get started with this project, you'll need to have the following prerequisite
 - An IDE like Visual Studio or Rider
 - A PostgreSQL Server instance for the database
 - Erlang for rabbitMq
+- Redis 
 
 ### Setup
 1. Clone the repository to your local machine.
@@ -28,6 +30,7 @@ To get started with this project, you'll need to have the following prerequisite
 3. Restore the NuGet packages.
 4. Update the connection string in `secrets.json` of Diary.Api to point to your PostgreSQL Server instance.
 5. Set up rabbitMq(follow instructions in Diary\Diary.Consumer\RabbitMqListener.cs)
+6. Set up Redis(after installing execute redis-server)
 6. Start the application.
 
 ## Usage
