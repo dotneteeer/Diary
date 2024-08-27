@@ -5,6 +5,7 @@ using Diary.Consumer.DependencyInjection;
 using Diary.DAL.DependencyInjection;
 using Diary.Domain.Settings;
 using Diary.Producer.DependencyInjection;
+using Prometheus;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddAuthenticationAndAuthorization(builder);
 
-//builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.UseHttpClientMetrics();
 
 builder.Services.AddSwagger();
 
@@ -51,6 +53,12 @@ app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseHttpsRedirection();
 
+app.UseMetricServer();
+app.UseHttpMetrics();
+
+app.MapGet("/random-number-game", () => Results.Ok(Random.Shared.Next(0, 10)));
+
+app.MapMetrics();
 app.UseRouting();
 app.UseAuthorization(); //added by me because Authorization didn't work
 app.MapControllers();
