@@ -163,6 +163,9 @@ public class ReportService : IReportService
 
         _reportRepository.Remove(report);
         await _reportRepository.SaveChangesAsync();
+
+        await _distributedCache.RemoveAsync($"Report_{id}");
+
         return new BaseResult<ReportDto>
         {
             Data = _mapper.Map<ReportDto>(report)
@@ -188,9 +191,14 @@ public class ReportService : IReportService
         var updatedReport = _reportRepository.Update(report);
         await _reportRepository.SaveChangesAsync();
 
+        var reportDto = _mapper.Map<ReportDto>(updatedReport);
+
+        _distributedCache.SetObject($"Report_{reportDto.Id}", reportDto,
+            new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)));
+
         return new BaseResult<ReportDto>
         {
-            Data = _mapper.Map<ReportDto>(updatedReport)
+            Data = reportDto
         };
     }
 }
