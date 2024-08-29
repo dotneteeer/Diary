@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		prometheus.yml = prometheus.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D43E0E33-AB10-46E0-8888-9FDE562B4ACA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diary.Tests", "Diary.Tests\Diary.Tests.csproj", "{C9429D2F-D11B-4380-894C-CF35A740871D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +40,7 @@ Global
 		{ADFEE505-B707-469D-A145-89750EA92FF3} = {28558559-1E42-4A0A-A39A-DD9C807A9ACF}
 		{6961AA54-E38E-44CD-BBB7-367743D9C0DD} = {F954BEE8-6298-478E-8AB5-55804E0563BD}
 		{21DB087A-E285-4EC4-89BF-4EF09D7B5C69} = {F954BEE8-6298-478E-8AB5-55804E0563BD}
+		{C9429D2F-D11B-4380-894C-CF35A740871D} = {D43E0E33-AB10-46E0-8888-9FDE562B4ACA}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C21685A8-B7C8-498C-B6A3-BB7542B0A19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -62,5 +67,9 @@ Global
 		{21DB087A-E285-4EC4-89BF-4EF09D7B5C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21DB087A-E285-4EC4-89BF-4EF09D7B5C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21DB087A-E285-4EC4-89BF-4EF09D7B5C69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9429D2F-D11B-4380-894C-CF35A740871D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9429D2F-D11B-4380-894C-CF35A740871D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9429D2F-D11B-4380-894C-CF35A740871D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9429D2F-D11B-4380-894C-CF35A740871D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
