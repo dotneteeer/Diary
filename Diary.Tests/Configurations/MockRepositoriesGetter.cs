@@ -5,7 +5,7 @@ using Moq;
 
 namespace Diary.Tests.Configurations;
 
-public class MockRepositoriesGetter
+public static class MockRepositoriesGetter
 {
     public static Mock<IBaseRepository<Report>> GetMockReportRepository()
     {
@@ -36,16 +36,16 @@ public class MockRepositoriesGetter
             new Report
             {
                 Id = 1,
-                Name = "Report1",
-                Description = "Report1",
+                Name = "UnitTestReport1",
+                Description = "UnitTestReport1",
                 CreatedAt = DateTime.UtcNow,
                 UserId = 1
             },
             new Report
             {
                 Id = 2,
-                Name = "Report2",
-                Description = "Report2",
+                Name = "UnitTestReport2",
+                Description = "UnitTestReport2",
                 CreatedAt = DateTime.UtcNow,
                 UserId = 2
             },
@@ -59,15 +59,15 @@ public class MockRepositoriesGetter
             new User
             {
                 Id = 1,
-                Login = "user1",
-                Password = "password1",
+                Login = "UnitTestUser1",
+                Password = "UnitTestPassword1",
                 CreatedAt = DateTime.UtcNow,
             },
             new User
             {
                 Id = 2,
-                Login = "user2",
-                Password = "password2",
+                Login = "UnitTestUser2",
+                Password = "UnitTestPassword2",
                 CreatedAt = DateTime.UtcNow,
             },
         }.AsQueryable();

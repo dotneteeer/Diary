@@ -23,7 +23,7 @@ public class ReportServiceTest
     {
         //Arrange
         var user = MockRepositoriesGetter.GetUsers().FirstOrDefault();
-        var createReportDto = new CreateReportDto("Report3", "Description3", user.Id);
+        var createReportDto = new CreateReportDto("UnitTestReport3", "UnitTestDescription3", user.Id);
         var reportService = ReportServiceFields.GetService();
 
         //Act
@@ -52,7 +52,8 @@ public class ReportServiceTest
     {
         // Arrange
         var report = MockRepositoriesGetter.GetReports().FirstOrDefault();
-        var updateReportDto = new UpdateReportDto(report.Id, "New name for report", "New description for report");
+        var updateReportDto = new UpdateReportDto(report.Id, "UnitTest New name for report",
+            "UnitTest New description for report");
         var reportService = ReportServiceFields.GetService();
 
         // Act
