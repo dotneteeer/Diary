@@ -45,7 +45,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return entity;
     }
 
-    public void Remove(TEntity entity)//method return value is void, but imo it must be TEntity just in case for other developers
+    public TEntity Remove(TEntity entity)
     {
         if (entity == null)
         {
@@ -55,6 +55,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbContext.Remove(entity);
 
 
-        //return entity;//method return value is void, but imo it must be TEntity just in case for other developers
+        return entity;
     }
 }
