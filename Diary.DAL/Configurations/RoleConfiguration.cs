@@ -29,11 +29,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             {
                 Id = 3,
                 Name = "Moderator"
-            },
-            new()
-            {
-                Id = 4,
-                Name = "Api"
             }
         });
     }
