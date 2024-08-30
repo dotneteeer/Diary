@@ -163,7 +163,7 @@ public class AuthService : IAuthService
             userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_refreshTokenValidityInDays);
 
             _userTokenRepository
-                .Update(userToken); //was not checked to return new value(when it was checking by ithomester(lesson 17(25:58)))
+                .Update(userToken); 
             await _userTokenRepository.SaveChangesAsync();
         }
 
