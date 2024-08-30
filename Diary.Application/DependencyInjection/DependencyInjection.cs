@@ -17,6 +17,7 @@ public static class DependencyInjection
     public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAutoMapper(typeof(ReportMapping));
+
         var options = configuration.GetSection(nameof(RedisSettings));
         var redisUrl = options["Url"];
         var instanceName = options["InstanceName"];
@@ -26,6 +27,8 @@ public static class DependencyInjection
             redisCacheOptions.Configuration = redisUrl;
             redisCacheOptions.InstanceName = instanceName;
         });
+
+        services.AddMediatR(cf => cf.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly));
         InitServices(services);
     }
 

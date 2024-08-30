@@ -1,4 +1,6 @@
 using AutoMapper;
+using Diary.Application.Commands;
+using Diary.Application.Queries;
 using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
@@ -11,6 +13,7 @@ using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Diary.Producer.Interfaces;
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
@@ -21,6 +24,7 @@ public class ReportService : IReportService
 {
     private readonly IDistributedCache _distributedCache;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IMessageProducer _messageProducer;
     private readonly IValidator<PageReportDto> _pageReportDtoValidator;
     private readonly IOptions<RabbitMqSettings> _rabbitMqOptions;
@@ -31,7 +35,7 @@ public class ReportService : IReportService
     public ReportService(IBaseRepository<Report> reportRepository, IBaseRepository<User> userRepository,
         IReportValidator reportValidator, IMapper mapper, IOptions<RabbitMqSettings> rabbitMqOptions,
         IMessageProducer messageProducer, IDistributedCache distributedCache,
-        IValidator<PageReportDto> pageReportDtoValidator)
+        IValidator<PageReportDto> pageReportDtoValidator, IMediator mediator)
     {
         _reportRepository = reportRepository;
         _userRepository = userRepository;
@@ -41,18 +45,14 @@ public class ReportService : IReportService
         _messageProducer = messageProducer;
         _distributedCache = distributedCache;
         _pageReportDtoValidator = pageReportDtoValidator;
+        _mediator = mediator;
     }
 
     /// <inheritdoc />
     public async Task<CollectionResult<ReportDto>> GetReportsAsync(long userId, PageReportDto dto)
     {
         ReportDto[] reports;
-        reports = await _reportRepository.GetAll()
-            .Where(x => x.UserId == userId)
-            .OrderByDescending(x => x.LastEditedAt)
-            .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToLongUtcString()))
-            .ToArrayAsync();
+        reports = await _mediator.Send(new GetReportsQuery(userId));
 
         var totalCount = reports.Length;
 
@@ -86,33 +86,28 @@ public class ReportService : IReportService
     }
 
     /// <inheritdoc />
-    public Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
+    public async Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
     {
         ReportDto? report;
         report = _distributedCache.GetObject<ReportDto>($"Report_{id}")
-                 ?? _reportRepository.GetAll()
-                     .AsEnumerable()
-                     .Select(x =>
-                         new ReportDto(x.Id, x.Name, x.Description,
-                             x.LastEditedAt.ToLongUtcString()))
-                     .FirstOrDefault(x => x.Id == id);
+                 ?? await _mediator.Send(new GetReportByIdQuery(id));
 
         if (report == null)
         {
-            return Task.FromResult(new BaseResult<ReportDto>()
+            return new BaseResult<ReportDto>()
             {
                 ErrorMessage = ErrorMessage.ReportNotFound,
                 ErrorCode = (int)ErrorCodes.ReportNotFound
-            });
+            };
         }
 
         _distributedCache.SetObject($"Report_{id}", report,
             new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)));
 
-        return Task.FromResult(new BaseResult<ReportDto>()
+        return new BaseResult<ReportDto>()
         {
             Data = report
-        });
+        };
     }
 
     /// <inheritdoc />
@@ -129,15 +124,7 @@ public class ReportService : IReportService
             };
         }
 
-        var report = new Report
-        {
-            Name = dto.Name,
-            Description = dto.Description,
-            UserId = user.Id
-        };
-
-        await _reportRepository.CreateAsync(report);
-        await _reportRepository.SaveChangesAsync();
+        var report = await _mediator.Send(new CreateReportCommand(dto.Name, dto.Description, dto.UserId));
 
         _messageProducer.SendMessage(report, _rabbitMqOptions.Value.RoutingKey, _rabbitMqOptions.Value.ExchangeKey);
 

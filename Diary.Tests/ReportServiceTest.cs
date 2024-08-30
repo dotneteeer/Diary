@@ -7,6 +7,19 @@ namespace Diary.Tests;
 public class ReportServiceTest
 {
     [Fact]
+    public async Task GetReports_ShouldBe_NotNull()
+    {
+        //Arrange
+        var pageReportDto = new PageReportDto(0, 0);
+        var reportService = ReportServiceFields.GetService();
+        //Act
+        var result = await reportService.GetReportsAsync(1, pageReportDto);
+
+        //Assert
+        Assert.NotNull(result.Data);
+    }
+
+    [Fact]
     public async Task GetReport_ShouldBe_NotNull()
     {
         //Arrange
@@ -15,7 +28,7 @@ public class ReportServiceTest
         var result = await reportService.GetReportByIdAsync(1);
 
         //Assert
-        Assert.NotNull(result);
+        Assert.NotNull(result.Data);
     }
 
     [Fact]
