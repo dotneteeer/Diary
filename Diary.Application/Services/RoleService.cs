@@ -240,7 +240,7 @@ public class RoleService : IRoleService
                     RoleId = newRoleForUser.Id
                 };
 
-                var isNewUserRoleExists = await _userRoleRepository.GetAll()
+                var isNewUserRoleExists = await  _unitOfWork.UserRoles.GetAll()
                     .FirstOrDefaultAsync(x => x.UserId == newUserRole.UserId && x.RoleId == newUserRole.RoleId) != null;
 
                 if (isNewUserRoleExists)
