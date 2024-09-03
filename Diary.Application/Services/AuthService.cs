@@ -15,18 +15,17 @@ using Diary.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-
 namespace Diary.Application.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly IMapper _mapper;
+    private readonly int _refreshTokenValidityInDays;
+    private readonly IBaseRepository<Role> _roleRepository;
+    private readonly ITokenService _tokenService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBaseRepository<User> _userRepository;
     private readonly IBaseRepository<UserToken> _userTokenRepository;
-    private readonly ITokenService _tokenService;
-    private readonly IBaseRepository<Role> _roleRepository;
-    private readonly IMapper _mapper;
-    private readonly int _refreshTokenValidityInDays;
 
     public AuthService(IBaseRepository<User> userRepository, IMapper mapper,
         IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
@@ -163,7 +162,7 @@ public class AuthService : IAuthService
             userToken.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_refreshTokenValidityInDays);
 
             _userTokenRepository
-                .Update(userToken); 
+                .Update(userToken);
             await _userTokenRepository.SaveChangesAsync();
         }
 

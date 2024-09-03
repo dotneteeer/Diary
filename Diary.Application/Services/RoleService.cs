@@ -14,12 +14,11 @@ namespace Diary.Application.Services;
 
 public class RoleService : IRoleService
 {
+    private readonly IMapper _mapper;
+    private readonly IBaseRepository<Role> _roleRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBaseRepository<User> _userRepository;
-    private readonly IBaseRepository<Role> _roleRepository;
     private readonly IBaseRepository<UserRole> _userRoleRepository;
-
-    private readonly IMapper _mapper;
 
     public RoleService(IBaseRepository<User> userRepository, IBaseRepository<Role> roleRepository, IMapper mapper,
         IBaseRepository<UserRole> userRoleRepository, IUnitOfWork unitOfWork)
@@ -240,7 +239,7 @@ public class RoleService : IRoleService
                     RoleId = newRoleForUser.Id
                 };
 
-                var isNewUserRoleExists = await  _unitOfWork.UserRoles.GetAll()
+                var isNewUserRoleExists = await _unitOfWork.UserRoles.GetAll()
                     .FirstOrDefaultAsync(x => x.UserId == newUserRole.UserId && x.RoleId == newUserRole.RoleId) != null;
 
                 if (isNewUserRoleExists)
@@ -251,14 +250,14 @@ public class RoleService : IRoleService
                         ErrorCode = (int)ErrorCodes.UserAlreadyHasThisRole
                     };
                 }
-                
+
                 var userRole = await _unitOfWork.UserRoles.GetAll()
                     .Where(x => x.RoleId == role.Id)
                     .FirstOrDefaultAsync(x => x.UserId == user.Id);
 
                 _unitOfWork.UserRoles.Remove(userRole);
                 await _unitOfWork.SaveChangesAsync();
-                
+
                 await _unitOfWork.UserRoles.CreateAsync(newUserRole);
                 await _unitOfWork.SaveChangesAsync();
 
