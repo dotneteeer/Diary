@@ -11,8 +11,6 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
 
-        builder.HasIndex(x => x.Name).IsUnique();
-
         builder.HasData(new List<Role>
         {
             new()
