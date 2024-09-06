@@ -29,6 +29,7 @@ namespace Diary.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController : ControllerBase
 {
+    private readonly string _bearer = "Bearer";
     private readonly IBaseRepository<Report> _reportRepository;
     private readonly IReportService _reportService;
 
@@ -42,7 +43,7 @@ public class ReportController : ControllerBase
     /// Get reports of user
     /// </summary>
     /// <param name="userId"></param>
-    /// <param name="pageReportDto">Recieved page number and size</param>
+    /// <param name="pageReportDto">Received page number and size</param>
     /// <remarks>
     /// Request for create report:
     /// 
@@ -58,12 +59,12 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsUserAllowedToGetData(userId.ToString()))
         {
-            return Forbid("Bearer");
+            return Forbid(_bearer);
         }
 
         var response = await _reportService.GetReportsAsync(userId, pageReportDto);
 
-        Response.Headers.Add("x-total-count", response.TotalCount.ToString());
+        Response.Headers.Append("x-total-count", response.TotalCount.ToString());
 
         if (response.IsSuccess)
         {
@@ -91,7 +92,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsAnyDataBelongsToUser(id))
         {
-            return Forbid("Bearer");
+            return Forbid(_bearer);
         }
 
         var response = await _reportService.GetReportByIdAsync(id);
@@ -120,7 +121,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsAnyDataBelongsToUser(id))
         {
-            return Forbid("Bearer");
+            return Forbid(_bearer);
         }
 
         var response = await _reportService.DeleteReportAsync(id);
@@ -151,7 +152,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsUserAllowedToGetData(dto.UserId.ToString()))
         {
-            return Forbid("Bearer");
+            return Forbid(_bearer);
         }
 
         var response = await _reportService.CreateReportAsync(dto);
@@ -183,7 +184,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsAnyDataBelongsToUser(dto.Id))
         {
-            return Forbid("Bearer");
+            return Forbid(_bearer);
         }
 
         var response = await _reportService.UpdateReportAsync(dto);
@@ -218,7 +219,7 @@ public class ReportController : ControllerBase
             nameof(Roles.Moderator)
         ];
         var canGetAnyData = userRole.Any(currentRole => canGetAnyDataRoles.Any(role => role == currentRole.Value));
-        var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var userReports = _reportRepository.GetAll().AsEnumerable().Where(x => x.UserId == userId);
         return canGetAnyData || userReports.Any(x => x.Id == id);
     }
