@@ -29,7 +29,7 @@ namespace Diary.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController : ControllerBase
 {
-    private readonly string _bearer = "Bearer";
+    private const string Bearer = "Bearer";
     private readonly IBaseRepository<Report> _reportRepository;
     private readonly IReportService _reportService;
 
@@ -59,7 +59,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsUserAllowedToGetData(userId.ToString()))
         {
-            return Forbid(_bearer);
+            return Forbid(Bearer);
         }
 
         var response = await _reportService.GetReportsAsync(userId, pageReportDto);
@@ -92,7 +92,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsAnyDataBelongsToUser(id))
         {
-            return Forbid(_bearer);
+            return Forbid(Bearer);
         }
 
         var response = await _reportService.GetReportByIdAsync(id);
@@ -121,7 +121,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsAnyDataBelongsToUser(id))
         {
-            return Forbid(_bearer);
+            return Forbid(Bearer);
         }
 
         var response = await _reportService.DeleteReportAsync(id);
@@ -152,7 +152,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsUserAllowedToGetData(dto.UserId.ToString()))
         {
-            return Forbid(_bearer);
+            return Forbid(Bearer);
         }
 
         var response = await _reportService.CreateReportAsync(dto);
@@ -184,7 +184,7 @@ public class ReportController : ControllerBase
     {
         if (!CheckIsAnyDataBelongsToUser(dto.Id))
         {
-            return Forbid(_bearer);
+            return Forbid(Bearer);
         }
 
         var response = await _reportService.UpdateReportAsync(dto);
