@@ -13,7 +13,7 @@ namespace Diary.Api.Controllers;
 /// <response code="400">If user was not registrated/logined</response>
 /// <response code="500">If internal server error occured</response>
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]

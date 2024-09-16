@@ -17,9 +17,9 @@ namespace Diary.Api.Controllers;
 /// <response code="400">If role was not created/deleted/updated/received/added</response>
 /// <response code="500">If internal server error occured</response>
 [Consumes(MediaTypeNames.Application.Json)]
-[Authorize(Roles=nameof(Roles.Admin))]
+[Authorize(Roles = nameof(Roles.Admin))]
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -32,7 +32,7 @@ public class RoleController : ControllerBase
     {
         _roleService = roleService;
     }
-    
+
     /// <summary>
     /// Create role
     /// </summary>
@@ -54,9 +54,10 @@ public class RoleController : ControllerBase
         {
             return Ok(response);
         }
+
         return BadRequest(response);
     }
-    
+
     /// <summary>
     /// Deletes role by its id
     /// </summary>
@@ -78,9 +79,10 @@ public class RoleController : ControllerBase
         {
             return Ok(response);
         }
+
         return BadRequest(response);
     }
-    
+
     /// <summary>
     /// Updates role
     /// </summary>
@@ -104,9 +106,10 @@ public class RoleController : ControllerBase
         {
             return Ok(response);
         }
+
         return BadRequest(response);
     }
-    
+
     /// <summary>
     /// Adding role for user
     /// </summary>
@@ -129,6 +132,7 @@ public class RoleController : ControllerBase
         {
             return Ok(response);
         }
+
         return BadRequest(response);
     }
 
@@ -154,9 +158,10 @@ public class RoleController : ControllerBase
         {
             return Ok(response);
         }
+
         return BadRequest(response);
     }
-    
+
     /// <summary>
     /// Updates role for user
     /// </summary>
@@ -180,6 +185,7 @@ public class RoleController : ControllerBase
         {
             return Ok(response);
         }
+
         return BadRequest(response);
     }
 }
