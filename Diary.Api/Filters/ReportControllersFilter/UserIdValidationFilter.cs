@@ -50,7 +50,7 @@ public class UserIdValidationFilter : ValidatorFilterBase, IAsyncAuthorizationFi
         var isSame = id == userId;
         if (!(canGetAnyData || isSame))
         {
-            context.Result = new ForbidResult("Bearer");
+            context.Result = new ForbidResult(AuthenticationScheme);
         }
     }
 }

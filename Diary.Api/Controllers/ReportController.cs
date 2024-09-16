@@ -28,7 +28,6 @@ namespace Diary.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController : ControllerBase
 {
-    private const string Bearer = "Bearer";
     private readonly IBaseRepository<Report> _reportRepository;
     private readonly IReportService _reportService;
 

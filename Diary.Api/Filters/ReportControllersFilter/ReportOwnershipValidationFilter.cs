@@ -54,7 +54,7 @@ public class ReportOwnershipValidationFilter : ValidatorFilterBase, IAsyncAuthor
         var ifUserHasReports = reportRepository.GetAll().Any(x => x.Id == id && x.UserId == userId);
         if (!(canGetAnyData || ifUserHasReports))
         {
-            context.Result = new ForbidResult("Bearer");
+            context.Result = new ForbidResult(AuthenticationScheme);
         }
     }
 }

@@ -6,6 +6,11 @@ namespace Diary.Api.Filters.ReportControllersFilter;
 public abstract class ValidatorFilterBase : Attribute
 {
     /// <summary>
+    /// Default authentication scheme
+    /// </summary>
+    protected const string AuthenticationScheme = "Bearer";
+
+    /// <summary>
     /// Name of identifier to get from route
     /// </summary>
     protected string IdentifierName { get; init; }
