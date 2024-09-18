@@ -5,6 +5,7 @@ using Diary.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace Diary.Api;
 
@@ -121,13 +122,17 @@ public static class Startup
         });
     }
 
+    /// <summary>
+    /// Logs listening urls
+    /// </summary>
+    /// <param name="app"></param>
     public static void LogListeningUrls(WebApplication app)
     {
         app.Lifetime.ApplicationStarted.Register(() =>
         {
             var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
             var addressesList = addresses.Value?.Split(';').ToList();
-            addressesList?.ForEach(address => Console.WriteLine("Now listening on: " + address));
+            addressesList?.ForEach(address => Log.Information("Now listening on: " + address));
         });
     }
 }
