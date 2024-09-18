@@ -5,6 +5,7 @@ using Diary.Consumer.DependencyInjection;
 using Diary.DAL.DependencyInjection;
 using Diary.Domain.Settings;
 using Diary.Producer.DependencyInjection;
+using Hangfire;
 using Prometheus;
 using Serilog;
 
@@ -30,6 +31,7 @@ builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddProducer();
 builder.Services.AddConsumer();
+builder.Services.AddHangfire(builder.Configuration);
 
 var app = builder.Build();
 
@@ -61,8 +63,9 @@ app.MapGet("/random-number-game", () => Results.Ok(Random.Shared.Next(0, 10)));
 app.MapMetrics();
 app.UseRouting();
 app.UseAuthorization(); //added by me because Authorization didn't work
+app.UseHangfireDashboard("/dashboard");
+app.UseHangfireServer();
 app.MapControllers();
-
 Startup.LogListeningUrls(app);
 
 app.Run();

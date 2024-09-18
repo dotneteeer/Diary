@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Text;
 using Asp.Versioning;
 using Diary.Domain.Settings;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -134,5 +136,22 @@ public static class Startup
             var addressesList = addresses.Value?.Split(';').ToList();
             addressesList?.ForEach(address => Log.Information("Now listening on: " + address));
         });
+    }
+
+
+    /// <summary>
+    /// Configures hangfire
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    public static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("PostgresSQL");
+
+        services.AddHangfire(globalConfiguration =>
+            globalConfiguration.UsePostgreSqlStorage(postgreSqlBootstrapperOptions =>
+                    postgreSqlBootstrapperOptions.UseNpgsqlConnection(connectionString))
+                .UseSerilogLogProvider());
+        services.AddHangfireServer();
     }
 }

@@ -7,11 +7,13 @@ using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
+using Diary.Domain.Helpers;
 using Diary.Domain.Interfaces.Databases;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -19,6 +21,7 @@ namespace Diary.Application.Services;
 
 public class AuthService : IAuthService
 {
+    private readonly HangfireLogHelper _logger;
     private readonly IMapper _mapper;
     private readonly int _refreshTokenValidityInDays;
     private readonly IBaseRepository<Role> _roleRepository;
@@ -29,7 +32,8 @@ public class AuthService : IAuthService
 
     public AuthService(IBaseRepository<User> userRepository, IMapper mapper,
         IBaseRepository<UserToken> userTokenRepository, ITokenService tokenService,
-        IBaseRepository<Role> roleRepository, IUnitOfWork unitOfWork, IOptions<JwtSettings> options)
+        IBaseRepository<Role> roleRepository, IUnitOfWork unitOfWork, IOptions<JwtSettings> options,
+        HangfireLogHelper logger)
     {
         _userRepository = userRepository;
         _mapper = mapper;
@@ -37,6 +41,7 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _roleRepository = roleRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
         _refreshTokenValidityInDays = options.Value.RefreshTokenValidityInDays;
     }
 
@@ -165,6 +170,12 @@ public class AuthService : IAuthService
                 .Update(userToken);
             await _userTokenRepository.SaveChangesAsync();
         }
+
+        var jobId = BackgroundJob.Enqueue(() => _logger.LogLoggedUser(user.Login));
+        BackgroundJob.ContinueJobWith(jobId, () => _logger.LogClosingSession(user.Login));
+        BackgroundJob.Schedule(() => _logger.LogClosedSession(user.Login), TimeSpan.FromSeconds(15));
+        RecurringJob.AddOrUpdate("ExampleReminder", () => _logger.LogReminder(user.Login, userRoles.Count),
+            Cron.Minutely);
 
         return new BaseResult<TokenDto>
         {

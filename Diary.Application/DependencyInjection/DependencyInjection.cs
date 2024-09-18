@@ -3,6 +3,7 @@ using Diary.Application.Services;
 using Diary.Application.Validation;
 using Diary.Application.Validation.FluentValidations.Report;
 using Diary.Domain.Dto.Report;
+using Diary.Domain.Helpers;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Interfaces.Validations;
 using Diary.Domain.Settings;
@@ -40,5 +41,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRoleService, RoleService>();
+
+        services.AddScoped<HangfireLogHelper>();
     }
 }
