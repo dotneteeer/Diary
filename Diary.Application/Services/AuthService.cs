@@ -173,7 +173,7 @@ public class AuthService : IAuthService
 
         var jobId = BackgroundJob.Enqueue(() => _logger.LogLoggedUser(user.Login));
         BackgroundJob.ContinueJobWith(jobId, () => _logger.LogClosingSession(user.Login));
-        BackgroundJob.Schedule(() => _logger.LogClosedSession(user.Login), TimeSpan.FromSeconds(15));
+        BackgroundJob.Schedule(() => _logger.LogClosedSession(user.Login), TimeSpan. /*FromSeconds*/FromMinutes(15));
         RecurringJob.AddOrUpdate("ExampleReminder", () => _logger.LogReminder(user.Login, userRoles.Count),
             Cron.Minutely);
 
