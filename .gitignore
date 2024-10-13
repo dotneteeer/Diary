@@ -360,4 +360,6 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
+FodyWeavers.xsd!/sincedb/sincedb.txt
+!/sincedb/sincedb.txt
+!/grafana/grafana.db
