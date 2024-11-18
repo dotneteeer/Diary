@@ -1,11 +1,17 @@
 using System.Reflection;
 using System.Text;
 using Asp.Versioning;
+using Diary.Application.GraphQl.Queries;
+using Diary.Application.GraphQl.Types.BaseTypes;
+using Diary.Application.GraphQl.Types.ReportTypes;
+using Diary.Domain.Entity;
+using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Path = System.IO.Path;
 
 namespace Diary.Api;
 
@@ -134,5 +140,22 @@ public static class Startup
             var addressesList = addresses.Value?.Split(';').ToList();
             addressesList?.ForEach(address => Log.Information("Now listening on: " + address));
         });
+    }
+
+
+    /// <summary>
+    /// Adds GraphQl server with types
+    /// </summary>
+    /// <param name="services"></param>
+    public static void AddGraphQl(this IServiceCollection services)
+    {
+        services.AddGraphQLServer()
+            .AddInMemorySubscriptions()
+            .AddQueryType<ReportQuery>()
+            .AddType<ReportType>()
+            .AddType(new BaseResultType<Report>())
+            .AddType(new CollectionResultType<BaseResult<Report>>())
+            .AddSorting()
+            .AddFiltering();
     }
 }

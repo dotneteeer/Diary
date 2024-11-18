@@ -5,6 +5,7 @@ using Diary.Consumer.DependencyInjection;
 using Diary.DAL.DependencyInjection;
 using Diary.Domain.Settings;
 using Diary.Producer.DependencyInjection;
+using GraphQL.Server.Ui.Voyager;
 using Prometheus;
 using Serilog;
 
@@ -30,6 +31,7 @@ builder.Services.AddDataAccessLayer(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddProducer();
 builder.Services.AddConsumer();
+builder.Services.AddGraphQl();
 
 var app = builder.Build();
 
@@ -62,6 +64,9 @@ app.MapMetrics();
 app.UseRouting();
 app.UseAuthorization(); //added by me because Authorization didn't work
 app.MapControllers();
+app.MapGraphQL();
+app.UseGraphQLVoyager("/graphql-voyager", new VoyagerOptions { GraphQLEndPoint = "/graphql" });
+app.UseWebSockets();
 
 Startup.LogListeningUrls(app);
 
