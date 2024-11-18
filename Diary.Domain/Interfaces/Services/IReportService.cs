@@ -11,7 +11,7 @@ public interface IReportService
     /// <param name="userId">user's id</param>
     /// <param name="dto">Recieved page number and size</param>
     /// <returns>Returns all reports of user by its id</returns>
-    Task<CollectionResult<ReportDto>> GetReportsAsync(long userId, PageReportDto dto);
+    Task<CollectionResult<ReportDto>> GetReportsAsync(long userId, PageReportDto? dto = null);
 
     /// <summary>
     /// Get report by its id
