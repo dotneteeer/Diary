@@ -18,12 +18,14 @@ public class ReportQuery
     {
         var collectionDto = await reportService.GetReportsAsync(userId, pageReportDto);
 
-        var idCollection = collectionDto.Data.Select(x => x.Id);
+        var idCollection = collectionDto.Data?.Select(x => x.Id) ?? Array.Empty<long>();
         var collectionReport = new CollectionResult<Report>
         {
             Data = reportRepository.GetAll().Where(x => idCollection.Contains(x.Id)),
             Count = collectionDto.Count,
-            TotalCount = collectionDto.TotalCount
+            TotalCount = collectionDto.TotalCount,
+            ErrorCode = collectionDto.ErrorCode,
+            ErrorMessage = collectionDto.ErrorMessage
         };
 
         return collectionReport;
@@ -38,7 +40,9 @@ public class ReportQuery
 
         var reportBaseResult = new BaseResult<Report>
         {
-            Data = (await reportRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dtoBaseResult.Data.Id))!,
+            Data = (dtoBaseResult.Data != null
+                ? await reportRepository.GetAll().FirstOrDefaultAsync(x => x.Id == dtoBaseResult.Data.Id)
+                : null)!,
             ErrorCode = dtoBaseResult.ErrorCode,
             ErrorMessage = dtoBaseResult.ErrorMessage
         };

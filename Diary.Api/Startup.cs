@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Asp.Versioning;
+using Diary.Application.GraphQl.Mutations;
 using Diary.Application.GraphQl.Queries;
 using Diary.Application.GraphQl.Types.BaseTypes;
 using Diary.Application.GraphQl.Types.ReportTypes;
@@ -157,6 +158,7 @@ public static class Startup
             .AddType<UserType>()
             .AddType(new BaseResultType<Report>())
             .AddType(new CollectionResultType<BaseResult<Report>>())
+            .AddMutationType<ReportMutation>()
             .AddSorting()
             .AddFiltering();
     }
