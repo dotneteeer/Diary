@@ -5,6 +5,7 @@ using Diary.Application.GraphQl.Mutations;
 using Diary.Application.GraphQl.Queries;
 using Diary.Application.GraphQl.Types.BaseTypes;
 using Diary.Application.GraphQl.Types.ReportTypes;
+using Diary.Application.GraphQl.Types.SubscriptionsTypes;
 using Diary.Application.GraphQl.Types.UserTypes;
 using Diary.Domain.Entity;
 using Diary.Domain.Result;
@@ -159,6 +160,7 @@ public static class Startup
             .AddType(new BaseResultType<Report>())
             .AddType(new CollectionResultType<BaseResult<Report>>())
             .AddMutationType<ReportMutation>()
+            .AddSubscriptionType<ReportSubscriptionType>()
             .AddSorting()
             .AddFiltering();
     }
