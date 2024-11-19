@@ -1,3 +1,4 @@
+using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
@@ -11,10 +12,11 @@ public class ReportQuery
 {
     [UseSorting]
     [UseFiltering]
-    public async Task<CollectionResult<Report>> GetReports(long userId, [Service] IReportService reportService,
+    public async Task<CollectionResult<Report>> GetReports(long userId, PageReportDto? pageReportDto,
+        [Service] IReportService reportService,
         [Service] IBaseRepository<Report> reportRepository)
     {
-        var collectionDto = await reportService.GetReportsAsync(userId);
+        var collectionDto = await reportService.GetReportsAsync(userId, pageReportDto);
 
         var idCollection = collectionDto.Data.Select(x => x.Id);
         var collectionReport = new CollectionResult<Report>

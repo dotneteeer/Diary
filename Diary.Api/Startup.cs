@@ -4,6 +4,7 @@ using Asp.Versioning;
 using Diary.Application.GraphQl.Queries;
 using Diary.Application.GraphQl.Types.BaseTypes;
 using Diary.Application.GraphQl.Types.ReportTypes;
+using Diary.Application.GraphQl.Types.UserTypes;
 using Diary.Domain.Entity;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
@@ -153,6 +154,7 @@ public static class Startup
             .AddInMemorySubscriptions()
             .AddQueryType<ReportQuery>()
             .AddType<ReportType>()
+            .AddType<UserType>()
             .AddType(new BaseResultType<Report>())
             .AddType(new CollectionResultType<BaseResult<Report>>())
             .AddSorting()

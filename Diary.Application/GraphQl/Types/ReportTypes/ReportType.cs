@@ -17,6 +17,7 @@ public class ReportType : ObjectType<Report>
         descriptor.Field(x => x.Description).Description("The description of the report");
         descriptor.Field(x => x.User).Description("The owner of the report");
         descriptor.Field(x => x.UserId).Description("The id of report's owner");
+
         descriptor.Field(x => x.CreatedAt).Description("Date of the report creation");
         descriptor.Field(x => x.CreatedBy).Description("The owner of the report creation");
         descriptor.Field(x => x.UpdatedAt).Description("Date of the report update");
