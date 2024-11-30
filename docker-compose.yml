@@ -29,6 +29,15 @@
       - prometheus
     networks:
       - mynw
-
+  
+  Diary.dashboard:
+    image: mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest
+    container_name: dashboard
+    ports:
+      - "18888:18888"
+      - "18889:18889"
+    networks:
+      - otel
 networks:
   mynw:
+  otel:
