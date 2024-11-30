@@ -191,7 +191,8 @@ public static class Startup
                     .AddHttpClientInstrumentation()
                     .AddEntityFrameworkCoreInstrumentation();
 
-                traces.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"));
+                traces.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"))
+                    .AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:4317"));
             });
 
         builder.Logging.AddOpenTelemetry(logging =>
