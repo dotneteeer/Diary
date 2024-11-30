@@ -1,11 +1,4 @@
 ﻿services:
-  Diary.api:
-    image: diary.api
-    build:
-      context: .
-      dockerfile: Diary.Api/Dockerfile
-  
-  
   prometheus:
     image: prom/prometheus
     ports:
@@ -89,6 +82,15 @@
       - "4317:4317"
       - "4318:4318"
       - "16686:16686"
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbit-mq
+    hostname: my-rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
 networks:
   mynw:
@@ -97,3 +99,4 @@ networks:
     driver: bridge
 volumes:
   elasticsearch-data:
+  rabbitmq_data:
