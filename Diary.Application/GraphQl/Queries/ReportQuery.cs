@@ -4,6 +4,7 @@ using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
 using HotChocolate;
+using HotChocolate.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diary.Application.GraphQl.Queries;
