@@ -29,6 +29,23 @@
       - prometheus
     networks:
       - mynw
-
+  
+  Diary.dashboard:
+    image: mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest
+    container_name: dashboard
+    ports:
+      - "18888:18888"
+      - "18889:18889"
+    networks:
+      - otel
+  
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "16686:16686"
 networks:
   mynw:
+  otel:

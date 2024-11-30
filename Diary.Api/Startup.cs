@@ -13,6 +13,10 @@ using Diary.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using Path = System.IO.Path;
 
@@ -163,5 +167,39 @@ public static class Startup
             .AddSubscriptionType<ReportSubscriptionType>()
             .AddSorting()
             .AddFiltering();
+    }
+
+    /// <summary>
+    /// Adds open telemetry services
+    /// </summary>
+    /// <param name="builder"></param>
+    public static void AddOpenTelemetry(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(res => res.AddService("DiaryService"))
+            .WithMetrics(metrics =>
+            {
+                metrics.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddRuntimeInstrumentation();
+
+                metrics.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"));
+            })
+            .WithTracing(traces =>
+            {
+                traces.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation();
+
+                traces.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"))
+                    .AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:4317"));
+            });
+
+        builder.Logging.AddOpenTelemetry(logging =>
+        {
+            logging.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"));
+            logging.IncludeScopes = true;
+            logging.IncludeFormattedMessage = true;
+        });
     }
 }
