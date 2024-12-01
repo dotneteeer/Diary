@@ -22,7 +22,6 @@ To get started with this project, you'll need to have the following prerequisite
 - .NET Core SDK
 - An IDE like Visual Studio or Rider
 - A PostgreSQL Server instance for the database
-- Erlang for rabbitMq
 - Redis 
 
 ### Setup
@@ -30,10 +29,9 @@ To get started with this project, you'll need to have the following prerequisite
 2. Open the solution in your IDE.
 3. Restore the NuGet packages.
 4. Update the connection string in `secrets.json` of `Diary.Api` to point to your PostgreSQL Server instance.
-5. Set up rabbitMq(follow instructions in `Diary\Diary.Consumer\RabbitMqListener.cs`)
-6. Set up Redis(after installing execute `redis-server`)
-7. Execute `docker-compose up -d` in project directory. 
-8. Start the application.
+5. Set up Redis(after installing execute `redis-server`)
+6. Execute `docker-compose up -d` in project directory. 
+7. Start the application.
 
 ## Usage
 Once the application is running, you can interact with the API using tools like Postman or directly through the Swagger UI.
