@@ -11,29 +11,33 @@ Welcome to the Diary API project! This project is built using ASP.NET Core and r
 
 ## Technologies
 - **ASP.NET Core**: For creating the web API.
+- **PostgreSQL**: To strore data
 - **Entity Framework Core**: For ORM and database interactions.
 - **Swagger**: For API documentation and testing.
 - **RabbitMq**: RabbitMq consumer and prudecer implemented.
 - **Redis**: The requested reports are cached.
-- **Prometheus and Grafana** - All activity is tracked.
+- **Open Telemetry** - All activity is tracked.
+- **Unit tests** - To test new features.
+- **Serilog** - Logs only necessary and saves logs in `.txt` files in `JSON` format.
+- **GraphQL** - For flexible requests and subscriptions.
+- **JWT Tokens** - To make secure requests.
 
 ## Getting Started
 To get started with this project, you'll need to have the following prerequisites installed:
 - .NET Core SDK
 - An IDE like Visual Studio or Rider
 - A PostgreSQL Server instance for the database
-- Erlang for rabbitMq
-- Redis 
+- Redis
+- Docker
 
 ### Setup
 1. Clone the repository to your local machine.
 2. Open the solution in your IDE.
 3. Restore the NuGet packages.
 4. Update the connection string in `secrets.json` of `Diary.Api` to point to your PostgreSQL Server instance.
-5. Set up rabbitMq(follow instructions in `Diary\Diary.Consumer\RabbitMqListener.cs`)
-6. Set up Redis(after installing execute `redis-server`)
-7. Execute `docker-compose up -d` in project directory. 
-8. Start the application.
+5. Set up Redis(after installing execute `redis-server`)
+6. Execute `docker-compose up -d` in project directory. 
+7. Start the application.
 
 ## Usage
 Once the application is running, you can interact with the API using tools like Postman or directly through the Swagger UI.
@@ -47,7 +51,7 @@ This project is still a work in progress, and contributions are welcome. If you'
 5. Submit a pull request.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the `LICENSE.txt` file for details.
 
 ## Acknowledgments
 - Thanks to all the contributors who have helped with the development of this project.
