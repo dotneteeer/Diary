@@ -1,3 +1,4 @@
+using System.Reflection;
 using AutoMapper;
 using Diary.Application.Services;
 using Diary.Application.Validation;
@@ -23,27 +24,35 @@ public static class ReportServiceFields
 
     private static readonly Mock<IDistributedCache> MockDistributedCache = new();
     private static readonly IMapper Mapper = MapperConfiguration.GetMapperConfiguration();
-    private static readonly User User = MockRepositoriesGetter.GetUsers().FirstOrDefault()!;
     private static readonly Mock<ReportValidator> MockValidator = new();
     private static readonly Mock<IOptions<RabbitMqSettings>> MockRabbitMqOptions = new();
     private static readonly Mock<Producer.Producer> MockMessageProducer = new();
 
-    private static readonly ReportService ReportService = new ReportService(MockReportRepository.Object,
+    private static readonly ReportService ReportService = new(MockReportRepository.Object,
         MockUserRepository.Object,
         MockValidator.Object, Mapper, MockRabbitMqOptions.Object, MockMessageProducer.Object,
-        MockDistributedCache.Object, null);
+        MockDistributedCache.Object, null!);
 
     static ReportServiceFields()
     {
-        var basePath = AppContext.BaseDirectory;
-        var projectPath = Directory.GetParent(basePath).Parent.Parent.Parent.Parent.FullName;
+        #region Getting root directory
+
+        var projectDirectory = Directory.GetParent(AppContext.BaseDirectory); //path to runtime directory
+        var projectName =
+            Assembly.GetExecutingAssembly().GetName().Name!.Split('.')
+                .First(); //name of app if naming is of type '<AppName>.<DirectoryName>' (e. g. 'Diary.Api')
+        while (projectDirectory!.Name != projectName)
+            projectDirectory = projectDirectory.Parent!; //getting path to root directory
+
+        #endregion
+
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(projectPath)
-            .AddJsonFile("Diary.Api/appsettings.json", optional: false, reloadOnChange: false)
+            .SetBasePath(projectDirectory.FullName)
+            .AddJsonFile(projectName + ".Api/appsettings.json", optional: false, reloadOnChange: false)
             .Build();
 
         var rabbitMqSettings = new RabbitMqSettings();
-        configuration.GetSection("RabbitMqSettings").Bind(rabbitMqSettings);
+        configuration.GetSection(nameof(RabbitMqSettings)).Bind(rabbitMqSettings);
         var options = Options.Create(rabbitMqSettings);
 
         MockRabbitMqOptions.Setup(o => o.Value).Returns(options.Value);
