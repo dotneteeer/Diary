@@ -21,7 +21,7 @@ namespace Diary.Application.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ErrorMessage {
+    public class ErrorMessage {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -35,7 +35,7 @@ namespace Diary.Application.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Diary.Application.Resources.ErrorMessage", typeof(ErrorMessage).Assembly);
@@ -50,7 +50,7 @@ namespace Diary.Application.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,7 +62,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Internal server error.
         /// </summary>
-        internal static string InternalServerError {
+        public static string InternalServerError {
             get {
                 return ResourceManager.GetString("InternalServerError", resourceCulture);
             }
@@ -71,7 +71,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid client request.
         /// </summary>
-        internal static string InvalidClientRequest {
+        public static string InvalidClientRequest {
             get {
                 return ResourceManager.GetString("InvalidClientRequest", resourceCulture);
             }
@@ -80,7 +80,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid token.
         /// </summary>
-        internal static string InvalidToken {
+        public static string InvalidToken {
             get {
                 return ResourceManager.GetString("InvalidToken", resourceCulture);
             }
@@ -89,7 +89,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Password is wrong.
         /// </summary>
-        internal static string PasswordIsWrong {
+        public static string PasswordIsWrong {
             get {
                 return ResourceManager.GetString("PasswordIsWrong", resourceCulture);
             }
@@ -98,7 +98,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Password mismatch.
         /// </summary>
-        internal static string PasswordMismatch {
+        public static string PasswordMismatch {
             get {
                 return ResourceManager.GetString("PasswordMismatch", resourceCulture);
             }
@@ -107,7 +107,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Report not found.
         /// </summary>
-        internal static string ReportNotFound {
+        public static string ReportNotFound {
             get {
                 return ResourceManager.GetString("ReportNotFound", resourceCulture);
             }
@@ -116,7 +116,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Reports not found.
         /// </summary>
-        internal static string ReportsNotFound {
+        public static string ReportsNotFound {
             get {
                 return ResourceManager.GetString("ReportsNotFound", resourceCulture);
             }
@@ -125,7 +125,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Role already exists.
         /// </summary>
-        internal static string RoleAlreadyExists {
+        public static string RoleAlreadyExists {
             get {
                 return ResourceManager.GetString("RoleAlreadyExists", resourceCulture);
             }
@@ -134,7 +134,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Role not found.
         /// </summary>
-        internal static string RoleNotFound {
+        public static string RoleNotFound {
             get {
                 return ResourceManager.GetString("RoleNotFound", resourceCulture);
             }
@@ -143,7 +143,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Role to be updated is not found.
         /// </summary>
-        internal static string RoleToBeUpdatedIsNotFound {
+        public static string RoleToBeUpdatedIsNotFound {
             get {
                 return ResourceManager.GetString("RoleToBeUpdatedIsNotFound", resourceCulture);
             }
@@ -152,7 +152,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Role to update is not found.
         /// </summary>
-        internal static string RoleToUpdateIsNotFound {
+        public static string RoleToUpdateIsNotFound {
             get {
                 return ResourceManager.GetString("RoleToUpdateIsNotFound", resourceCulture);
             }
@@ -161,7 +161,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to User alredy exists.
         /// </summary>
-        internal static string UserAlreadyExists {
+        public static string UserAlreadyExists {
             get {
                 return ResourceManager.GetString("UserAlreadyExists", resourceCulture);
             }
@@ -170,7 +170,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to User already has this role.
         /// </summary>
-        internal static string UserAlreadyHasThisRole {
+        public static string UserAlreadyHasThisRole {
             get {
                 return ResourceManager.GetString("UserAlreadyHasThisRole", resourceCulture);
             }
@@ -179,7 +179,7 @@ namespace Diary.Application.Resources {
         /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
-        internal static string UserNotFound {
+        public static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
