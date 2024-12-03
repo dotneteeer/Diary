@@ -1,5 +1,7 @@
-﻿using Diary.Domain.Dto.Report;
+﻿using Diary.Application.Resources;
+using Diary.Domain.Dto.Report;
 using Diary.Tests.Configurations;
+using FluentAssertions;
 using Xunit;
 
 namespace Diary.Tests;
@@ -16,6 +18,20 @@ public class ReportServiceTest
 
         //Assert
         Assert.NotNull(result);
+    }
+
+    [Fact]
+    public async Task GetReport_ShouldBe_UserNotFoundError_When_UserIdIsIncorrect()
+    {
+        //Arrange
+        var reportService = ReportServiceFields.GetService();
+
+        //Act
+        var result = await reportService.GetReportByIdAsync(-1);
+
+        //Assert
+        Assert.False(result.IsSuccess);
+        result.ErrorMessage.Should().Be(ErrorMessage.ReportNotFound);
     }
 
     [Fact]
