@@ -14,26 +14,25 @@ using MapperConfiguration = Diary.Tests.Configurations.MapperConfiguration;
 
 namespace Diary.Tests;
 
-public static class ReportServiceFields
+public class ReportServiceFactory
 {
-    private static readonly Mock<IBaseRepository<Report>> MockReportRepository =
+    public static readonly Mock<IOptions<RabbitMqSettings>> MockRabbitMqOptions = new();
+    private readonly ReportService _reportService;
+    public readonly IMapper Mapper = MapperConfiguration.GetMapperConfiguration();
+
+    public readonly Mock<IDistributedCache> MockDistributedCache = new();
+    public readonly Mock<Producer.Producer> MockMessageProducer = new();
+
+    public readonly Mock<IBaseRepository<Report>> MockReportRepository =
         MockRepositoriesGetter.GetMockReportRepository();
 
-    private static readonly Mock<IBaseRepository<User>> MockUserRepository =
+    public readonly Mock<IBaseRepository<User>> MockUserRepository =
         MockRepositoriesGetter.GetMockUserRepository();
 
-    private static readonly Mock<IDistributedCache> MockDistributedCache = new();
-    private static readonly IMapper Mapper = MapperConfiguration.GetMapperConfiguration();
-    private static readonly Mock<ReportValidator> MockValidator = new();
-    private static readonly Mock<IOptions<RabbitMqSettings>> MockRabbitMqOptions = new();
-    private static readonly Mock<Producer.Producer> MockMessageProducer = new();
+    public readonly Mock<ReportValidator> MockValidator = new();
 
-    private static readonly ReportService ReportService = new(MockReportRepository.Object,
-        MockUserRepository.Object,
-        MockValidator.Object, Mapper, MockRabbitMqOptions.Object, MockMessageProducer.Object,
-        MockDistributedCache.Object, null!);
 
-    static ReportServiceFields()
+    static ReportServiceFactory()
     {
         #region Getting root directory
 
@@ -58,5 +57,13 @@ public static class ReportServiceFields
         MockRabbitMqOptions.Setup(o => o.Value).Returns(options.Value);
     }
 
-    public static ReportService GetService() => ReportService;
+    public ReportServiceFactory()
+    {
+        _reportService = new ReportService(MockReportRepository.Object,
+            MockUserRepository.Object,
+            MockValidator.Object, Mapper, MockRabbitMqOptions.Object, MockMessageProducer.Object,
+            MockDistributedCache.Object, null!);
+    }
+
+    public ReportService GetReportService() => _reportService;
 }
