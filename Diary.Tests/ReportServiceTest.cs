@@ -10,6 +10,46 @@ namespace Diary.Tests;
 
 public class ReportServiceTest
 {
+    public static IEnumerable<object[]> GetReportData() => new List<object[]>
+    {
+        new object[] { 1, true },
+        new object[] { -1, false },
+    };
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task GetReport_ShouldBe_NotNull_WithGivenId(long id)
+    {
+        //Arrange
+        var reportService = new ReportServiceFactory().GetReportService();
+        //Act
+        var result = await reportService.GetReportByIdAsync(id);
+
+        //Assert
+        Assert.NotNull(result);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetReportData))]
+    public async Task GetReport_ShouldBe_NotNull_WithGivenIdAndExpectedResult(long id, bool isSuccessExpected)
+    {
+        //Arrange
+        var reportService = new ReportServiceFactory().GetReportService();
+        //Act
+        var result = await reportService.GetReportByIdAsync(id);
+
+        //Assert
+        if (isSuccessExpected)
+        {
+            Assert.NotNull(result);
+        }
+        else
+        {
+            Assert.False(result.IsSuccess);
+        }
+    }
+
     [Fact]
     public async Task GetReport_ShouldBe_NotNull()
     {
