@@ -1,7 +1,9 @@
 ﻿using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
+using Diary.Domain.Entity;
 using Diary.Tests.Configurations;
 using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace Diary.Tests;
@@ -12,7 +14,7 @@ public class ReportServiceTest
     public async Task GetReport_ShouldBe_NotNull()
     {
         //Arrange
-        var reportService = ReportServiceFields.GetService();
+        var reportService = new ReportServiceFactory().GetReportService();
         //Act
         var result = await reportService.GetReportByIdAsync(1);
 
@@ -24,7 +26,7 @@ public class ReportServiceTest
     public async Task GetReport_ShouldBe_UserNotFoundError_When_UserIdIsIncorrect()
     {
         //Arrange
-        var reportService = ReportServiceFields.GetService();
+        var reportService = new ReportServiceFactory().GetReportService();
 
         //Act
         var result = await reportService.GetReportByIdAsync(-1);
@@ -40,7 +42,7 @@ public class ReportServiceTest
         //Arrange
         var user = MockRepositoriesGetter.GetUsers().FirstOrDefault();
         var createReportDto = new CreateReportDto("UnitTestReport3", "UnitTestDescription3", user.Id);
-        var reportService = ReportServiceFields.GetService();
+        var reportService = new ReportServiceFactory().GetReportService();
 
         //Act
         var result = await reportService.CreateReportAsync(createReportDto);
@@ -54,7 +56,7 @@ public class ReportServiceTest
     {
         // Arrange
         var report = MockRepositoriesGetter.GetReports().FirstOrDefault();
-        var reportService = ReportServiceFields.GetService();
+        var reportService = new ReportServiceFactory().GetReportService();
 
         // Act
         var result = await reportService.DeleteReportAsync(report.Id);
@@ -70,12 +72,14 @@ public class ReportServiceTest
         var report = MockRepositoriesGetter.GetReports().FirstOrDefault();
         var updateReportDto = new UpdateReportDto(report.Id, "UnitTest New name for report",
             "UnitTest New description for report");
-        var reportService = ReportServiceFields.GetService();
+        var reportServiceFactory = new ReportServiceFactory();
+        var reportService = reportServiceFactory.GetReportService();
 
         // Act
         var result = await reportService.UpdateReportAsync(updateReportDto);
 
         // Assert
         Assert.True(result.IsSuccess);
+        reportServiceFactory.MockReportRepository.Verify(x => x.Update(It.IsAny<Report>()), Times.Once);
     }
 }
