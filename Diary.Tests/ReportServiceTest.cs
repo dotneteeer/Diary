@@ -2,6 +2,7 @@
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Tests.Configurations;
+using Diary.Tests.Factories;
 using FluentAssertions;
 using Moq;
 using Xunit;

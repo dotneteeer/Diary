@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using MapperConfiguration = Diary.Tests.Configurations.MapperConfiguration;
 
-namespace Diary.Tests;
+namespace Diary.Tests.Factories;
 
 public class ReportServiceFactory
 {
