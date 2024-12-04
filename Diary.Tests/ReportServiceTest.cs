@@ -3,6 +3,7 @@ using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Tests.Configurations;
 using Diary.Tests.Factories;
+using Diary.Tests.TestDataClasses;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -77,12 +78,13 @@ public class ReportServiceTest
         result.ErrorMessage.Should().Be(ErrorMessage.ReportNotFound);
     }
 
-    [Fact]
-    public async Task CreateReport_ShouldBe_NewReport()
+    [Theory]
+    [ClassData(typeof(ReportCreateTestData))]
+    public async Task CreateReport_ShouldBe_NewReport(string description)
     {
         //Arrange
         var user = MockRepositoriesGetter.GetUsers().FirstOrDefault();
-        var createReportDto = new CreateReportDto("UnitTestReport3", "UnitTestDescription3", user.Id);
+        var createReportDto = new CreateReportDto("UnitTestReport3", description, user.Id);
         var reportService = new ReportServiceFactory().GetReportService();
 
         //Act
