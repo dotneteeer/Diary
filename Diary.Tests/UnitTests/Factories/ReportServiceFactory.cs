@@ -5,14 +5,14 @@ using Diary.Application.Validation;
 using Diary.Domain.Entity;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Settings;
-using Diary.Tests.Configurations;
+using Diary.Tests.UnitTests.Configurations;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Moq;
-using MapperConfiguration = Diary.Tests.Configurations.MapperConfiguration;
+using MapperConfiguration = Diary.Tests.UnitTests.Configurations.MapperConfiguration;
 
-namespace Diary.Tests.Factories;
+namespace Diary.Tests.UnitTests.Factories;
 
 public class ReportServiceFactory
 {

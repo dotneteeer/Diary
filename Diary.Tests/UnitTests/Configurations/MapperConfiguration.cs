@@ -1,7 +1,7 @@
 using AutoMapper;
 using Diary.Application.Mapping;
 
-namespace Diary.Tests.Configurations;
+namespace Diary.Tests.UnitTests.Configurations;
 
 public static class MapperConfiguration
 {

@@ -1,14 +1,14 @@
 ﻿using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
-using Diary.Tests.Configurations;
-using Diary.Tests.Factories;
-using Diary.Tests.TestDataClasses;
+using Diary.Tests.UnitTests.Configurations;
+using Diary.Tests.UnitTests.Factories;
+using Diary.Tests.UnitTests.TestDataClasses;
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace Diary.Tests;
+namespace Diary.Tests.UnitTests;
 
 public class ReportServiceTest
 {

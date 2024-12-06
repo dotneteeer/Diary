@@ -3,7 +3,7 @@ using Diary.Domain.Interfaces.Repositories;
 using MockQueryable.Moq;
 using Moq;
 
-namespace Diary.Tests.Configurations;
+namespace Diary.Tests.UnitTests.Configurations;
 
 public static class MockRepositoriesGetter
 {

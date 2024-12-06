@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Diary.Tests.TestDataClasses;
+namespace Diary.Tests.UnitTests.TestDataClasses;
 
 public class ReportCreateTestData : TheoryData<string>
 {
