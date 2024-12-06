@@ -10,11 +10,11 @@ namespace Diary.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            /*migrationBuilder.InsertData(
+            migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 4L, "Api" });*/
-            //Alredy in database
+                values: new object[] { 4L, "Api" });
+
 
             migrationBuilder.CreateIndex(
                 name: "IX_Report_CreatedAt",
@@ -30,11 +30,10 @@ namespace Diary.DAL.Migrations
                 name: "IX_Report_CreatedAt",
                 table: "Report");
 
-            /*migrationBuilder.DeleteData(
+            migrationBuilder.DeleteData(
                 table: "Role",
                 keyColumn: "Id",
-                keyValue: 4L);*/
-            //must not be deleted
+                keyValue: 4L);
         }
     }
 }

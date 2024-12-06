@@ -14,7 +14,7 @@ namespace Diary.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            /*migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
                 {
@@ -123,14 +123,12 @@ namespace Diary.DAL.Migrations
                     { 1L, "User" },
                     { 2L, "Admin" },
                     { 3L, "Moderator" }
-                });*/
-            //table already exist and data already inserted
+                });
 
-            /*migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_Report_UserId",
                 table: "Report",
-                column: "UserId");*/
-            //Index already exists
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Role_Name",
@@ -150,18 +148,18 @@ namespace Diary.DAL.Migrations
                 columns: new[] { "UserId", "RoleId" },
                 unique: true);
 
-            /*migrationBuilder.CreateIndex(
+            migrationBuilder.CreateIndex(
                 name: "IX_UserToken_UserId",
                 table: "UserToken",
                 column: "UserId",
-                unique: true);*/
-            //Index already exists
+                unique: true);
+           
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            /*migrationBuilder.DropTable(
+            migrationBuilder.DropTable(
                 name: "Report");
 
             migrationBuilder.DropTable(
@@ -174,8 +172,7 @@ namespace Diary.DAL.Migrations
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "User");*/
-            //code commented as it destroys database
+                name: "User");
             
             migrationBuilder.DropIndex(
                 name: "IX_Role_Name",
