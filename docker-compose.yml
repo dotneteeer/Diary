@@ -91,12 +91,41 @@
       - "15672:15672"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+  
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db
+    ports:
+      - "5433:5432"
+    networks:
+      - pg-network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: Diary
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    ports:
+      - "8888:80"
+    networks:
+      - pg-network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres-db
 
 networks:
   mynw:
   otel:
   elk:
     driver: bridge
+  pg-network:
 volumes:
   elasticsearch-data:
   rabbitmq_data:
+  postgres_data:
