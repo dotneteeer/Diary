@@ -85,3 +85,7 @@ app.UseWebSockets();
 Startup.LogListeningUrls(app);
 
 app.Run();
+
+public partial class Program
+{
+}
