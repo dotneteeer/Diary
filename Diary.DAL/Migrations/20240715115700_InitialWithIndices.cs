@@ -131,12 +131,6 @@ namespace Diary.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Role_Name",
-                table: "Role",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_Login",
                 table: "User",
                 column: "Login",
@@ -173,10 +167,6 @@ namespace Diary.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
-            
-            migrationBuilder.DropIndex(
-                name: "IX_Role_Name",
-                table: "Role");
 
             migrationBuilder.DropIndex(
                 name: "IX_User_Login",

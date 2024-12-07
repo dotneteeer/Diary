@@ -11,9 +11,6 @@ namespace Diary.DAL.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Report_CreatedAt",
-                table: "Report");
 
             migrationBuilder.AddColumn<DateTime>(
                 name: "LastEditedAt",
@@ -72,12 +69,6 @@ namespace Diary.DAL.Migrations
             migrationBuilder.DropColumn(
                 name: "LastEditedBy",
                 table: "Report");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Report_CreatedAt",
-                table: "Report",
-                column: "CreatedAt",
-                descending: new bool[0]);
         }
     }
 }
