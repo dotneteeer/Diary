@@ -1,4 +1,6 @@
 using Diary.Domain.Dto.Report;
+using Diary.Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace Diary.Tests.IntegrationTests;
@@ -18,8 +20,10 @@ public class ReportTests : BaseReportIntegrationTest
 
         //Assert
         var result = await _reportService.CreateReportAsync(createReportDto);
+        var addedReport = await _dbContext.Set<Report>().FirstOrDefaultAsync(x => x.Id == result.Data.Id);
 
         //Act
         Assert.True(result.IsSuccess);
+        Assert.NotNull(addedReport);
     }
 }
