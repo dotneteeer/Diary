@@ -46,6 +46,8 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
 
         builder.ConfigureServices(services =>
         {
+            #region Adding test data (db prep)
+
             using var scope = services.BuildServiceProvider().CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -75,6 +77,8 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
             );
 
             dbContext.SaveChanges();
+
+            #endregion
         });
     }
 }
