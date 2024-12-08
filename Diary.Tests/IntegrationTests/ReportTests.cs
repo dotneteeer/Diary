@@ -32,7 +32,7 @@ public class ReportTests : BaseReportIntegrationTest
     public async Task CreateReport_ShouldBe_UserNotFoundError_When_UserIdIsNotValid()
     {
         //Arrange
-        var reportName = "Test report 4";
+        const string reportName = "Test report 4";
         var createReportDto = new CreateReportDto(reportName, "Test report 4 description",
             0);
 
@@ -44,5 +44,18 @@ public class ReportTests : BaseReportIntegrationTest
         Assert.False(result.IsSuccess);
         Assert.Equal(ErrorMessage.UserNotFound, result.ErrorMessage);
         Assert.Null(addedReport);
+    }
+
+    [Fact]
+    public async Task GetReport_ShouldBe_NotNull()
+    {
+        //Arrange
+
+        //Assert
+        var result = await _reportService.GetReportByIdAsync(1);
+
+        //Act
+        Assert.True(result.IsSuccess);
+        Assert.NotNull(result.Data);
     }
 }
