@@ -4,12 +4,12 @@ using Xunit;
 
 namespace Diary.Tests.IntegrationTests;
 
-public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
+public abstract class BaseReportIntegrationTest : IClassFixture<IntegrationTestWebAppFactory>
 {
     protected readonly IReportService _reportService;
     private readonly IServiceScope _scope;
 
-    protected BaseIntegrationTest(IntegrationTestWebAppFactory factory)
+    protected BaseReportIntegrationTest(IntegrationTestWebAppFactory factory)
     {
         _scope = factory.Services.CreateScope();
         _reportService = _scope.ServiceProvider.GetRequiredService<IReportService>();

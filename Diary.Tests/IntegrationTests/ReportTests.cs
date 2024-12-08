@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Diary.Tests.IntegrationTests;
 
-public class ReportTests : BaseIntegrationTest
+public class ReportTests : BaseReportIntegrationTest
 {
     public ReportTests(IntegrationTestWebAppFactory factory) : base(factory)
     {
