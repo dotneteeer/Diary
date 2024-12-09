@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Diary.DAL;
 using Diary.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,14 @@ internal static class PrepDb
         dbContext.Database.EnsureDeleted();
         dbContext.Database.Migrate();
 
+        var hashedPassword = SHA256.HashData("Test user password"u8.ToArray());
+        var hashedPasswordString = Convert.ToBase64String(hashedPassword);
+
+
         dbContext.Set<User>().Add(new User
         {
             Login = "Test user 1",
-            Password = "Test user password"
+            Password = hashedPasswordString,
         });
 
         dbContext.SaveChanges();
