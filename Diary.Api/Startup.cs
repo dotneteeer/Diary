@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Text;
 using Asp.Versioning;
 using Diary.Application.GraphQl.Mutations;
 using Diary.Application.GraphQl.Queries;
@@ -10,8 +9,7 @@ using Diary.Application.GraphQl.Types.UserTypes;
 using Diary.Domain.Entity;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -33,31 +31,16 @@ public static class Startup
         WebApplicationBuilder builder)
     {
         services.AddAuthorization();
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            var jwtOptions = builder.Configuration.GetSection(JwtSettings.DefaultSection).Get<JwtSettings>();
-            var jwtKey = jwtOptions.JwtKey;
-            var issuer = jwtOptions.Issuer;
-            var audience = jwtOptions.Audience;
-            var authority = jwtOptions.Authority;
-            options.Authority = authority;
-            options.RequireHttpsMetadata = false;
-            options.TokenValidationParameters = new TokenValidationParameters
+
+        var expireTimeSpan = builder.Configuration.GetSection(JwtSettings.DefaultSection).GetValue<int>("LifeTime");
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
             {
-                ValidIssuer = issuer,
-                ValidAudience = audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true
-            };
-        });
+                options.Cookie.Name = "AuthCookie";
+                options.LoginPath = "/api/v1/auth/login";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(expireTimeSpan);
+                options.Cookie.HttpOnly = true;
+            });
     }
 
     /// <summary>

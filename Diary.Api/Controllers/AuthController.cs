@@ -2,7 +2,11 @@ using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Result;
+using Diary.Domain.Settings;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Diary.Api.Controllers;
 
@@ -20,10 +24,12 @@ namespace Diary.Api.Controllers;
 public class AuthController : Controller
 {
     private readonly IAuthService _authService;
+    private readonly JwtSettings _jwtSettings;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IAuthService authService, IOptions<JwtSettings> jwtSettings)
     {
         _authService = authService;
+        _jwtSettings = jwtSettings.Value;
     }
 
     /// <summary>
@@ -54,6 +60,13 @@ public class AuthController : Controller
         var response = await _authService.Login(dto);
         if (response.IsSuccess)
         {
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, response.Data.Principal,
+                new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddMinutes(_jwtSettings.LifeTime),
+                    IsPersistent = true
+                });
+            response.Data.Principal = null;
             return Ok(response);
         }
 
