@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Dto.User;
 using Diary.Domain.Interfaces.Services;
@@ -25,10 +26,12 @@ public class AuthController : Controller
 {
     private readonly IAuthService _authService;
     private readonly JwtSettings _jwtSettings;
+    private readonly ITokenService _tokenService;
 
-    public AuthController(IAuthService authService, IOptions<JwtSettings> jwtSettings)
+    public AuthController(IAuthService authService, IOptions<JwtSettings> jwtSettings, ITokenService tokenService)
     {
         _authService = authService;
+        _tokenService = tokenService;
         _jwtSettings = jwtSettings.Value;
     }
 
@@ -60,13 +63,16 @@ public class AuthController : Controller
         var response = await _authService.Login(dto);
         if (response.IsSuccess)
         {
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, response.Data.Principal,
+            var claims =
+                _tokenService.GetPrincipalFromExpiredToken(response.Data
+                    .AccessToken).Claims; //the token is not expired bet the method is used to get claims
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
                 new AuthenticationProperties
                 {
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(_jwtSettings.LifeTime),
                     IsPersistent = true
                 });
-            response.Data.Principal = null;
             return Ok(response);
         }
 

@@ -172,7 +172,6 @@ public class AuthService : IAuthService
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies")),
                 UserId = user.Id
             }
         };
