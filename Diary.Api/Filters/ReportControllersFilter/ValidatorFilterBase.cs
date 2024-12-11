@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace Diary.Api.Filters.ReportControllersFilter;
 
 /// <summary>
@@ -8,7 +10,7 @@ public abstract class ValidatorFilterBase : Attribute
     /// <summary>
     /// Default authentication scheme
     /// </summary>
-    protected const string AuthenticationScheme = "Bearer";
+    protected const string AuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
     /// <summary>
     /// Name of identifier to get from route

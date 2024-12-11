@@ -40,6 +40,15 @@ public static class Startup
                 options.LoginPath = "/api/v1/auth/login";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(expireTimeSpan);
                 options.Cookie.HttpOnly = true;
+
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToAccessDenied = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        return Task.CompletedTask;
+                    }
+                };
             });
     }
 
