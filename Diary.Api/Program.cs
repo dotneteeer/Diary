@@ -81,6 +81,7 @@ app.MapControllers();
 app.MapGraphQL();
 app.UseGraphQLVoyager("/graphql-voyager", new VoyagerOptions { GraphQLEndPoint = "/graphql" });
 app.UseWebSockets();
+app.UseSession();
 
 Startup.LogListeningUrls(app);
 

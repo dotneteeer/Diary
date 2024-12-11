@@ -50,6 +50,15 @@ public static class Startup
                     }
                 };
             });
+
+        services.AddSession(options =>
+        {
+            options.IdleTimeout =
+                TimeSpan.FromMinutes(
+                    expireTimeSpan); //just a coincidence, no actual connection between value and expireTimeSpan
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
     }
 
     /// <summary>

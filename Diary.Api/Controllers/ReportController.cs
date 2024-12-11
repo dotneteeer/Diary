@@ -1,4 +1,6 @@
+using System.Text.Json;
 using Asp.Versioning;
+using AutoMapper;
 using Diary.Api.Filters.ReportControllersFilter;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
@@ -28,13 +30,15 @@ namespace Diary.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private readonly IBaseRepository<Report> _reportRepository;
     private readonly IReportService _reportService;
 
-    public ReportController(IReportService reportService, IBaseRepository<Report> reportRepository)
+    public ReportController(IReportService reportService, IBaseRepository<Report> reportRepository, IMapper mapper)
     {
         _reportService = reportService;
         _reportRepository = reportRepository;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -56,9 +60,31 @@ public class ReportController : ControllerBase
     public async Task<ActionResult<BaseResult<ReportDto>>> GetUserReports(long userId,
         [FromQuery] PageReportDto? pageReportDto)
     {
+        if (pageReportDto!.PageNumber != 0 && pageReportDto.PageSize != 0)
+        {
+            if (HttpContext.Session.GetInt32(nameof(PageReportDto.PageNumber)) == pageReportDto.PageNumber &&
+                HttpContext.Session.GetInt32(nameof(PageReportDto.PageSize)) == pageReportDto.PageSize)
+            {
+                var reports = JsonSerializer.Deserialize<ReportDto[]>(HttpContext.Session.GetString("Reports")!);
+                return Ok(new CollectionResult<ReportDto>
+                {
+                    Data = reports
+                });
+            }
+        }
+
         var response = await _reportService.GetReportsAsync(userId, pageReportDto);
 
         Response.Headers.Append("x-total-count", response.TotalCount.ToString());
+
+        if (pageReportDto!.PageNumber != 0 && pageReportDto.PageSize != 0)
+        {
+            HttpContext.Session.SetInt32(nameof(PageReportDto.PageNumber), pageReportDto.PageNumber);
+            HttpContext.Session.SetInt32(nameof(PageReportDto.PageSize), pageReportDto.PageSize);
+
+            var json = JsonSerializer.Serialize(response.Data);
+            HttpContext.Session.SetString("Reports", json);
+        }
 
         if (response.IsSuccess)
         {
