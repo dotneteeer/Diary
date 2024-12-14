@@ -26,8 +26,7 @@ Welcome to the Diary API project! This project is built using ASP.NET Core and r
 To get started with this project, you'll need to have the following prerequisites installed:
 - .NET Core SDK
 - An IDE like Visual Studio or Rider
-- A PostgreSQL Server instance for the database
-- Redis
+- A PostgreSQL Server instance for the database (or use PostgreSQL Server instance in `docker-compose.yml` 
 - Docker
 
 ### Setup
