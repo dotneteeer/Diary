@@ -12,6 +12,7 @@ public class ReportTests : BaseReportIntegrationTest
     {
     }
 
+    [Trait("Category", "Integration")]
     [Fact]
     public async Task CreateReport_ShouldBe_NewReport()
     {
@@ -28,6 +29,7 @@ public class ReportTests : BaseReportIntegrationTest
         Assert.NotNull(addedReport);
     }
 
+    [Trait("Category", "Integration")]
     [Fact]
     public async Task CreateReport_ShouldBe_UserNotFoundError_When_UserIdIsNotValid()
     {
@@ -46,6 +48,7 @@ public class ReportTests : BaseReportIntegrationTest
         Assert.Null(addedReport);
     }
 
+    [Trait("Category", "Integration")]
     [Fact]
     public async Task GetReport_ShouldBe_NotNull()
     {

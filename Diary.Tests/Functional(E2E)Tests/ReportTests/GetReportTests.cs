@@ -14,6 +14,7 @@ public class GetReportTests : BaseReportFunctionalTest
     {
     }
 
+    [Trait("Category", "E2E")]
     [Fact]
     public async Task GetReports_ShouldBe_Reports()
     {
@@ -36,6 +37,7 @@ public class GetReportTests : BaseReportFunctionalTest
         Assert.Equal(2, response.Count);
     }
 
+    [Trait("Category", "E2E")]
     [Fact]
     public async Task GetReports_ShouldBe_ReportsNotFound_When_UserIdIsInvalid()
     {

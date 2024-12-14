@@ -14,6 +14,7 @@ public class AuthReportTests : BaseReportFunctionalTest
     {
     }
 
+    [Trait("Category", "E2E")]
     [Fact]
     public async Task GetReports_ShouldBe_Unauthorized_When_UserIsUnauthorized()
     {
@@ -29,6 +30,7 @@ public class AuthReportTests : BaseReportFunctionalTest
         Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
     }
 
+    [Trait("Category", "E2E")]
     [Fact]
     public async Task GetReports_ShouldBe_Forbidden_When_UserIdDoesNotMatchUserIdInAccessToken()
     {

@@ -18,6 +18,7 @@ public class ReportServiceTest
         new object[] { -1, false },
     };
 
+    [Trait("Category", "Unit")]
     [Theory]
     [InlineData(1)]
     [InlineData(2)]
@@ -32,6 +33,7 @@ public class ReportServiceTest
         Assert.NotNull(result);
     }
 
+    [Trait("Category", "Unit")]
     [Theory]
     [MemberData(nameof(GetReportData))]
     public async Task GetReport_ShouldBe_NotNull_WithGivenIdAndExpectedResult(long id, bool isSuccessExpected)
@@ -52,6 +54,7 @@ public class ReportServiceTest
         }
     }
 
+    [Trait("Category", "Unit")]
     [Fact]
     public async Task GetReport_ShouldBe_NotNull()
     {
@@ -64,6 +67,7 @@ public class ReportServiceTest
         Assert.NotNull(result);
     }
 
+    [Trait("Category", "Unit")]
     [Fact]
     public async Task GetReport_ShouldBe_UserNotFoundError_When_UserIdIsIncorrect()
     {
@@ -78,6 +82,7 @@ public class ReportServiceTest
         result.ErrorMessage.Should().Be(ErrorMessage.ReportNotFound);
     }
 
+    [Trait("Category", "Unit")]
     [Theory]
     [ClassData(typeof(ReportCreateTestData))]
     public async Task CreateReport_ShouldBe_NewReport(string description)
@@ -94,6 +99,7 @@ public class ReportServiceTest
         Assert.True(result.IsSuccess);
     }
 
+    [Trait("Category", "Unit")]
     [Fact]
     public async Task DeleteReport_ShouldBe_Return_TrueSuccess()
     {
@@ -108,6 +114,7 @@ public class ReportServiceTest
         Assert.True(result.IsSuccess);
     }
 
+    [Trait("Category", "Unit")]
     [Fact]
     public async Task UpdateReport_ShouldBe_Return_NewData_For_Report()
     {
