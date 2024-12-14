@@ -36,7 +36,7 @@ To get started with this project, you'll need to have the following prerequisite
 3. Restore the NuGet packages.
 4. Update the connection string in `secrets.json` of `Diary.Api` to point to your PostgreSQL Server instance.
 5. Set up Redis(after installing execute `redis-server`)
-6. Execute `docker-compose up -d` in project directory. 
+6. Execute `docker-compose -p diary-auxiliary-services up -d` in project directory. 
 7. Start the application.
 
 ## Usage
@@ -49,6 +49,7 @@ This project is still a work in progress, and contributions are welcome. If you'
 3. Commit your changes.
 4. Push to your fork.
 5. Submit a pull request.
+Do not contribute branches with `-EXAMPLE` tag. They are for test purposes only.
 
 ## License
 This project is licensed under the MIT License - see the `LICENSE.txt` file for details.
