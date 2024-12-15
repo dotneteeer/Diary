@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		sincedb\sincedb.txt = sincedb\sincedb.txt
 		sincedb\sincedb file will appear in this folder.txt = sincedb\sincedb file will appear in this folder.txt
 		grafana\grafana.db = grafana\grafana.db
+		.github\workflows\ci.yml = .github\workflows\ci.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D43E0E33-AB10-46E0-8888-9FDE562B4ACA}"

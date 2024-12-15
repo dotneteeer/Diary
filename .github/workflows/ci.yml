@@ -1,0 +1,71 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - master
+      - "feature/*"
+      - "Diary-add-*"
+  pull_request:
+    branches:
+      - master
+      - "feature/*"
+      - "Diary-add-*"
+
+jobs:
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Run Unit Tests
+        run: dotnet test --filter "Category=Unit"
+
+  integration-tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Run Integration Tests
+        run: dotnet test --filter "Category=Integration"
+
+  e2e-tests:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Run E2E Tests
+        run: dotnet test --filter "Category=E2E"
