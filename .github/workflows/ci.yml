@@ -72,3 +72,4 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Development
           DOTNET_LOG_LEVEL: Information
+          JWT_SECRET: ${{ secrets.JWT }}
