@@ -68,7 +68,7 @@ jobs:
         run: dotnet restore
 
       - name: Run E2E Tests
-        run: dotnet test --filter "Category=E2E"
+        run: dotnet test --filter "Category=E2E" --verbosity detailed
         env:
           ASPNETCORE_ENVIRONMENT: Development
           DOTNET_LOG_LEVEL: Information
