@@ -53,21 +53,9 @@ jobs:
 
   e2e-tests:
     name: Run E2E Tests
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Docker version
-        run: docker version
-
-      - name: List Docker images
-        run: docker images
-    
-      - name: Pull PostgreSQL image
-        run: docker pull postgres:latest
-        
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Set up .NET
         uses: actions/setup-dotnet@v4.1.0
         with:
