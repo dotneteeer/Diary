@@ -13,7 +13,7 @@ on:
       - "Diary-add-*"
 
 jobs:
-  sonar:
+  Sonar:
     runs-on: ubuntu-latest
     
     steps:
@@ -29,16 +29,9 @@ jobs:
         run: dotnet restore
 
       - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST_URL }}
-        run: |
-          dotnet sonarscanner begin \
-            /k:"dotneteeer_Diary" \
-            /d:sonar.login="${{ secrets.SONARQUBE_TOKEN }}" \
-            /d:sonar.host.url="${{ secrets.SONARQUBE_HOST_URL }}"
-          dotnet build
-          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONARQUBE_TOKEN }}"
   
   unit-tests:
     name: Run Unit Tests
