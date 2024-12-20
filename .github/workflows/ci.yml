@@ -37,7 +37,17 @@ jobs:
         uses: actions/setup-dotnet@v4.1.0
         with:
           dotnet-version: '8.0'
-          cache: true
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Install dependencies
+        run: dotnet restore
 
       - name: Run Unit Tests
         run: dotnet test --filter "Category=Unit"
@@ -57,7 +67,14 @@ jobs:
         uses: actions/setup-dotnet@v4.1.0
         with:
           dotnet-version: '8.0'
-          cache: true
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Install dependencies
         run: dotnet restore
@@ -80,7 +97,14 @@ jobs:
         uses: actions/setup-dotnet@v4.1.0
         with:
           dotnet-version: '8.0'
-          cache: true
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Install dependencies
         run: dotnet restore
