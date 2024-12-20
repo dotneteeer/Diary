@@ -13,6 +13,33 @@ on:
       - "Diary-add-*"
 
 jobs:
+  sonar:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4.1.0
+        with:
+          dotnet-version: '8.0'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST_URL }}
+        run: |
+          dotnet sonarscanner begin \
+            /k:"dotneteeer_Diary" \
+            /d:sonar.login="${{ secrets.SONARQUBE_TOKEN }}" \
+            /d:sonar.host.url="${{ secrets.SONARQUBE_HOST_URL }}"
+          dotnet build
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONARQUBE_TOKEN }}"
+  
   unit-tests:
     name: Run Unit Tests
     runs-on: ubuntu-latest
