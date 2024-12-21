@@ -53,9 +53,6 @@ jobs:
       - name: Build project
         run: dotnet build -o ./Diary_build
 
-      - name: List build directory  # Additionally, to check the content
-        run: ls -R Diary_build
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
