@@ -14,6 +14,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Polly;
 
 namespace Diary.Application.Services;
 
@@ -141,7 +142,16 @@ public class ReportService : IReportService
         await _reportRepository.CreateAsync(report);
         await _reportRepository.SaveChangesAsync();
 
-        _messageProducer.SendMessage(report, _rabbitMqOptions.Value.RoutingKey, _rabbitMqOptions.Value.ExchangeKey);
+        var policy = Policy.Handle<Exception>()
+            .WaitAndRetryAsync(5, i => TimeSpan.FromSeconds(Math.Pow(i, 2)));
+
+        await policy.ExecuteAsync(() =>
+        {
+            _messageProducer.SendMessage(report, _rabbitMqOptions.Value.RoutingKey,
+                _rabbitMqOptions.Value.ExchangeKey);
+            return Task.CompletedTask;
+        });
+
 
         return new BaseResult<ReportDto>
         {
