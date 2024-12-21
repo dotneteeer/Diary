@@ -25,10 +25,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   
-  unit-tests:
-    name: Run Unit Tests
+  build:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -44,10 +43,29 @@ jobs:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
-            ${{ runner.os }}-nuget-
+            ${{ runner.os }}-nuget-\
 
       - name: Install dependencies
         run: dotnet restore
+
+      - name: Build project
+        run: dotnet build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: '**/bin/Debug/net*/'
+  
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
 
       - name: Run Unit Tests
         run: dotnet test --filter "Category=Unit"
@@ -60,24 +78,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4.1.0
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
         with:
-          dotnet-version: '8.0'
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Install dependencies
-        run: dotnet restore
+          name: build-artifacts
 
       - name: Run Integration Tests
         run: dotnet test --filter "Category=Integration"
@@ -90,24 +94,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4.1.0
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
         with:
-          dotnet-version: '8.0'
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Install dependencies
-        run: dotnet restore
+          name: build-artifacts
 
       - name: Set Environment Variables for JWT
         run: |
