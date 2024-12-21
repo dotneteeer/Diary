@@ -54,13 +54,13 @@ jobs:
         run: dotnet build -o ./Diary_build
 
       - name: List build directory  # Additionally, to check the content
-        run: ls -R Diary-build
+        run: ls -R Diary_build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
-          path: 'Diary-build/**'
+          path: 'Diary_build/**'
           if-no-files-found: 'error'
   
   unit-tests:
