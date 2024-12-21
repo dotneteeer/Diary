@@ -81,10 +81,10 @@ jobs:
           path: ./Diary_build
 
       - name: Run Unit Tests
-        run: dotnet test  --filter "Category=Unit"
+        run: dotnet test --no-build --filter "Category=Unit" --output ./Diary_build
 
       - name: Run Unit Tests (detailed)
-        run: dotnet test  --filter "Category=Unit" --verbosity detailed
+        run: dotnet test --no-build --filter "Category=Unit" --verbosity detailed --output ./Diary_build
 
   integration-tests:
     name: Run Integration Tests
@@ -107,10 +107,10 @@ jobs:
           path: ./Diary_build
 
       - name: Run Integration Tests
-        run: dotnet test  --filter "Category=Integration"
+        run: dotnet test --no-build --filter "Category=Integration" --output ./Diary_build
         
       - name: Run Integration Tests (detailed)
-        run: dotnet test  --filter "Category=Integration" --verbosity detailed
+        run: dotnet test --no-build --filter "Category=Integration" --verbosity detailed --output ./Diary_build
 
   e2e-tests:
     name: Run E2E Tests
@@ -142,10 +142,10 @@ jobs:
           echo "JWT__RefreshTokenValidityInDays=${{ secrets.JWT_REFRESH_DAYS }}" >> $GITHUB_ENV
           
       - name: Run E2E Tests
-        run: dotnet test  --filter "Category=E2E"
+        run: dotnet test --no-build --filter "Category=E2E" --output ./Diary_build
 
       - name: Run E2E Tests (detailed)
-        run: dotnet test  --filter "Category=E2E" --verbosity detailed
+        run: dotnet test --no-build --filter "Category=E2E" --verbosity detailed --output ./Diary_build
         env:
           ASPNETCORE_ENVIRONMENT: Development
           DOTNET_LOG_LEVEL: Information
