@@ -51,13 +51,17 @@ jobs:
         run: dotnet restore
 
       - name: Build project
-        run: dotnet build -o Diary-build
+        run: dotnet build -o ./Diary_build
+
+      - name: List build directory  # Additionally, to check the content
+        run: ls -R Diary-build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
-          path: 'Diary-build/**'
+          path: 'Diary-build/**'  \
+          if-no-files-found: 'error'
   
   unit-tests:
     name: Run Unit Tests
@@ -77,12 +81,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+          path: ./Diary_build
 
       - name: Run Unit Tests
-        run: dotnet test build-artifacts/Diary.sln --filter "Category=Unit"
+        run: dotnet test --no-build --filter "Category=Unit"
 
       - name: Run Unit Tests (detailed)
-        run: dotnet test build-artifacts/Diary.sln --filter "Category=Unit" --verbosity detailed
+        run: dotnet test --no-build --filter "Category=Unit" --verbosity detailed
 
   integration-tests:
     name: Run Integration Tests
@@ -102,12 +107,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+          path: ./Diary_build
 
       - name: Run Integration Tests
-        run: dotnet test build-artifacts/Diary.sln --filter "Category=Integration"
+        run: dotnet test --no-build --filter "Category=Integration"
         
       - name: Run Integration Tests (detailed)
-        run: dotnet test build-artifacts/Diary.sln --filter "Category=Integration" --verbosity detailed
+        run: dotnet test --no-build --filter "Category=Integration" --verbosity detailed
 
   e2e-tests:
     name: Run E2E Tests
@@ -127,6 +133,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifacts
+          path: ./Diary_build
 
       - name: Set Environment Variables for JWT
         run: |
@@ -138,10 +145,10 @@ jobs:
           echo "JWT__RefreshTokenValidityInDays=${{ secrets.JWT_REFRESH_DAYS }}" >> $GITHUB_ENV
           
       - name: Run E2E Tests
-        run: dotnet test build-artifacts/Diary.sln --filter "Category=E2E"
+        run: dotnet test --no-build --filter "Category=E2E"
 
       - name: Run E2E Tests (detailed)
-        run: dotnet test build-artifacts/Diary.sln --filter "Category=E2E" --verbosity detailed
+        run: dotnet test --no-build --filter "Category=E2E" --verbosity detailed
         env:
           ASPNETCORE_ENVIRONMENT: Development
           DOTNET_LOG_LEVEL: Information
