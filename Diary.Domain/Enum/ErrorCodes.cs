@@ -6,20 +6,19 @@ public enum ErrorCodes
     //User:11-20
     //Authorization:21-30
     //Roles: 31-40
-    InternalServerError=10,
-    
-    ReportsNotFound=0,
-    ReportNotFound=1,
-    
-    UserNotFound=11,
-    UserAlreadyExists=12,
-    UserAlreadyHasThisRole=13,
-    
-    
-    PasswordMismatch=21,
-    PasswordIsWrong=22,
+    InternalServerError = 10,
 
-    RoleAlreadyExists=31,
-    RoleNotFound=32,
-    
+    ReportsNotFound = 0,
+    ReportNotFound = 1,
+
+    UserNotFound = 11,
+    UserAlreadyExists = 12,
+    UserAlreadyHasThisRole = 13,
+
+
+    PasswordMismatch = 21,
+    PasswordIsWrong = 22,
+
+    RoleAlreadyExists = 31,
+    RoleNotFound = 32,
 }

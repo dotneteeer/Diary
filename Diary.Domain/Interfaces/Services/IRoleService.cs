@@ -15,14 +15,14 @@ public interface IRoleService
     /// <param name="dto"></param>
     /// <returns></returns>
     Task<BaseResult<RoleDto>> CreateRoleAsync(CreateRoleDto dto);
-    
+
     /// <summary>
     /// Role deleting
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     Task<BaseResult<RoleDto>> DeleteRoleAsync(long id);
-    
+
     /// <summary>
     /// Role updating
     /// </summary>
@@ -36,14 +36,14 @@ public interface IRoleService
     /// <param name="dto"></param>
     /// <returns></returns>
     Task<BaseResult<UserRoleDto>> AddRoleForUserAsync(UserRoleDto dto);
-    
+
     /// <summary>
     /// Deletes user's role
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
     Task<BaseResult<UserRoleDto>> DeleteRoleForUserAsync(DeleteUserRoleDto dto);
-    
+
     /// <summary>
     /// Updating role for user
     /// </summary>

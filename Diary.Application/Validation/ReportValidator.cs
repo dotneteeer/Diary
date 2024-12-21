@@ -6,7 +6,7 @@ using Diary.Domain.Result;
 
 namespace Diary.Application.Validation;
 
-public class ReportValidator:IReportValidator
+public class ReportValidator : IReportValidator
 {
     public BaseResult ValidateOnNull(Report model)
     {

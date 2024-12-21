@@ -26,9 +26,10 @@ public class UserType : ObjectType<User>
         descriptor.Field(x => x.LastEditedBy).Description("The owner of last report edit");
     }
 
-    private class Resolvers
+    private sealed class Resolvers
     {
-        public IQueryable<Report> GetReports([Parent] User user, [Service] IBaseRepository<Report> reportRepository)
+        public static IQueryable<Report> GetReports([Parent] User user,
+            [Service] IBaseRepository<Report> reportRepository)
         {
             var reports = reportRepository.GetAll().Where(x => x.UserId == user.Id);
             return reports;

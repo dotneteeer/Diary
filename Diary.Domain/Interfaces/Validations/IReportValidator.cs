@@ -3,12 +3,12 @@ using Diary.Domain.Result;
 
 namespace Diary.Domain.Interfaces.Validations;
 
-public interface IReportValidator:IBaseValidator<Report>
-{ 
+public interface IReportValidator : IBaseValidator<Report>
+{
     /// <summary>
     /// Checks User by UserId
     /// </summary>
     /// <param name="user"></param>
     /// <returns></returns>
-    BaseResult CreateValidator( User user);
+    BaseResult CreateValidator(User user);
 }

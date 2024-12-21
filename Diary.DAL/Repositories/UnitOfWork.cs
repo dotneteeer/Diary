@@ -8,12 +8,7 @@ namespace Diary.DAL.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
-    
-    
-    public IBaseRepository<User> Users { get; set; }
-    public IBaseRepository<Role> Roles { get; set; }
 
-    public IBaseRepository<UserRole> UserRoles { get; set; }
     public UnitOfWork(ApplicationDbContext context, IBaseRepository<User> users, IBaseRepository<Role> roles,
         IBaseRepository<UserRole> userRoles)
     {
@@ -22,6 +17,12 @@ public class UnitOfWork : IUnitOfWork
         Roles = roles;
         UserRoles = userRoles;
     }
+
+
+    public IBaseRepository<User> Users { get; set; }
+    public IBaseRepository<Role> Roles { get; set; }
+
+    public IBaseRepository<UserRole> UserRoles { get; set; }
 
     public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
@@ -32,6 +33,4 @@ public class UnitOfWork : IUnitOfWork
     {
         return await _context.SaveChangesAsync();
     }
-
-
 }

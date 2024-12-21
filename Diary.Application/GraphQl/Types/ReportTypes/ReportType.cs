@@ -26,12 +26,12 @@ public class ReportType : ObjectType<Report>
         descriptor.Field(x => x.LastEditedBy).Description("The owner of last report edit");
 
         descriptor.Field(x => x.User)
-            .ResolveWith<Resolvers>(x => x.GetUser(default!, default!));
+            .ResolveWith<Resolvers>(x => Resolvers.GetUser(default!, default!));
     }
 
-    private class Resolvers
+    private sealed class Resolvers
     {
-        public async Task<User> GetUser([Parent] Report report, [Service] IBaseRepository<User> userRepository)
+        public static async Task<User> GetUser([Parent] Report report, [Service] IBaseRepository<User> userRepository)
         {
             var result = await userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == report.UserId);
 

@@ -15,11 +15,8 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString("PostgresSQL");
         services.AddSingleton<DateInterceptor>();
-        services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            options.UseNpgsql(connectionString);
-        });
-        
+        services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(connectionString); });
+
         services.InitRepositories();
     }
 

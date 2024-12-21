@@ -3,7 +3,7 @@ namespace Diary.Api.Filters.ReportControllersFilter;
 /// <summary>
 /// Base class for validators in report controller
 /// </summary>
-public abstract class ValidatorFilterBase : Attribute
+public abstract class ValidatorFilterBaseAttribute : Attribute
 {
     /// <summary>
     /// Default authentication scheme

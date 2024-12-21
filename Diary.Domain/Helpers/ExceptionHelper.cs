@@ -6,7 +6,7 @@ public static class ExceptionHelper
     {
         foreach (var argument in arguments)
         {
-            ArgumentNullException.ThrowIfNull(argument, nameof(argument));
+            ArgumentNullException.ThrowIfNull(argument);
         }
     }
 }

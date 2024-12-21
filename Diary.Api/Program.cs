@@ -37,7 +37,7 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
                 ["service.instance.id"] = Guid.NewGuid().ToString()
             };
         })
-    //.Enrich.FromLogContext()
+//.Enrich.FromLogContext()
 );
 
 builder.AddOpenTelemetry();
@@ -84,7 +84,7 @@ app.UseWebSockets();
 
 Startup.LogListeningUrls(app);
 
-app.Run();
+await app.RunAsync();
 
 public partial class Program
 {

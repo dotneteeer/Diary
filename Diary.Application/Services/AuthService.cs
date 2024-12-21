@@ -177,13 +177,13 @@ public class AuthService : IAuthService
         };
     }
 
-    private string HashPassword(string password)
+    private static string HashPassword(string password)
     {
         var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
         return Convert.ToBase64String(bytes);
     }
 
-    private bool IsVerifiedPassword(string userPasswordHash, string userPassword)
+    private static bool IsVerifiedPassword(string userPasswordHash, string userPassword)
     {
         var hash = HashPassword(userPassword);
         return userPasswordHash == hash;

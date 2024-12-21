@@ -6,10 +6,11 @@ using ILogger = Serilog.ILogger;
 
 namespace Diary.DAL;
 
-public sealed class ApplicationDbContext:DbContext//sealed added by rider(forbids to inherit)
+public sealed class ApplicationDbContext : DbContext //sealed added by rider(forbids to inherit)
 {
     private readonly ILogger _logger;
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options, ILogger logger):base(options)
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILogger logger) : base(options)
     {
         _logger = logger;
         //Database.EnsureCreated();//use migrations

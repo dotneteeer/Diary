@@ -7,8 +7,8 @@ namespace Diary.Api.Middlewares;
 
 public class WarningHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger _logger;
+    private readonly RequestDelegate _next;
 
     public WarningHandlingMiddleware(ILogger logger, RequestDelegate next)
     {
@@ -40,7 +40,6 @@ public class WarningHandlingMiddleware
                 }
 
                 await swapStream.CopyToAsync(originalResponseBody);
-                
             }
         }
         finally
@@ -55,5 +54,4 @@ public class WarningHandlingMiddleware
         await stream.WriteAsync(buffer, 0, buffer.Length);
         stream.Seek(0, SeekOrigin.Begin);
     }
-    
 }

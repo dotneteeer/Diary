@@ -103,14 +103,14 @@ public static class Startup
                 }
             });
 
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
                 Description = "Please write valid token",
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
-                Scheme = "Bearer"
+                Scheme = JwtBearerDefaults.AuthenticationScheme
             });
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -121,9 +121,9 @@ public static class Startup
                         Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
+                            Id = JwtBearerDefaults.AuthenticationScheme
                         },
-                        Name = "Bearer",
+                        Name = JwtBearerDefaults.AuthenticationScheme,
                         In = ParameterLocation.Header
                     },
                     Array.Empty<string>()

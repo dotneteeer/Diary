@@ -17,7 +17,7 @@ namespace Diary.Api.Controllers;
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class AuthController : Controller
+public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
 

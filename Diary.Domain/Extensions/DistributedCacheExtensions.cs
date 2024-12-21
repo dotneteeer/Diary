@@ -13,7 +13,6 @@ public static class DistributedCacheExtensions
         return value?.Length > 0
             ? JsonSerializer.Deserialize<T>(value)
             : default;
-        ;
     }
 
     public static void SetObject<T>(this IDistributedCache cache, string key, T value,
@@ -27,8 +26,8 @@ public static class DistributedCacheExtensions
     public static void RefreshObject<T>(this IDistributedCache cache, string key,
         DistributedCacheEntryOptions? options = null)
     {
-        if (cache.GetObject<T>(key) == null)
-            throw new NullReferenceException($"Object with key \"{key}\" was not found");
+        if (cache.GetObject<T>(key).Equals(default(T)))
+            throw new ArgumentException($"Object with key \"{key}\" was not found");
         cache.Refresh(key);
     }
 }

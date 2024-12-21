@@ -6,8 +6,8 @@ namespace Diary.Api.Middlewares;
 
 public class ExceptionHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly ILogger _logger;
+    private readonly RequestDelegate _next;
 
     public ExceptionHandlingMiddleware(RequestDelegate next, ILogger logger)
     {
@@ -38,11 +38,10 @@ public class ExceptionHandlingMiddleware
 
     private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
-
         var errorMessage = exception.Message;
-        
+
         _logger.Error(exception, errorMessage);
-        
+
 
         var response = exception switch
         {
@@ -59,8 +58,8 @@ public class ExceptionHandlingMiddleware
             }
         };
 
-        
-        httpContext.Response.ContentType= "application/json";
+
+        httpContext.Response.ContentType = "application/json";
         httpContext.Response.StatusCode = (int)response.ErrorCode;
         await httpContext.Response.WriteAsJsonAsync(response);
     }

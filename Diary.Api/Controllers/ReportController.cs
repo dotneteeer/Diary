@@ -28,13 +28,11 @@ namespace Diary.Api.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ReportController : ControllerBase
 {
-    private readonly IBaseRepository<Report> _reportRepository;
     private readonly IReportService _reportService;
 
     public ReportController(IReportService reportService, IBaseRepository<Report> reportRepository)
     {
         _reportService = reportService;
-        _reportRepository = reportRepository;
     }
 
     /// <summary>

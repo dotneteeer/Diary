@@ -147,7 +147,7 @@ namespace Diary.DAL.Migrations
                 table: "UserToken",
                 column: "UserId",
                 unique: true);
-           
+
         }
 
         /// <inheritdoc />
@@ -175,7 +175,7 @@ namespace Diary.DAL.Migrations
             migrationBuilder.DropIndex(
                 name: "IX_UserRole_UserId_RoleId",
                 table: "UserRole");
-            
+
         }
 
     }

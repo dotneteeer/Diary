@@ -15,7 +15,7 @@ namespace Diary.Api.Controllers;
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class TokenController : Controller
+public class TokenController : ControllerBase
 {
     private readonly ITokenService _tokenService;
 
