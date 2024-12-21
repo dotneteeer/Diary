@@ -142,7 +142,7 @@ jobs:
           echo "JWT__RefreshTokenValidityInDays=${{ secrets.JWT_REFRESH_DAYS }}" >> $GITHUB_ENV
 
       - name: List build directory  # Дополнительно, чтобы проверить содержимое
-        run: ls
+        run: ls -R Diary_build
           
       - name: Run E2E Tests
         run: dotnet test --no-build --filter "Category=E2E" --output ./Diary_build
