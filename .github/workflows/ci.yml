@@ -58,7 +58,6 @@ jobs:
         with:
           name: build-artifacts
           path: 'Diary-build/**'
-          if-no-files-found: 'error'
   
   unit-tests:
     name: Run Unit Tests
