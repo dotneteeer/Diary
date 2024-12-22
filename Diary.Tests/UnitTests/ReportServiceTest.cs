@@ -30,7 +30,7 @@ public class ReportServiceTest
         var result = await reportService.GetReportByIdAsync(id);
 
         //Assert
-        Assert.NotNull(result);
+        Assert.NotNull(result.Data);
     }
 
     [Trait("Category", "Unit")]
@@ -46,7 +46,7 @@ public class ReportServiceTest
         //Assert
         if (isSuccessExpected)
         {
-            Assert.NotNull(result);
+            Assert.NotNull(result.Data);
         }
         else
         {
@@ -64,7 +64,7 @@ public class ReportServiceTest
         var result = await reportService.GetReportByIdAsync(1);
 
         //Assert
-        Assert.NotNull(result);
+        Assert.NotNull(result.Data);
     }
 
     [Trait("Category", "Unit")]
