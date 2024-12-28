@@ -50,6 +50,7 @@ This project is still a work in progress, and contributions are welcome. If you'
 5. Submit a pull request.
 
 Do not contribute branches with `-EXAMPLE` tag. They are for test purposes only.
+Branchers with `-NOT-COMPLETE` tag are not complete and are most likely not working.
 
 ## License
 This project is licensed under the MIT License - see the `LICENSE.txt` file for details.
