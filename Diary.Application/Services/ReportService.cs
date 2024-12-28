@@ -4,6 +4,7 @@ using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
 using Diary.Domain.Extensions;
+using Diary.Domain.Helpers;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Interfaces.Validations;
@@ -92,7 +93,7 @@ public class ReportService : IReportService
     public Task<BaseResult<ReportDto>> GetReportByIdAsync(long id)
     {
         ReportDto? report;
-        report = _distributedCache.GetObject<ReportDto>($"Report_{id}")
+        report = _distributedCache.GetObject<ReportDto>(RedisNameHelper.GetReportRedisName(id))
                  ?? _reportRepository.GetAll()
                      .AsEnumerable()
                      .Select(x =>
@@ -109,7 +110,7 @@ public class ReportService : IReportService
             });
         }
 
-        _distributedCache.SetObject($"Report_{id}", report,
+        _distributedCache.SetObject(RedisNameHelper.GetReportRedisName(id), report,
             new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5)));
 
         return Task.FromResult(new BaseResult<ReportDto>()
@@ -173,10 +174,10 @@ public class ReportService : IReportService
             };
         }
 
-        _reportRepository.Remove(report);
+        _reportRepository.Remove(report!);
         await _reportRepository.SaveChangesAsync();
 
-        await _distributedCache.RemoveAsync($"Report_{id}");
+        await _distributedCache.RemoveAsync(RedisNameHelper.GetReportRedisName(report));
 
         return new BaseResult<ReportDto>
         {
@@ -197,7 +198,7 @@ public class ReportService : IReportService
             };
         }
 
-        report.Name = dto.Name;
+        report!.Name = dto.Name;
         report.Description = dto.Description;
 
         var updatedReport = _reportRepository.Update(report);
