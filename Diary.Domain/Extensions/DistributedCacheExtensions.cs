@@ -1,6 +1,7 @@
-using System.Text.Json;
+using System.Text;
 using Diary.Domain.Helpers;
 using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace Diary.Domain.Extensions;
 
@@ -9,9 +10,9 @@ public static class DistributedCacheExtensions
     public static T GetObject<T>(this IDistributedCache cache, string key)
     {
         ExceptionHelper.ThrowIfArgumentsNull(key);
-        var value = cache.Get(key);
+        var value = Encoding.UTF8.GetString(cache.Get(key));
         return value?.Length > 0
-            ? JsonSerializer.Deserialize<T>(value)
+            ? JsonConvert.DeserializeObject<T>(value)
             : default;
     }
 
@@ -19,7 +20,10 @@ public static class DistributedCacheExtensions
         DistributedCacheEntryOptions? options = null)
     {
         ExceptionHelper.ThrowIfArgumentsNull(key, value);
-        var bytes = JsonSerializer.SerializeToUtf8Bytes(value);
+        var bytes = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value, new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        }));
         cache.Set(key, bytes, options ?? new DistributedCacheEntryOptions());
     }
 

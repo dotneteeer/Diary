@@ -6,12 +6,12 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Diary.DAL.Repositories;
 
-public class CachedReportBaseRepository : IBaseRepository<Report>
+public class ReportCachedBaseRepository : IBaseRepository<Report>
 {
     private readonly IDistributedCache _cache;
     private readonly IBaseRepository<Report> _decorated;
 
-    public CachedReportBaseRepository(IBaseRepository<Report> decorated, IDistributedCache cache)
+    public ReportCachedBaseRepository(IBaseRepository<Report> decorated, IDistributedCache cache)
     {
         _decorated = decorated;
         _cache = cache;
