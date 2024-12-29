@@ -132,12 +132,12 @@ public class ReportService : IReportService
             };
         }
 
-        var report = new Report
-        {
-            Name = dto.Name,
-            Description = dto.Description,
-            UserId = user.Id
-        };
+        var report = Report.Create
+        (
+            dto.Name,
+            dto.Description,
+            user!.Id
+        );
 
         await _reportRepository.CreateAsync(report);
         await _reportRepository.SaveChangesAsync();
@@ -197,8 +197,7 @@ public class ReportService : IReportService
             };
         }
 
-        report.Name = dto.Name;
-        report.Description = dto.Description;
+        report!.Update(dto.Name, dto.Description);
 
         var updatedReport = _reportRepository.Update(report);
         await _reportRepository.SaveChangesAsync();

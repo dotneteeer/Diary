@@ -25,5 +25,18 @@ public class User : IEntityId<long>, IAuditable
     public DateTime LastEditedAt { get; set; }
 
     public long LastEditedBy { get; set; }
+
+    public void UpdateCreatedAt()
+    {
+        CreatedAt = DateTime.UtcNow;
+        LastEditedAt = DateTime.UtcNow;
+    }
+
+    public void UpdateUpdatedAt()
+    {
+        UpdatedAt = DateTime.UtcNow;
+        LastEditedAt = DateTime.UtcNow;
+    }
+
     public long Id { get; set; }
 }

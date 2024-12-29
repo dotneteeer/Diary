@@ -31,25 +31,15 @@ public static class MockRepositoriesGetter
 
     public static IQueryable<Report> GetReports()
     {
-        return new List<Report>
-        {
-            new Report
-            {
-                Id = 1,
-                Name = "UnitTestReport1",
-                Description = "UnitTestReport1",
-                CreatedAt = DateTime.UtcNow,
-                UserId = 1
-            },
-            new Report
-            {
-                Id = 2,
-                Name = "UnitTestReport2",
-                Description = "UnitTestReport2",
-                CreatedAt = DateTime.UtcNow,
-                UserId = 2
-            },
-        }.AsQueryable();
+        var report1 = Report.Create("UnitTestReport1", "UnitTestReport1", 1);
+        var report2 = Report.Create("UnitTestReport2", "UnitTestReport2", 2);
+
+        report1.Id = 1;
+        report1.UpdateCreatedAt();
+        report2.Id = 2;
+        report2.UpdateUpdatedAt();
+
+        return new List<Report> { report1, report2 }.AsQueryable();
     }
 
     public static IQueryable<User> GetUsers()

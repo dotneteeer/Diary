@@ -32,18 +32,18 @@ internal static class PrepDb
 
         dbContext.SaveChanges();
 
-        dbContext.Set<Report>().AddRange(new Report
-            {
-                Name = "Test report 1",
-                Description = "Test report 1 description",
-                UserId = 1
-            },
-            new Report
-            {
-                Name = "Test report 2",
-                Description = "Test report 2 description",
-                UserId = 1
-            }
+        dbContext.Set<Report>().AddRange(Report.Create
+            (
+                "Test report 1",
+                "Test report 1 description",
+                1
+            ),
+            Report.Create
+            (
+                "Test report 2",
+                "Test report 2 description",
+                1
+            )
         );
 
         dbContext.SaveChanges();

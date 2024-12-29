@@ -23,15 +23,13 @@ public class DateInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property(x => x.CreatedAt).CurrentValue = DateTime.UtcNow;
+                entry.Entity.UpdateCreatedAt();
             }
 
             if (entry.State == EntityState.Modified)
             {
-                entry.Property(x => x.UpdatedAt).CurrentValue = DateTime.UtcNow;
+                entry.Entity.UpdateUpdatedAt();
             }
-
-            entry.Property(x => x.LastEditedAt).CurrentValue = DateTime.UtcNow;
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -50,15 +48,13 @@ public class DateInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Property(x => x.CreatedAt).CurrentValue = DateTime.UtcNow;
+                entry.Entity.UpdateCreatedAt();
             }
 
             if (entry.State == EntityState.Modified)
             {
-                entry.Property(x => x.UpdatedAt).CurrentValue = DateTime.UtcNow;
+                entry.Entity.UpdateUpdatedAt();
             }
-
-            entry.Property(x => x.LastEditedAt).CurrentValue = DateTime.UtcNow;
         }
 
         return base.SavingChanges(eventData, result);
