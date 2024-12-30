@@ -1,16 +1,33 @@
 using Diary.Domain.Interfaces;
+using Diary.Domain.ValueObjects.Report;
 
 namespace Diary.Domain.Entity;
 
 public class Report : IEntityId<long>, IAuditable
 {
+    private Name _name;
+
     private Report()
     {
     }
 
-    public string Name { get; private set; }
+    public string FullName { get; private set; }
 
-    public string Description { get; private set; }
+    public Name Name
+    {
+        get
+        {
+            _name = new Name(FullName);
+            return _name;
+        }
+        set
+        {
+            _name = value;
+            FullName = _name.ToString();
+        }
+    }
+
+    public string Description { get; set; }
 
     public User User { get; init; }
 

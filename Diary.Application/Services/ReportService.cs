@@ -52,7 +52,7 @@ public class ReportService : IReportService
             .Where(x => x.UserId == userId)
             .OrderByDescending(x => x.LastEditedAt)
             .Select(x =>
-                new ReportDto(x.Id, x.Name, x.Description, x.LastEditedAt.ToLongUtcString()))
+                new ReportDto(x.Id, x.Name.ToString(), x.Description, x.LastEditedAt.ToLongUtcString()))
             .ToArrayAsync();
 
         var totalCount = reports.Length;
@@ -96,7 +96,7 @@ public class ReportService : IReportService
                  ?? _reportRepository.GetAll()
                      .AsEnumerable()
                      .Select(x =>
-                         new ReportDto(x.Id, x.Name, x.Description,
+                         new ReportDto(x.Id, x.Name.ToString(), x.Description,
                              x.LastEditedAt.ToLongUtcString()))
                      .FirstOrDefault(x => x.Id == id);
 

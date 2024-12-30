@@ -40,7 +40,7 @@ public class ReportTests : BaseReportIntegrationTest
 
         //Assert
         var result = await _reportService.CreateReportAsync(createReportDto);
-        var addedReport = await _dbContext.Set<Report>().FirstOrDefaultAsync(x => x.Name == reportName);
+        var addedReport = await _dbContext.Set<Report>().FirstOrDefaultAsync(x => x.FullName == reportName);
 
         //Act
         Assert.False(result.IsSuccess);
