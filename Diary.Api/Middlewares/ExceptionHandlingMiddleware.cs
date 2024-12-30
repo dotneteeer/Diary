@@ -45,11 +45,7 @@ public class ExceptionHandlingMiddleware
 
         var response = exception switch
         {
-            UnauthorizedAccessException _ => new BaseResult
-            {
-                ErrorMessage = errorMessage,
-                ErrorCode = (int)HttpStatusCode.Unauthorized
-            },
+            //Add exception cases
 
             _ => new BaseResult
             {
