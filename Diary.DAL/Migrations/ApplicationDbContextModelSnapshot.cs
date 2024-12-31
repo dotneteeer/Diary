@@ -41,16 +41,16 @@ namespace Diary.DAL.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<DateTime>("LastEditedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("LastEditedBy")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -68,7 +68,7 @@ namespace Diary.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Report");
+                    b.ToTable("Report", (string)null);
                 });
 
             modelBuilder.Entity("Diary.Domain.Entity.Role", b =>
@@ -86,7 +86,10 @@ namespace Diary.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Role", (string)null);
 
                     b.HasData(
                         new
@@ -103,6 +106,11 @@ namespace Diary.DAL.Migrations
                         {
                             Id = 3L,
                             Name = "Moderator"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "Api"
                         });
                 });
 
@@ -146,7 +154,7 @@ namespace Diary.DAL.Migrations
                     b.HasIndex("Login")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("Diary.Domain.Entity.UserRole", b =>
@@ -162,7 +170,7 @@ namespace Diary.DAL.Migrations
                     b.HasIndex("UserId", "RoleId")
                         .IsUnique();
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRole", (string)null);
                 });
 
             modelBuilder.Entity("Diary.Domain.Entity.UserToken", b =>
@@ -188,7 +196,7 @@ namespace Diary.DAL.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserToken");
+                    b.ToTable("UserToken", (string)null);
                 });
 
             modelBuilder.Entity("Diary.Domain.Entity.Report", b =>

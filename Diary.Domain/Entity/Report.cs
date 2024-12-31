@@ -6,27 +6,12 @@ namespace Diary.Domain.Entity;
 
 public class Report : AbstractClasses.Entity, IAuditable
 {
-    private Name _name;
-
     private Report()
     {
     }
 
-    public string FullName { get; private set; }
 
-    public Name Name
-    {
-        get
-        {
-            _name = new Name(FullName);
-            return _name;
-        }
-        set
-        {
-            _name = value;
-            FullName = _name.ToString();
-        }
-    }
+    public Name Name { get; set; }
     //real value objects should be immutable
 
     public string Description { get; set; }
