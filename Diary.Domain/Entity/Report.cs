@@ -26,6 +26,7 @@ public class Report : IEntityId<long>, IAuditable
             FullName = _name.ToString();
         }
     }
+    //real value objects should be immutable
 
     public string Description { get; set; }
 
