@@ -57,7 +57,7 @@ public class Report : AbstractClasses.Entity, IAuditable
             UserId = userId
         };
 
-        report._domainEvents.Add(new ReportCreatedDomainEvent(report.Id));
+        report.RaiseDomainEvent(new ReportCreatedDomainEvent(report.Id));
 
         return report;
     }
@@ -69,6 +69,6 @@ public class Report : AbstractClasses.Entity, IAuditable
         Name = name;
         Description = description;
 
-        _domainEvents.Add(new ReportUpdatedDomainEvent(Id));
+        RaiseDomainEvent(new ReportUpdatedDomainEvent(Id));
     }
 }
