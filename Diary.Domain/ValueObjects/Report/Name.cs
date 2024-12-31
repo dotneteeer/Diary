@@ -5,6 +5,10 @@ public sealed class Name : IEquatable<Name>
     public Name(string fullName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(fullName);
+        //Instead of 
+        //ArgumentException.ThrowIfNullOrWhiteSpace(fullName);
+        //it could be:
+        //Ensure.NotNullOrEmpty(fullName);
 
         var separatedName = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
         FirstName = Capitalize(separatedName[0]);
@@ -52,3 +56,13 @@ public sealed class Name : IEquatable<Name>
         return new Name(name);
     }
 }
+
+//There mat be a guard class like:
+/*public static class Ensure
+{
+    public static void NotNullOrEmpty([NotNull] string value, //[NotNull] is there for the compiler
+        [CallerArgumentExpression("value")] string parameterName = null)
+    {
+        //...
+    }
+}*/
