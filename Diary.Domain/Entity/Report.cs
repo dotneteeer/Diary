@@ -1,9 +1,10 @@
+using Diary.Domain.DomainEvents;
 using Diary.Domain.Interfaces;
 using Diary.Domain.ValueObjects.Report;
 
 namespace Diary.Domain.Entity;
 
-public class Report : IEntityId<long>, IAuditable
+public class Report : AbstractClasses.Entity, IAuditable
 {
     private Name _name;
 
@@ -34,6 +35,8 @@ public class Report : IEntityId<long>, IAuditable
 
     public long UserId { get; init; }
 
+    public List<IDomainEvent> DomainEvents => _domainEvents;
+
     public DateTime CreatedAt { get; protected set; }
 
     public long CreatedBy { get; set; }
@@ -58,8 +61,6 @@ public class Report : IEntityId<long>, IAuditable
         LastEditedAt = DateTime.UtcNow;
     }
 
-    public long Id { get; set; }
-
     public static Report Create(string name, string description, long userId)
     {
         ArgumentNullException.ThrowIfNull(userId);
@@ -71,6 +72,8 @@ public class Report : IEntityId<long>, IAuditable
             UserId = userId
         };
 
+        report._domainEvents.Add(new ReportCreatedDomainEvent(report.Id));
+
         return report;
     }
 
@@ -80,5 +83,7 @@ public class Report : IEntityId<long>, IAuditable
 
         Name = name;
         Description = description;
+
+        _domainEvents.Add(new ReportUpdatedDomainEvent(Id));
     }
 }
