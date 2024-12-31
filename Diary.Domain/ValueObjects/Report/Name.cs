@@ -4,8 +4,7 @@ public sealed class Name : IEquatable<Name>
 {
     public Name(string fullName)
     {
-        if (string.IsNullOrWhiteSpace(fullName))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(fullName));
+        ArgumentException.ThrowIfNullOrWhiteSpace(fullName);
 
         var separatedName = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
         FirstName = Capitalize(separatedName[0]);

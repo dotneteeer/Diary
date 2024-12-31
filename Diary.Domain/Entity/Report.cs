@@ -62,7 +62,7 @@ public class Report : IEntityId<long>, IAuditable
 
     public static Report Create(string name, string description, long userId)
     {
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name), "The name is required");
+        ArgumentNullException.ThrowIfNull(userId);
 
         var report = new Report
         {
