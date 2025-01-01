@@ -1,5 +1,4 @@
 using AutoMapper;
-using Diary.Application.Resources;
 using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
@@ -7,6 +6,7 @@ using Diary.Domain.Extensions;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
 using Diary.Domain.Interfaces.Validations;
+using Diary.Domain.Resources;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Diary.Producer.Interfaces;

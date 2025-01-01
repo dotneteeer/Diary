@@ -1,6 +1,6 @@
-﻿using Diary.Application.Resources;
-using Diary.Domain.Dto.Report;
+﻿using Diary.Domain.Dto.Report;
 using Diary.Domain.Entity;
+using Diary.Domain.Resources;
 using Diary.Tests.UnitTests.Configurations;
 using Diary.Tests.UnitTests.Factories;
 using Diary.Tests.UnitTests.TestDataClasses;

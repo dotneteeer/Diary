@@ -2,11 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Diary.Application.Resources;
 using Diary.Domain.Dto.Token;
 using Diary.Domain.Entity;
 using Diary.Domain.Interfaces.Repositories;
 using Diary.Domain.Interfaces.Services;
+using Diary.Domain.Resources;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +17,11 @@ namespace Diary.Application.Services;
 
 public class TokenService : ITokenService
 {
-    private readonly IBaseRepository<User> _userRepository;
-    private readonly string _jwtKey;
-    private readonly string _issuer;
     private readonly string _audience;
+    private readonly string _issuer;
+    private readonly string _jwtKey;
     private readonly int _lifetime;
+    private readonly IBaseRepository<User> _userRepository;
 
     public TokenService(IOptions<JwtSettings> options, IBaseRepository<User> userRepository)
     {

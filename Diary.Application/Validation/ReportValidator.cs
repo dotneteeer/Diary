@@ -1,7 +1,7 @@
-using Diary.Application.Resources;
 using Diary.Domain.Entity;
 using Diary.Domain.Enum;
 using Diary.Domain.Interfaces.Validations;
+using Diary.Domain.Resources;
 using Diary.Domain.Result;
 
 namespace Diary.Application.Validation;
