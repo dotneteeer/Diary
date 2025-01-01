@@ -11,10 +11,10 @@ public class Report : AbstractClasses.Entity, IAuditable
     }
 
 
-    public Name Name { get; set; }
+    public Name Name { get; private set; }
     //real value objects should be immutable
 
-    public string Description { get; set; }
+    public string Description { get; private set; }
 
     public User User { get; init; }
 
@@ -22,17 +22,17 @@ public class Report : AbstractClasses.Entity, IAuditable
 
     public List<IDomainEvent> DomainEvents => _domainEvents;
 
-    public DateTime CreatedAt { get; protected set; }
+    public DateTime CreatedAt { get; private set; }
 
-    public long CreatedBy { get; set; }
+    public long CreatedBy { get; private set; }
 
-    public DateTime? UpdatedAt { get; protected set; }
+    public DateTime? UpdatedAt { get; private set; }
 
-    public long? UpdatedBy { get; set; }
+    public long? UpdatedBy { get; private set; }
 
-    public DateTime LastEditedAt { get; protected set; }
+    public DateTime LastEditedAt { get; private set; }
 
-    public long LastEditedBy { get; set; }
+    public long LastEditedBy { get; private set; }
 
     public void UpdateCreatedAt()
     {
