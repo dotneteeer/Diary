@@ -72,3 +72,7 @@ public class Report : AbstractClasses.Entity, IAuditable
         RaiseDomainEvent(new ReportUpdatedDomainEvent(Id));
     }
 }
+
+//TODO DDD:
+//1. User may have method to create report
+//2. User should have public IReadOnlyCollection<Report> and private readonly List<Report>
