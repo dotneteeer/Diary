@@ -1,7 +1,7 @@
 # Diary API Project
 
 ## Introduction
-Welcome to the Diary API project! This project is built using ASP.NET Core and represents the backend and API for a diary application. The goal of this project is to provide a robust and scalable backend service that can handle diary entries and user interactions efficiently.
+Welcome to the Diary API project! This project is built using ASP.NET Core and represents the backend and API for a diary application. The goal of this project is to provide a simple .NET-based daily planner powered by the most popular and cutting-edge technologies to streamline your day.
 
 ## Features
 - **User Authentication**: Secure JWT Token system.
