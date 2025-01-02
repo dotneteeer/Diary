@@ -64,8 +64,11 @@ public static class Startup
     /// Swagger set up
     /// </summary>
     /// <param name="services"></param>
-    public static void AddSwagger(this IServiceCollection services)
+    /// <param name="builder"></param>
+    public static void AddSwagger(this IServiceCollection services, WebApplicationBuilder builder)
     {
+        var termsOfServiceUrl = new Uri(builder.Configuration.GetSection("AppStartupSettings")
+            .GetValue<string>("TermsOfServiceUrl"));
         services.AddApiVersioning()
             .AddApiExplorer(options =>
             {
@@ -82,11 +85,11 @@ public static class Startup
                 Version = "v1",
                 Title = "Diary.Api",
                 Description = "Diary api v1",
-                TermsOfService = new Uri("https://aka.ms/aspnetcore/swashbuckle"),
+                TermsOfService = termsOfServiceUrl,
                 Contact = new OpenApiContact
                 {
                     Name = "Diary api contact",
-                    Url = new Uri("https://aka.ms/aspnetcore/swashbuckle")
+                    Url = termsOfServiceUrl
                 }
             });
 
@@ -95,11 +98,11 @@ public static class Startup
                 Version = "v2",
                 Title = "Diary.Api",
                 Description = "Diary api v2",
-                TermsOfService = new Uri("https://aka.ms/aspnetcore/swashbuckle"),
+                TermsOfService = termsOfServiceUrl,
                 Contact = new OpenApiContact
                 {
                     Name = "Diary api contact",
-                    Url = new Uri("https://aka.ms/aspnetcore/swashbuckle")
+                    Url = termsOfServiceUrl
                 }
             });
 
@@ -145,7 +148,13 @@ public static class Startup
         {
             var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
             var addressesList = addresses.Value?.Split(';').ToList();
-            addressesList?.ForEach(address => Log.Information("Now listening on: " + address));
+            var appStartupUrlLog =
+                app.Configuration.GetSection("AppStartupSettings").GetValue<string>("AppStartupUrlLog");
+            addressesList?.ForEach(address =>
+            {
+                var fullUrlLog = appStartupUrlLog + address;
+                Log.Information(fullUrlLog);
+            });
         });
     }
 
@@ -175,6 +184,11 @@ public static class Startup
     /// <param name="builder"></param>
     public static void AddOpenTelemetry(this WebApplicationBuilder builder)
     {
+        var openTelemetryConfiguration =
+            builder.Configuration.GetSection("AppStartupSettings").GetSection("OpenTelemetrySettings");
+        var aspireDashboardUri = new Uri(openTelemetryConfiguration.GetValue<string>("AspireDashboardUrl"));
+        var jaegerUri = new Uri(openTelemetryConfiguration.GetValue<string>("JaegerUrl"));
+
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(res => res.AddService("DiaryService"))
             .WithMetrics(metrics =>
@@ -183,7 +197,7 @@ public static class Startup
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation();
 
-                metrics.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"));
+                metrics.AddOtlpExporter(options => options.Endpoint = aspireDashboardUri);
             })
             .WithTracing(traces =>
             {
@@ -191,13 +205,13 @@ public static class Startup
                     .AddHttpClientInstrumentation()
                     .AddEntityFrameworkCoreInstrumentation();
 
-                traces.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"))
-                    .AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:4317"));
+                traces.AddOtlpExporter(options => options.Endpoint = aspireDashboardUri)
+                    .AddOtlpExporter(options => options.Endpoint = jaegerUri);
             });
 
         builder.Logging.AddOpenTelemetry(logging =>
         {
-            logging.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:18889"));
+            logging.AddOtlpExporter(options => options.Endpoint = aspireDashboardUri);
             logging.IncludeScopes = true;
             logging.IncludeFormattedMessage = true;
         });

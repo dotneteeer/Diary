@@ -11,13 +11,13 @@ namespace Diary.Api.Filters.ReportControllersFilter;
 /// Validates if id of user is equals to transmitted userId
 /// </summary>
 [AttributeUsage(AttributeTargets.Method)]
-public class UserIdValidationFilter : ValidatorFilterBaseAttribute, IAsyncAuthorizationFilter
+public class UserIdValidationFilterAttribute : ValidatorFilterBaseAttribute, IAsyncAuthorizationFilter
 {
     /// <summary>
     /// Gets name of identifier to compare with same identifier of User
     /// </summary>
     /// <param name="identifierName">Name of identifier to compare with same identifier of User</param>
-    public UserIdValidationFilter(string? identifierName = null)
+    public UserIdValidationFilterAttribute(string? identifierName = null)
     {
         IdentifierName = identifierName ?? "userId";
     }

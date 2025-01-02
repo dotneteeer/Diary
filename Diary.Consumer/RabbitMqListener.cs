@@ -33,7 +33,8 @@ public class RabbitMqListener : BackgroundService
         consumer.Received += (obj, basicDeliver) =>
         {
             var content = Encoding.UTF8.GetString(basicDeliver.Body.ToArray());
-            _logger.Information("Message received: " + content);
+            var messageLog = "Message received: " + content;
+            _logger.Information(messageLog);
             _channel.BasicAck(basicDeliver.DeliveryTag, false);
         };
         _channel.BasicConsume(_options.Value.QueueName, false, consumer);

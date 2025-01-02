@@ -31,6 +31,10 @@ public class ReportType : ObjectType<Report>
 
     private sealed class Resolvers
     {
+        private Resolvers()
+        {
+        }
+
         public static async Task<User> GetUser([Parent] Report report, [Service] IBaseRepository<User> userRepository)
         {
             var result = await userRepository.GetAll().FirstOrDefaultAsync(x => x.Id == report.UserId);

@@ -13,13 +13,13 @@ namespace Diary.Api.Filters.ReportControllersFilter;
 /// Validates if user request his report 
 /// </summary>
 [AttributeUsage(AttributeTargets.Method)]
-public class ReportOwnershipValidationFilter : ValidatorFilterBaseAttribute, IAsyncAuthorizationFilter
+public class ReportOwnershipValidationFilterAttribute : ValidatorFilterBaseAttribute, IAsyncAuthorizationFilter
 {
     /// <summary>
     /// Gets name of identifier to compare with same identifier of User
     /// </summary>
     /// <param name="identifierName">Name of identifier to compare with same identifier of User</param>
-    public ReportOwnershipValidationFilter(string? identifierName = null)
+    public ReportOwnershipValidationFilterAttribute(string? identifierName = null)
     {
         IdentifierName = identifierName ?? "id";
     }

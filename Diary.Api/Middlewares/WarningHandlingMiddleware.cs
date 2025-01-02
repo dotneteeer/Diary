@@ -1,5 +1,4 @@
 using System.Net;
-using System.Text;
 using Newtonsoft.Json;
 using ILogger = Serilog.ILogger;
 
@@ -46,12 +45,5 @@ public class WarningHandlingMiddleware
         {
             httpContext.Response.Body = originalResponseBody;
         }
-    }
-
-    private static async Task WriteToStreamAsync(MemoryStream stream, string message)
-    {
-        var buffer = Encoding.UTF8.GetBytes(message);
-        await stream.WriteAsync(buffer, 0, buffer.Length);
-        stream.Seek(0, SeekOrigin.Begin);
     }
 }

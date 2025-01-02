@@ -24,13 +24,14 @@ builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.UseHttpClientMetrics();
 
-builder.Services.AddSwagger();
+builder.Services.AddSwagger(builder);
 
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
         .WriteTo.OpenTelemetry(options =>
         {
-            options.Endpoint = "http://localhost:18889";
+            options.Endpoint = builder.Configuration.GetSection("AppStartupSettings")
+                .GetSection("OpenTelemetrySettings").GetValue<string>("AspireDashboardUrl");
             options.ResourceAttributes = new Dictionary<string, object>
             {
                 ["service.name"] = "DiaryService",

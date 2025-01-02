@@ -1,6 +1,4 @@
 using Diary.Domain.Entity;
-using Diary.Domain.Interfaces.Repositories;
-using HotChocolate;
 using HotChocolate.Types;
 
 namespace Diary.Application.GraphQl.Types.UserTypes;
@@ -24,15 +22,5 @@ public class UserType : ObjectType<User>
         descriptor.Field(x => x.UpdatedBy).Description("The owner of the report update");
         descriptor.Field(x => x.LastEditedAt).Description("Date of last report edit");
         descriptor.Field(x => x.LastEditedBy).Description("The owner of last report edit");
-    }
-
-    private sealed class Resolvers
-    {
-        public static IQueryable<Report> GetReports([Parent] User user,
-            [Service] IBaseRepository<Report> reportRepository)
-        {
-            var reports = reportRepository.GetAll().Where(x => x.UserId == user.Id);
-            return reports;
-        }
     }
 }
