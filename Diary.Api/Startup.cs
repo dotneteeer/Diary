@@ -12,6 +12,7 @@ using Diary.Domain.Entity;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Logs;
@@ -230,11 +231,8 @@ public static class Startup
     /// <param name="configuration"></param>
     public static void AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
     {
-        var rabbitMqSettings = new RabbitMqSettings();
-        var redisSettings = new RedisSettings();
-
-        configuration.GetSection(nameof(RabbitMqSettings)).Bind(rabbitMqSettings);
-        configuration.GetSection(nameof(RedisSettings)).Bind(redisSettings);
+        var rabbitMqSettings = services.BuildServiceProvider().GetRequiredService<IOptions<RabbitMqSettings>>().Value;
+        var redisSettings = services.BuildServiceProvider().GetRequiredService<IOptions<RedisSettings>>().Value;
 
         services.AddHealthChecks()
             .AddRabbitMQ(rabbitMqSettings.GetConnectionString(), name: default)
