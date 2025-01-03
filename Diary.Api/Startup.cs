@@ -7,6 +7,7 @@ using Diary.Application.GraphQl.Types.BaseTypes;
 using Diary.Application.GraphQl.Types.ReportTypes;
 using Diary.Application.GraphQl.Types.SubscriptionsTypes;
 using Diary.Application.GraphQl.Types.UserTypes;
+using Diary.DAL;
 using Diary.Domain.Entity;
 using Diary.Domain.Result;
 using Diary.Domain.Settings;
@@ -22,8 +23,13 @@ using Path = System.IO.Path;
 
 namespace Diary.Api;
 
+/// <summary>
+///     Class with methods for app stratup
+/// </summary>
 public static class Startup
 {
+    private const string AppStartupSectionName = "AppStartupSettings";
+
     /// <summary>
     /// Sets up authentication and authorization
     /// </summary>
@@ -65,9 +71,9 @@ public static class Startup
     /// </summary>
     /// <param name="services"></param>
     /// <param name="builder"></param>
-    public static void AddSwagger(this IServiceCollection services, WebApplicationBuilder builder)
+    public static void AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
-        var termsOfServiceUrl = new Uri(builder.Configuration.GetSection("AppStartupSettings")
+        var termsOfServiceUrl = new Uri(configuration.GetSection(AppStartupSectionName)
             .GetValue<string>("TermsOfServiceUrl"));
         services.AddApiVersioning()
             .AddApiExplorer(options =>
@@ -142,14 +148,14 @@ public static class Startup
     /// Logs listening urls
     /// </summary>
     /// <param name="app"></param>
-    public static void LogListeningUrls(WebApplication app)
+    public static void LogListeningUrls(this WebApplication app)
     {
         app.Lifetime.ApplicationStarted.Register(() =>
         {
             var addresses = app.Configuration.GetSection("ASPNETCORE_URLS");
             var addressesList = addresses.Value?.Split(';').ToList();
             var appStartupUrlLog =
-                app.Configuration.GetSection("AppStartupSettings").GetValue<string>("AppStartupUrlLog");
+                app.Configuration.GetSection(AppStartupSectionName).GetValue<string>("AppStartupUrlLog");
             addressesList?.ForEach(address =>
             {
                 var fullUrlLog = appStartupUrlLog + address;
@@ -185,7 +191,7 @@ public static class Startup
     public static void AddOpenTelemetry(this WebApplicationBuilder builder)
     {
         var openTelemetryConfiguration =
-            builder.Configuration.GetSection("AppStartupSettings").GetSection("OpenTelemetrySettings");
+            builder.Configuration.GetSection(AppStartupSectionName).GetSection("OpenTelemetrySettings");
         var aspireDashboardUri = new Uri(openTelemetryConfiguration.GetValue<string>("AspireDashboardUrl"));
         var jaegerUri = new Uri(openTelemetryConfiguration.GetValue<string>("JaegerUrl"));
 
@@ -215,5 +221,25 @@ public static class Startup
             logging.IncludeScopes = true;
             logging.IncludeFormattedMessage = true;
         });
+    }
+
+    /// <summary>
+    ///     Add health checks
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    public static void AddHealthCheck(this IServiceCollection services, IConfiguration configuration)
+    {
+        var rabbitMqSettings = new RabbitMqSettings();
+        var redisSettings = new RedisSettings();
+
+        configuration.GetSection(nameof(RabbitMqSettings)).Bind(rabbitMqSettings);
+        configuration.GetSection(nameof(RedisSettings)).Bind(redisSettings);
+
+        services.AddHealthChecks()
+            .AddRabbitMQ(rabbitMqSettings.GetConnectionString(), name: default)
+            .AddRedis(redisSettings.GetConnectionString())
+            .AddElasticsearch(configuration.GetSection(AppStartupSectionName).GetValue<string>("ElasticSearchUrl"))
+            .AddDbContextCheck<ApplicationDbContext>();
     }
 }

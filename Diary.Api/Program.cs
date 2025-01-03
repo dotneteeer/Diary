@@ -6,6 +6,8 @@ using Diary.DAL.DependencyInjection;
 using Diary.Domain.Settings;
 using Diary.Producer.DependencyInjection;
 using GraphQL.Server.Ui.Voyager;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Prometheus;
 using Serilog;
 
@@ -24,7 +26,7 @@ builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.UseHttpClientMetrics();
 
-builder.Services.AddSwagger(builder);
+builder.Services.AddSwagger(builder.Configuration);
 
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
@@ -47,6 +49,7 @@ builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddProducer();
 builder.Services.AddConsumer();
 builder.Services.AddGraphQl();
+builder.Services.AddHealthCheck(builder.Configuration);
 
 var app = builder.Build();
 
@@ -82,8 +85,12 @@ app.MapControllers();
 app.MapGraphQL();
 app.UseGraphQLVoyager("/graphql-voyager", new VoyagerOptions { GraphQLEndPoint = "/graphql" });
 app.UseWebSockets();
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
-Startup.LogListeningUrls(app);
+app.LogListeningUrls();
 
 await app.RunAsync();
 
